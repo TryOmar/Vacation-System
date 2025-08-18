@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Vacation Inquiry - Search Results</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      background-color: #f9f9f9;
+    }
+    h1 { text-align: center; margin-bottom: 20px; }
+    .controls { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .left-controls, .right-controls { display: flex; align-items: center; gap: 10px; }
+    label { font-weight: bold; }
+    select { padding: 6px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      background: #fff;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: center;
+    }
+    th { background-color: #eee; }
+    .print-btn {
+      padding: 5px 10px;
+      background: #000;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .print-btn:disabled {
+      background: #000;
+      color: #fff;
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .action-btn {
+      padding: 8px 12px;
+      background: #000;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .summary { margin-top: 10px; }
+    .pagination { display: flex; align-items: center; gap: 6px; margin-top: 15px; flex-wrap: wrap; }
+    .page-link { padding: 6px 10px; border: 1px solid #999; background: #fff; cursor: pointer; }
+    .page-link.active { background: #000; color: #fff; border-color: #000; }
+    .page-link.disabled { color: #aaa; border-color: #ddd; cursor: default; }
+  </style>
+</head>
+<body>
+
+<h1>Employee Vacation Inquiry - Search Results</h1>
+<p class="summary">Showing matching inquiry results based on search criteria</p>
+
+<div class="controls">
+  <div class="left-controls">
+    <button id="exportBtn" class="action-btn">Export to Excel</button>
+    <button id="newSearchBtn" class="action-btn">New Search</button>
+  </div>
+  <div class="right-controls">
+    <label for="pageSize">Records per page:</label>
+    <select id="pageSize">
+      <option value="10">10</option>
+      <option value="25" selected>25</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+  </div>
+</div>
+
+<table id="resultsTable">
+  <thead>
+    <tr>
+      <th>Employee ID</th>
+      <th>Employee Name</th>
+      <th>Vacation Type</th>
+      <th>Vacation Start</th>
+      <th>Vacation End</th>
+      <th>Duration</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<div id="pagination" class="pagination"></div>
+
+<script>
+  // Mock dataset with multiple departments/types/statuses (60 rows)
+  const mockData = (() => {
+    const base = [
+      {id: "EMP001", name: "Ahmed Al-Rashid", dept: "IT", type: "Annual", start: "2025-01-15", end: "2025-01-20", status: "Approved"},
+      {id: "EMP002", name: "Fatima Al-Zahra", dept: "HR", type: "Sick", start: "2025-02-01", end: "2025-02-03", status: "Pending"},
+      {id: "EMP003", name: "Omar Al-Mansouri", dept: "Finance", type: "Annual", start: "2025-03-10", end: "2025-03-17", status: "Rejected"},
+      {id: "EMP004", name: "Sara Al-Mahmoud", dept: "Marketing", type: "Annual", start: "2025-04-05", end: "2025-04-09", status: "Approved"},
+      {id: "EMP005", name: "Khalid Al-Rashid", dept: "HR", type: "Sick", start: "2025-05-01", end: "2025-05-02", status: "Approved"},
+      {id: "EMP006", name: "Omar Al-Qasimi", dept: "IT", type: "Annual", start: "2025-06-12", end: "2025-06-16", status: "Cancelled"},
+      {id: "EMP007", name: "Layla Mostafa", dept: "Finance", type: "Sick", start: "2025-07-03", end: "2025-07-04", status: "Approved"},
+      {id: "EMP008", name: "Hassan Adel", dept: "Marketing", type: "Annual", start: "2025-08-20", end: "2025-08-25", status: "Approved"},
+      {id: "EMP009", name: "Youssef Nabil", dept: "Operations", type: "Sick", start: "2025-09-14", end: "2025-09-15", status: "Rejected"},
+      {id: "EMP010", name: "Nourhan Sameh", dept: "Sales", type: "Annual", start: "2025-10-01", end: "2025-10-05", status: "Approved"}
+    ];
+    const rows = [];
+    for (let i = 0; i < 6; i++) {
+      base.forEach((b, idx) => {
+        const idNum = (i * base.length + idx + 1).toString().padStart(3, '0');
+        const copy = { ...b, id: `EMP${idNum}` };
+        rows.push(copy);
+      });
+    }
+    return rows;
+  })();
+
+  function calcDuration(start, end) {
+    return (new Date(end) - new Date(start)) / (1000*60*60*24) + 1;
+  }
+
+  const tbody = document.querySelector('#resultsTable tbody');
+  const paginationEl = document.getElementById('pagination');
+  const pageSizeEl = document.getElementById('pageSize');
+  const exportBtn = document.getElementById('exportBtn');
+  const newSearchBtn = document.getElementById('newSearchBtn');
+
+  let currentPage = 1;
+  let pageSize = parseInt(pageSizeEl.value, 10);
+  const totalItems = mockData.length;
+  const totalPages = () => Math.max(1, Math.ceil(totalItems / pageSize));
+
+  function renderTable() {
+    tbody.innerHTML = '';
+    const startIdx = (currentPage - 1) * pageSize;
+    const pageRows = mockData.slice(startIdx, startIdx + pageSize);
+    pageRows.forEach(r => {
+      const tr = document.createElement('tr');
+      const duration = calcDuration(r.start, r.end);
+      const disabledAttr = r.status === 'Approved' ? '' : 'disabled';
+      tr.innerHTML = `
+        <td>${r.id}</td>
+        <td>${r.name}</td>
+        <td>${r.type}</td>
+        <td>${r.start}</td>
+        <td>${r.end}</td>
+        <td>${duration} day${duration > 1 ? 's' : ''}</td>
+        <td>${r.status}</td>
+        <td><button class="print-btn" data-id="${r.id}" ${disabledAttr}>Print</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function makePageLink(label, page, disabled = false, active = false) {
+    const btn = document.createElement('button');
+    btn.textContent = label;
+    btn.className = 'page-link' + (disabled ? ' disabled' : '') + (active ? ' active' : '');
+    if (!disabled && !active) {
+      btn.addEventListener('click', () => {
+        currentPage = page;
+        renderTable();
+        renderPagination();
+      });
+    }
+    return btn;
+  }
+
+  function renderPagination() {
+    paginationEl.innerHTML = '';
+    const total = totalPages();
+    const prev = makePageLink('Previous', Math.max(1, currentPage - 1), currentPage === 1, false);
+    paginationEl.appendChild(prev);
+
+    // Page numbers with ellipsis style: show first 3, last, and around current
+    const pages = [];
+    const addPage = p => { if (!pages.includes(p) && p >= 1 && p <= total) pages.push(p); };
+    addPage(1); addPage(2); addPage(3);
+    addPage(currentPage - 1); addPage(currentPage); addPage(currentPage + 1);
+    addPage(total - 1); addPage(total);
+    pages.sort((a,b)=>a-b);
+
+    let last = 0;
+    pages.forEach(p => {
+      if (p - last > 1) {
+        const dots = document.createElement('span');
+        dots.textContent = '...';
+        paginationEl.appendChild(dots);
+      }
+      paginationEl.appendChild(makePageLink(String(p), p, false, p === currentPage));
+      last = p;
+    });
+
+    const next = makePageLink('Next', Math.min(total, currentPage + 1), currentPage === total, false);
+    paginationEl.appendChild(next);
+  }
+
+  pageSizeEl.addEventListener('change', () => {
+    pageSize = parseInt(pageSizeEl.value, 10);
+    currentPage = 1;
+    renderTable();
+    renderPagination();
+  });
+
+  exportBtn.addEventListener('click', () => {
+    // Export current page rows to CSV
+    const startIdx = (currentPage - 1) * pageSize;
+    const pageRows = mockData.slice(startIdx, startIdx + pageSize);
+    const header = ['Employee ID','Employee Name','Vacation Type','Vacation Start','Vacation End','Duration','Status'];
+    const rows = pageRows.map(r => [r.id, r.name, r.type, r.start, r.end, calcDuration(r.start, r.end), r.status]);
+    const csv = [header, ...rows].map(arr => arr.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'vacation_inquiry_results.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  newSearchBtn.addEventListener('click', () => {
+    alert('Navigate back to Search Parameters screen.');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target && e.target.matches('.print-btn') && !e.target.disabled) {
+      const id = e.target.getAttribute('data-id');
+      alert('Printing report for ' + id + ' (only allowed for Approved requests).');
+    }
+  });
+
+  // Initial render
+  renderTable();
+  renderPagination();
+</script>
+
+</body>
+</html> 
