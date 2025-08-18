@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Dictionary Template</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:1200px;margin:20px auto;padding:20px;border:2px solid #ccc;background:#f9f9f9}
+  h1{text-align:center;margin-bottom:30px;color:#333}
+  .description{text-align:center;color:#666;margin-bottom:30px;font-size:16px}
+  .export-buttons{text-align:center;margin-bottom:30px}
+  .export-buttons button{margin:0 10px;padding:10px 20px;border:none;background:#000;color:#fff;cursor:pointer;font-weight:bold;border-radius:3px;transition:.2s}
+  .export-buttons button:hover{background:#333}
+  table{width:100%;border-collapse:collapse;margin-top:20px;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.1)}
+  th,td{border:1px solid #999;padding:12px;text-align:left;vertical-align:top}
+  th{background:#f0f0f0;font-weight:bold;color:#333}
+  tr:nth-child(even){background:#f9f9f9}
+  .required{color:#d32f2f;font-weight:bold}
+  .optional{color:#388e3c}
+  .conditional{color:#f57c00;font-weight:bold}
+  .readonly{background:#e8e8e8;font-style:italic}
+  .field-type{font-weight:bold;color:#1976d2}
+  .business-rules{font-size:13px;line-height:1.4}
+  @media print{.export-buttons{display:none}body{border:none;margin:0;padding:10px}}
+</style>
+</head>
+<body>
+
+<h1 id="pageTitle">Data Dictionary Template</h1>
+<p class="description" id="pageDescription">Complete field specifications for the interface</p>
+
+<div class="export-buttons">
+  <button onclick="exportToCSV()">Export to CSV</button>
+  <button onclick="exportToPDF()">Export to PDF</button>
+  <button onclick="window.print()">Print</button>
+</div>
+
+<table id="dataDictionaryTable">
+  <thead><tr><th>Field Name</th><th>Data/UI Type</th><th>Is Required</th><th>Data Source</th><th>Business Rules</th><th>Default Values</th></tr></thead>
+  <tbody id="tableBody"></tbody>
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+<script>
+const pageConfig={title:"Vacation Types Master Data - Data Dictionary",description:"Complete field specifications for the Vacation Types Master Data interface",fileName:"Vacation_Types_Master_Data_Dictionary"};
+const dataDictionaryFields=[
+  {fieldName:"Vacation Type",dataType:"Enum",isRequired:"Yes",dataSource:"Config",businessRules:"Annual, Sick only",defaultValue:"None",isReadOnly:false},
+  {fieldName:"Entitlement",dataType:"Number",isRequired:"Yes",dataSource:"Config",businessRules:"21 or 30 days depending on years of service",defaultValue:"21 days",isReadOnly:false},
+  {fieldName:"Carry Over",dataType:"Boolean",isRequired:"Yes",dataSource:"Config",businessRules:"Annual: No carry-over; Sick: No carry-over",defaultValue:"False",isReadOnly:false},
+  {fieldName:"Proof Required",dataType:"Boolean",isRequired:"Yes",dataSource:"Config",businessRules:"Sick leave requires attachment",defaultValue:"True for Sick",isReadOnly:false}
+];
+function getRequirementClass(r){switch(r.toLowerCase()){case"yes":return"required";case"no":return"optional";case"conditional":return"conditional";default:return"optional"}}
+function generateTableRow(f){return `<tr><td><strong>${f.fieldName}</strong></td><td class="field-type">${f.dataType}</td><td class="${getRequirementClass(f.isRequired)}">${f.isRequired}</td><td>${f.dataSource}</td><td class="business-rules">${f.businessRules}</td><td class="${f.isReadOnly?"readonly":""}">${f.defaultValue}</td></tr>`}
+function initializePage(){document.getElementById("pageTitle").textContent=pageConfig.title;document.getElementById("pageDescription").textContent=pageConfig.description;document.getElementById("tableBody").innerHTML=dataDictionaryFields.map(generateTableRow).join("")}
+function exportToCSV(){const headers=['Field Name','Data/UI Type','Is Required','Data Source','Business Rules','Default Values'];const csvContent=[headers.join(','),...dataDictionaryFields.map(f=>[`"${f.fieldName}"`,'"'+f.dataType+'"','"'+f.isRequired+'"','"'+f.dataSource+'"','"'+f.businessRules+'"','"'+f.defaultValue+'"'].join(','))].join('\n');const blob=new Blob([csvContent],{type:'text/csv;charset=utf-8;'}),link=document.createElement('a'),url=URL.createObjectURL(blob);link.href=url;link.download=`${pageConfig.fileName}.csv`;link.style.visibility="hidden";document.body.appendChild(link);link.click();document.body.removeChild(link)}
+function exportToPDF(){const{jsPDF}=window.jspdf,doc=new jsPDF();doc.setProperties({title:pageConfig.title,subject:pageConfig.description,author:"Vacation System",creator:"Data Dictionary Generator"});doc.setFontSize(18).setFont("helvetica","bold").text(pageConfig.title,20,25);doc.setFontSize(11).setFont("helvetica","normal").text(pageConfig.description,20,35);doc.setFontSize(9).text(`Generated on: ${new Date().toLocaleDateString()}`,20,45);const table=document.getElementById("dataDictionaryTable"),rows=[...table.querySelectorAll("tr")],data=[];for(let i=1;i<rows.length;i++){data.push([...rows[i].querySelectorAll("td")].map(c=>c.innerText||c.textContent))}doc.autoTable({head:[['Field Name','Data/UI Type','Required','Data Source','Business Rules','Default Values']],body:data,startY:55,styles:{fontSize:8,cellPadding:3,lineColor:[0,0,0],lineWidth:.1,font:"helvetica",fontStyle:"normal",overflow:"linebreak",halign:"left",valign:"top"},headStyles:{fillColor:[240,240,240],textColor:[0,0,0],fontStyle:"bold",fontSize:9,halign:"center",valign:"middle"},columnStyles:{0:{cellWidth:30,fontStyle:"bold",fontSize:8},1:{cellWidth:32,textColor:[25,118,210],fontSize:8},2:{cellWidth:20,halign:"center",fontSize:8},3:{cellWidth:25,fontSize:8},4:{cellWidth:50,fontSize:7},5:{cellWidth:28,fontSize:8}},alternateRowStyles:{fillColor:[249,249,249]},margin:{top:55,right:15,bottom:20,left:15},didDrawPage:d=>{doc.setFontSize(8).text(`Page ${d.pageNumber} of ${doc.internal.getNumberOfPages()}`,d.settings.margin.left,doc.internal.pageSize.height-10)},didParseCell:d=>{if(d.column.index===4&&typeof d.cell.text==="string")d.cell.text=d.cell.text.split("; ").join(";\n")}});doc.save(`${pageConfig.fileName}.pdf`)}
+document.addEventListener("DOMContentLoaded",initializePage);
+</script>
+</body>
+</html>
