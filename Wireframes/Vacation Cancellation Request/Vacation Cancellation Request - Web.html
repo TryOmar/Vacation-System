@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacation Cancellation Request Wireframe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #999;
+            background-color: #fff; /* default white */
+            box-sizing: border-box;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+        .row .col {
+            flex: 1;
+        }
+        .readonly {
+            background-color: #ddd; /* only readonly gray */
+        }
+        .file-upload {
+            border: 2px dashed #999;
+            padding: 20px;
+            margin-top: 5px;
+            background-color: #eee;
+            position: relative;
+        }
+        .file-upload input[type="file"] {
+            display: none;
+        }
+        .file-upload button {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            padding: 8px 12px;
+            border: none;
+            background-color: #000;
+            color: #fff;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: #eee;
+        }
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+        }
+        td.center {
+            text-align: center;
+        }
+        .delete-x {
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons button {
+            flex: 1;
+            margin: 0 5px;
+            padding: 12px 15px;
+            border: none;
+            background-color: #000;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Vacation Cancellation Request</h1>
+
+<form id="cancellationForm">
+    <!-- Employee Name & ID in same row -->
+    <div class="row">
+        <div class="col">
+            <label for="employeeName">Employee Name</label>
+            <input type="text" id="employeeName" class="readonly" value="Omar Abdelrahman" readonly>
+        </div>
+        <div class="col">
+            <label for="employeeId">Employee ID</label>
+            <input type="text" id="employeeId" class="readonly" value="EMP12345" readonly>
+        </div>
+    </div>
+
+    <p><em>Cancellation must occur before the vacation start date.</em></p>
+    <div id="cancellationError" class="error"></div>
+
+    <!-- Original Request Details (all read-only) -->
+    <label for="vacationTypeOriginal">Vacation Type</label>
+    <input type="text" id="vacationTypeOriginal" class="readonly" value="Annual Leave" readonly>
+
+    <div class="row">
+        <div class="col">
+            <label for="startDateOriginal">Start Date</label>
+            <input type="date" id="startDateOriginal" class="readonly" value="2025-08-20" readonly>
+        </div>
+        <div class="col">
+            <label for="endDateOriginal">End Date</label>
+            <input type="date" id="endDateOriginal" class="readonly" value="2025-08-25" readonly>
+        </div>
+    </div>
+
+    <label for="periodOriginal">Period (Days)</label>
+    <input type="text" id="periodOriginal" class="readonly" readonly>
+
+    <!-- Notes removed per request -->
+
+    <label>Original Attachments</label>
+    <table>
+        <tr>
+            <th>Seq</th>
+            <th>File Name</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>travel_itinerary.pdf</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>vacation_request_form.jpg</td>
+        </tr>
+    </table>
+
+    <label for="cancellationReason">Cancellation Reason</label>
+    <textarea id="cancellationReason" rows="4" placeholder="Optional"></textarea>
+
+    <div class="buttons">
+        <button type="button">Cancel</button>
+        <button type="submit">Submit Cancellation</button>
+    </div>
+</form>
+
+<script>
+    const startInput = document.getElementById("startDateOriginal");
+    const endInput = document.getElementById("endDateOriginal");
+    const periodInput = document.getElementById("periodOriginal");
+    const cancellationError = document.getElementById("cancellationError");
+
+    function calculateDays() {
+        const startDate = startInput.value ? new Date(startInput.value) : null;
+        const endDate = endInput.value ? new Date(endInput.value) : null;
+        if (startDate && endDate && endDate >= startDate) {
+            const diffTime = endDate - startDate;
+            const diffDays = diffTime / (1000 * 3600 * 24) + 1; // inclusive
+            periodInput.value = diffDays + " day" + (diffDays > 1 ? "s" : "");
+        } else {
+            periodInput.value = "";
+        }
+    }
+
+    document.getElementById("cancellationForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        cancellationError.textContent = "";
+
+        // Compare today (date-only) with original start date (date-only)
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const originalStart = startInput.value ? new Date(startInput.value + 'T00:00:00') : null;
+
+        if (!originalStart) {
+            cancellationError.textContent = "Original start date is missing.";
+            return;
+        }
+
+        if (today >= originalStart) {
+            cancellationError.textContent = "Cancellation must occur before the vacation start date.";
+            return;
+        }
+
+        alert("Cancellation submitted successfully!");
+    });
+
+    calculateDays(); // initial run
+</script>
+
+</body>
+</html> 
