@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Vacation Inquiry - Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      background-color: #f9f9f9;
+    }
+    h1 { text-align: center; margin-bottom: 20px; }
+    label { display: block; font-weight: bold; margin-top: 15px; }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #999;
+      background-color: #fff;
+      box-sizing: border-box;
+    }
+    .row { display: flex; gap: 10px; }
+    .row .col { flex: 1; }
+    .error { color: red; font-size: 12px; margin-top: 3px; }
+    .buttons { margin-top: 20px; display: flex; justify-content: space-between; }
+    .buttons button {
+      flex: 1;
+      margin: 0 5px;
+      padding: 12px 15px;
+      border: none;
+      background-color: #000;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+      background: #fff;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: center;
+    }
+    th { background-color: #eee; }
+    .print-btn {
+      padding: 5px 10px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    @media (max-width: 600px) { .row { flex-direction: column; } }
+  </style>
+</head>
+<body>
+
+<h1>Employee Vacation Inquiry - Search Parameters</h1>
+<form id="inquiryForm">
+  <!-- Date Range -->
+  <div class="row">
+    <div class="col">
+      <label for="fromDate">From Date</label>
+      <input type="date" id="fromDate">
+    </div>
+    <div class="col">
+      <label for="toDate">To Date</label>
+      <input type="date" id="toDate">
+    </div>
+  </div>
+  <div id="dateError" class="error"></div>
+
+  <!-- Department -->
+  <label for="department">Department (Multi-select)</label>
+  <select id="department" multiple size="6">
+    <option value="All Departments" selected>All Departments</option>
+    <option value="IT">IT</option>
+    <option value="HR">HR</option>
+    <option value="Finance">Finance</option>
+    <option value="Marketing">Marketing</option>
+    <option value="Operations">Operations</option>
+    <option value="Sales">Sales</option>
+  </select>
+
+  <!-- Employee Search -->
+  <label for="employeeSearch">Employee Name or ID (Optional)</label>
+  <input type="text" id="employeeSearch" placeholder="Type name or ID">
+
+  <!-- Vacation Type -->
+  <label for="vacationType">Vacation Type (Multi-select)</label>
+  <select id="vacationType" multiple size="3">
+    <option value="Annual">Annual</option>
+    <option value="Sick">Sick</option>
+    <option value="All" selected>All</option>
+  </select>
+
+  <!-- Vacation Request Status -->
+  <label for="status">Vacation Request Status (Multi-select)</label>
+  <select id="status" multiple size="5">
+    <option value="Pending">Pending</option>
+    <option value="Approved">Approved</option>
+    <option value="Rejected">Rejected</option>
+    <option value="Cancelled">Cancelled</option>
+    <option value="All" selected>All</option>
+  </select>
+
+  <div class="buttons">
+    <button type="button" id="resetBtn">Reset</button>
+    <button type="submit">Generate Report</button>
+  </div>
+</form>
+
+<!-- Results -->
+<div id="resultsSection" style="display:none;">
+  <h2>Employee Vacation Inquiry - Search Results</h2>
+  <p id="resultsSummary"></p>
+  <table id="resultsTable">
+    <thead>
+      <tr>
+        <th>Employee ID</th>
+        <th>Employee Name</th>
+        <th>Vacation Type</th>
+        <th>Vacation Start</th>
+        <th>Vacation End</th>
+        <th>Duration (days)</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+  const fromDate = document.getElementById('fromDate');
+  const toDate = document.getElementById('toDate');
+  const dateError = document.getElementById('dateError');
+  const form = document.getElementById('inquiryForm');
+  const resultsSection = document.getElementById('resultsSection');
+  const resultsTableBody = document.querySelector('#resultsTable tbody');
+  const resultsSummary = document.getElementById('resultsSummary');
+
+  // Mock Data (20+ rows)
+  const mockData = [
+    {id: "E1001", name: "Ahmed Mohamed", dept: "IT", type: "Annual", start: "2025-01-10", end: "2025-01-15", duration: 5, status: "Approved"},
+    {id: "E1002", name: "Mona Ali", dept: "HR", type: "Sick", start: "2025-02-05", end: "2025-02-07", duration: 2, status: "Pending"},
+    {id: "E1003", name: "Khaled Ibrahim", dept: "Finance", type: "Annual", start: "2025-03-01", end: "2025-03-10", duration: 9, status: "Approved"},
+    {id: "E1004", name: "Sara Hassan", dept: "Marketing", type: "Sick", start: "2025-04-12", end: "2025-04-13", duration: 1, status: "Rejected"},
+    {id: "E1005", name: "Mohamed Abdallah", dept: "Operations", type: "Annual", start: "2025-05-01", end: "2025-05-03", duration: 2, status: "Cancelled"},
+    {id: "E1006", name: "Fatma Youssef", dept: "Sales", type: "Annual", start: "2025-06-15", end: "2025-06-25", duration: 10, status: "Approved"},
+    {id: "E1007", name: "Ibrahim Ali", dept: "IT", type: "Sick", start: "2025-07-04", end: "2025-07-06", duration: 2, status: "Approved"},
+    {id: "E1008", name: "Omar Abdelrahman", dept: "HR", type: "Annual", start: "2025-08-11", end: "2025-08-20", duration: 9, status: "Pending"},
+    {id: "E1009", name: "Layla Mostafa", dept: "Finance", type: "Sick", start: "2025-09-03", end: "2025-09-05", duration: 2, status: "Approved"},
+    {id: "E1010", name: "Hassan Adel", dept: "Marketing", type: "Annual", start: "2025-10-01", end: "2025-10-07", duration: 6, status: "Approved"},
+    {id: "E1011", name: "Youssef Nabil", dept: "Operations", type: "Sick", start: "2025-11-14", end: "2025-11-15", duration: 1, status: "Rejected"},
+    {id: "E1012", name: "Nourhan Sameh", dept: "Sales", type: "Annual", start: "2025-12-01", end: "2025-12-10", duration: 9, status: "Approved"}
+   ];
+
+  function calcDuration(start, end) {
+    return (new Date(end) - new Date(start)) / (1000*60*60*24) + 1;
+  }
+
+  function getSelectedOptions(select) {
+    return [...select.options].filter(o=>o.selected).map(o=>o.value);
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    dateError.textContent = '';
+
+    if (fromDate.value && toDate.value && toDate.value < fromDate.value) {
+      dateError.textContent = 'To Date must be on or after From Date.';
+      return;
+    }
+
+    const dept = getSelectedOptions(document.getElementById('department'));
+    const type = getSelectedOptions(document.getElementById('vacationType'));
+    const status = getSelectedOptions(document.getElementById('status'));
+    const empSearch = document.getElementById('employeeSearch').value.toLowerCase();
+
+    let filtered = mockData.filter(item=>{
+      // Date range
+      if (fromDate.value && item.start < fromDate.value) return false;
+      if (toDate.value && item.end > toDate.value) return false;
+
+      // Department
+      if (!dept.includes("All Departments") && !dept.includes(item.dept)) return false;
+
+      // Type
+      if (!type.includes("All") && !type.includes(item.type)) return false;
+
+      // Status
+      if (!status.includes("All") && !status.includes(item.status)) return false;
+
+      // Employee Search
+      if (empSearch && !(item.id.toLowerCase().includes(empSearch) || item.name.toLowerCase().includes(empSearch))) return false;
+
+      return true;
+    });
+
+    resultsTableBody.innerHTML = '';
+    filtered.forEach(r=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${r.id}</td>
+        <td>${r.name}</td>
+        <td>${r.type}</td>
+        <td>${r.start}</td>
+        <td>${r.end}</td>
+        <td>${calcDuration(r.start,r.end)}</td>
+        <td>${r.status}</td>
+        <td>${r.status==="Approved" ? '<button class="print-btn">Print</button>' : ''}</td>
+      `;
+      resultsTableBody.appendChild(tr);
+    });
+
+    resultsSummary.textContent = `Showing ${filtered.length} results based on your criteria.`;
+    resultsSection.style.display = 'block';
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    form.reset();
+    resultsSection.style.display = 'none';
+    dateError.textContent='';
+  });
+</script>
+
+</body>
+</html>
