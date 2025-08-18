@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Data Dictionary Template</title>
 <style>
-  body{font-family:Arial,sans-serif;max-width:1200px;margin:20px auto;padding:20px;border:2px solid #ccc;background:#f9f9f9}
+  body{font:16px Arial,sans-serif;margin:20px auto;padding:20px;max-width:1200px;border:2px solid #ccc;background:#f9f9f9}
   h1{text-align:center;margin-bottom:30px;color:#333}
   .description{text-align:center;color:#666;margin-bottom:30px;font-size:16px}
-  .export-buttons{text-align:center;margin-bottom:30px}
-  .export-buttons button{margin:0 10px;padding:10px 20px;border:none;background:#000;color:#fff;cursor:pointer;font-weight:bold;border-radius:3px;transition:.2s}
+  .export-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;text-align:center;margin-bottom:30px}
+  .export-buttons button{margin:0;padding:10px 20px;border:none;background:#000;color:#fff;cursor:pointer;font-weight:bold;border-radius:3px;transition:.2s;min-width:120px}
   .export-buttons button:hover{background:#333}
   table{width:100%;border-collapse:collapse;margin-top:20px;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.1)}
   th,td{border:1px solid #999;padding:12px;text-align:left;vertical-align:top}
@@ -21,8 +21,28 @@
   .readonly{background:#e8e8e8;font-style:italic}
   .field-type{font-weight:bold;color:#1976d2}
   .business-rules{font-size:13px;line-height:1.4}
+  
+  /* Responsive */
+  @media(max-width:768px){
+  body{margin:10px;padding:15px}
+  h1{font-size:24px;margin-bottom:20px}
+  .description{font-size:14px;margin-bottom:20px}
+  .export-buttons{flex-direction:column;align-items:center;gap:8px}
+  .export-buttons button{width:100%;max-width:250px;padding:12px 20px;font-size:14px}
+  table{display:block;overflow-x:auto;white-space:nowrap;font-size:12px}
+  th,td{padding:8px 6px;min-width:80px}
+  .business-rules{font-size:11px;line-height:1.3;max-width:120px;white-space:normal;word-wrap:break-word}
+  @media(max-width:480px){
+  table,thead,tbody,th,td,tr{display:block}
+  thead tr{position:absolute;top:-9999px;left:-9999px}
+  tr{border:1px solid #ccc;margin-bottom:10px;padding:10px;background:#fff;border-radius:5px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+  td{border:none;position:relative;padding-left:50%;padding-top:8px;padding-bottom:8px;text-align:left;white-space:normal}
+  td:before{content:attr(data-label)": ";position:absolute;left:6px;width:45%;padding-right:10px;white-space:nowrap;font-weight:bold;color:#333}
+  .business-rules{max-width:none;font-size:12px}
+  }}
   @media print{.export-buttons{display:none}body{border:none;margin:0;padding:10px}}
-</style>
+  </style>
+  
 </head>
 <body>
 
@@ -58,7 +78,7 @@ const dataDictionaryFields=[
   {fieldName:"Footer Info",dataType:"Text Display",isRequired:"Yes",dataSource:"System",businessRules:"Print time, page #, user who printed",defaultValue:"Auto-filled",isReadOnly:true}
 ];
 function getRequirementClass(r){switch(r.toLowerCase()){case"yes":return"required";case"no":return"optional";case"conditional":return"conditional";default:return"optional"}}
-function generateTableRow(f){return `<tr><td><strong>${f.fieldName}</strong></td><td class="field-type">${f.dataType}</td><td class="${getRequirementClass(f.isRequired)}">${f.isRequired}</td><td>${f.dataSource}</td><td class="business-rules">${f.businessRules}</td><td class="${f.isReadOnly?"readonly":""}">${f.defaultValue}</td></tr>`}
+function generateTableRow(f){return `<tr><td data-label="Field Name"><strong>${f.fieldName}</strong></td><td data-label="Data/UI Type" class="field-type">${f.dataType}</td><td data-label="Is Required" class="${getRequirementClass(f.isRequired)}">${f.isRequired}</td><td data-label="Data Source">${f.dataSource}</td><td data-label="Business Rules" class="business-rules">${f.businessRules}</td><td data-label="Default Values" class="${f.isReadOnly?"readonly":""}">${f.defaultValue}</td></tr>`}
 function initializePage(){document.getElementById("pageTitle").textContent=pageConfig.title;document.getElementById("pageDescription").textContent=pageConfig.description;document.getElementById("tableBody").innerHTML=dataDictionaryFields.map(generateTableRow).join("")}
 function exportToCSV(){const headers=['Field Name','Data/UI Type','Is Required','Data Source','Business Rules','Default Values'];const csvContent=[headers.join(','),...dataDictionaryFields.map(f=>[`"${f.fieldName}"`,'"'+f.dataType+'"','"'+f.isRequired+'"','"'+f.dataSource+'"','"'+f.businessRules+'"','"'+f.defaultValue+'"'].join(','))].join('\n');const blob=new Blob([csvContent],{type:'text/csv;charset=utf-8;'}),link=document.createElement('a'),url=URL.createObjectURL(blob);link.href=url;link.download=`${pageConfig.fileName}.csv`;link.style.visibility="hidden";document.body.appendChild(link);link.click();document.body.removeChild(link)}
 function exportToPDF(){const{jsPDF}=window.jspdf,doc=new jsPDF();doc.setProperties({title:pageConfig.title,subject:pageConfig.description,author:"Vacation System",creator:"Data Dictionary Generator"});doc.setFontSize(18).setFont("helvetica","bold").text(pageConfig.title,20,25);doc.setFontSize(11).setFont("helvetica","normal").text(pageConfig.description,20,35);doc.setFontSize(9).text(`Generated on: ${new Date().toLocaleDateString()}`,20,45);const table=document.getElementById("dataDictionaryTable"),rows=[...table.querySelectorAll("tr")],data=[];for(let i=1;i<rows.length;i++){data.push([...rows[i].querySelectorAll("td")].map(c=>c.innerText||c.textContent))}doc.autoTable({head:[['Field Name','Data/UI Type','Required','Data Source','Business Rules','Default Values']],body:data,startY:55,styles:{fontSize:8,cellPadding:3,lineColor:[0,0,0],lineWidth:.1,font:"helvetica",fontStyle:"normal",overflow:"linebreak",halign:"left",valign:"top"},headStyles:{fillColor:[240,240,240],textColor:[0,0,0],fontStyle:"bold",fontSize:9,halign:"center",valign:"middle"},columnStyles:{0:{cellWidth:30,fontStyle:"bold",fontSize:8},1:{cellWidth:32,textColor:[25,118,210],fontSize:8},2:{cellWidth:20,halign:"center",fontSize:8},3:{cellWidth:25,fontSize:8},4:{cellWidth:50,fontSize:7},5:{cellWidth:28,fontSize:8}},alternateRowStyles:{fillColor:[249,249,249]},margin:{top:55,right:15,bottom:20,left:15},didDrawPage:d=>{doc.setFontSize(8).text(`Page ${d.pageNumber} of ${doc.internal.getNumberOfPages()}`,d.settings.margin.left,doc.internal.pageSize.height-10)},didParseCell:d=>{if(d.column.index===4&&typeof d.cell.text==="string")d.cell.text=d.cell.text.split("; ").join(";\n")}});doc.save(`${pageConfig.fileName}.pdf`)}
