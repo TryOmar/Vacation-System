@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Vacation Request Wireframe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #999;
+            background-color: #fff; /* default white */
+            box-sizing: border-box;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+        .row .col {
+            flex: 1;
+        }
+        .readonly {
+            background-color: #ddd; /* only readonly gray */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: #eee;
+        }
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+        }
+        td.center {
+            text-align: center;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons button {
+            flex: 1;
+            margin: 0 5px;
+            padding: 12px 15px;
+            border: none;
+            background-color: #000;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Review Vacation Request</h1>
+
+<form id="reviewForm">
+    <!-- Request Details (View Mode) -->
+    <div class="row">
+        <div class="col">
+            <label for="employeeName">Employee Name</label>
+            <input type="text" id="employeeName" class="readonly" value="Omar Abdelrahman" readonly>
+        </div>
+        <div class="col">
+            <label for="employeeId">Employee ID</label>
+            <input type="text" id="employeeId" class="readonly" value="EMP12345" readonly>
+        </div>
+    </div>
+
+    <label for="department">Department</label>
+    <input type="text" id="department" class="readonly" value="Information Technology" readonly>
+
+    <label for="vacationType">Vacation Type</label>
+    <input type="text" id="vacationType" class="readonly" value="Annual Leave" readonly>
+
+    <div class="row">
+        <div class="col">
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" class="readonly" value="2025-08-20" readonly>
+        </div>
+        <div class="col">
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" class="readonly" value="2025-08-25" readonly>
+        </div>
+    </div>
+
+    <label for="period">Period (Days)</label>
+    <input type="text" id="period" class="readonly" readonly>
+
+    <label for="notes">Notes</label>
+    <textarea id="notes" rows="4" class="readonly" readonly>Family vacation abroad</textarea>
+
+    <label>Attachments</label>
+    <table>
+        <tr>
+            <th>Seq</th>
+            <th>File Name</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>travel_itinerary.pdf</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>vacation_request_form.jpg</td>
+        </tr>
+    </table>
+
+    <label for="managerReason">Reason for Accept/Reject</label>
+    <textarea id="managerReason" rows="4" placeholder="Required"></textarea>
+    <div id="managerReasonError" class="error"></div>
+
+    <!-- Approval flow note removed as requested -->
+
+    <div class="buttons">
+        <button type="button" id="rejectBtn">Reject</button>
+        <button type="button" id="acceptBtn">Accept</button>
+    </div>
+</form>
+
+<script>
+    const startInput = document.getElementById("startDate");
+    const endInput = document.getElementById("endDate");
+    const periodInput = document.getElementById("period");
+
+    const reasonInput = document.getElementById("managerReason");
+    const reasonError = document.getElementById("managerReasonError");
+
+    function calculateDays() {
+        const startDate = startInput.value ? new Date(startInput.value) : null;
+        const endDate = endInput.value ? new Date(endInput.value) : null;
+        if (startDate && endDate && endDate >= startDate) {
+            const diffTime = endDate - startDate;
+            const diffDays = diffTime / (1000 * 3600 * 24) + 1; // inclusive
+            periodInput.value = diffDays + " day" + (diffDays > 1 ? "s" : "");
+        } else {
+            periodInput.value = "";
+        }
+    }
+
+    function handleDecision(action) {
+        reasonError.textContent = "";
+        const reason = (reasonInput.value || "").trim();
+        if (!reason) {
+            reasonError.textContent = "Reason is required.";
+            reasonInput.focus();
+            return;
+        }
+        alert(action === 'accept' ? 'Request accepted.' : 'Request rejected.');
+    }
+
+    document.getElementById("acceptBtn").addEventListener("click", function() {
+        handleDecision('accept');
+    });
+
+    document.getElementById("rejectBtn").addEventListener("click", function() {
+        handleDecision('reject');
+    });
+
+    calculateDays(); // initial run
+</script>
+
+</body>
+</html> 
