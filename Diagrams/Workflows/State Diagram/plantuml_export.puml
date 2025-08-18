@@ -1,0 +1,12 @@
+@startuml
+title Vacation Request – State Diagram
+
+[*] --> Pending
+
+Pending --> Approved
+Pending --> Rejected
+
+Approved --> [*]
+Rejected --> [*]
+
+@enduml

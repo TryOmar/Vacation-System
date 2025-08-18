@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vacation Request Wireframe</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 2px solid #ccc;
+        background-color: #f9f9f9;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    label {
+        display: block;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+    input, select, textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #999;
+        background-color: #fff; /* default white */
+        box-sizing: border-box;
+    }
+    .row {
+        display: flex;
+        gap: 10px;
+    }
+    .row .col {
+        flex: 1;
+    }
+    .readonly {
+        background-color: #ddd; /* only readonly gray */
+    }
+    .file-upload {
+        border: 2px dashed #999;
+        padding: 20px;
+        margin-top: 5px;
+        background-color: #eee;
+        position: relative;
+    }
+    .file-upload input[type="file"] {
+        display: none;
+    }
+    .file-upload button {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        padding: 8px 12px;
+        border: none;
+        background-color: #000;
+        color: #fff;
+        cursor: pointer;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        background-color: #eee;
+    }
+    th, td {
+        border: 1px solid #999;
+        padding: 8px;
+        text-align: left;
+    }
+    td.center {
+        text-align: center;
+    }
+    .delete-x {
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .error {
+        color: red;
+        font-size: 12px;
+        margin-top: 3px;
+    }
+    .buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .buttons button {
+        flex: 1;
+        margin: 0 5px;
+        padding: 12px 15px;
+        border: none;
+        background-color: #000;
+        color: #fff;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    /* Responsive Design */
+    @media (max-width: 600px) {
+        .row {
+            flex-direction: column;
+        }
+    }
+</style>
+</head>
+<body>
+
+<h1>Vacation Request</h1>
+
+<form id="vacationForm">
+    <!-- Employee Name & ID in same row -->
+    <div class="row">
+        <div class="col">
+            <label for="employeeName">Employee Name</label>
+            <input type="text" id="employeeName" class="readonly" value="Omar Abdelrahman" readonly>
+        </div>
+        <div class="col">
+            <label for="employeeId">Employee ID</label>
+            <input type="text" id="employeeId" class="readonly" value="EMP12345" readonly>
+        </div>
+    </div>
+
+    <label for="vacationType">Vacation Type</label>
+    <select id="vacationType">
+        <option>Annual Leave</option>
+        <option>Sick Leave</option>
+    </select>
+    <div id="vacationTypeError" class="error"></div>
+
+    <div class="row">
+        <div class="col">
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" value="2025-08-20">
+            <div id="startDateError" class="error"></div>
+        </div>
+        <div class="col">
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" value="2025-08-25">
+            <div id="endDateError" class="error"></div>
+        </div>
+    </div>
+
+    <label for="period">Period (Days)</label>
+    <input type="text" id="period" class="readonly" readonly>
+
+    <label for="notes">Notes</label>
+    <textarea id="notes" rows="4">Family vacation abroad</textarea>
+
+    <label>Attachments</label>
+    <div class="file-upload">
+        Drag & drop files here
+        <input type="file" id="fileInput" multiple>
+        <button type="button" onclick="document.getElementById('fileInput').click()">Browse</button>
+    </div>
+
+    <label>Uploaded Files</label>
+    <table>
+        <tr>
+            <th>Seq</th>
+            <th>File Name</th>
+            <th>Delete</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>travel_itinerary.pdf</td>
+            <td class="center"><span class="delete-x">X</span></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>vacation_request_form.jpg</td>
+            <td class="center"><span class="delete-x">X</span></td>
+        </tr>
+    </table>
+
+    <div class="buttons">
+        <button type="button">Cancel</button>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+<script>
+    const startInput = document.getElementById("startDate");
+    const endInput = document.getElementById("endDate");
+    const periodInput = document.getElementById("period");
+    const vacationType = document.getElementById("vacationType");
+
+    const startError = document.getElementById("startDateError");
+    const endError = document.getElementById("endDateError");
+    const typeError = document.getElementById("vacationTypeError");
+
+    function calculateDays() {
+        const startDate = new Date(startInput.value);
+        const endDate = new Date(endInput.value);
+        if (startDate && endDate && endDate >= startDate) {
+            const diffTime = endDate - startDate;
+            const diffDays = diffTime / (1000 * 3600 * 24) + 1; // inclusive
+            periodInput.value = diffDays + " day" + (diffDays > 1 ? "s" : "");
+            startError.textContent = "";
+            endError.textContent = "";
+        } else if (endDate < startDate) {
+            endError.textContent = "End date must be after start date.";
+            periodInput.value = "";
+        } else {
+            startError.textContent = "";
+            endError.textContent = "";
+            periodInput.value = "";
+        }
+    }
+
+    startInput.addEventListener("change", calculateDays);
+    endInput.addEventListener("change", calculateDays);
+
+    document.getElementById("vacationForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        let valid = true;
+
+        if (!vacationType.value) {
+            typeError.textContent = "Vacation type is required.";
+            valid = false;
+        } else {
+            typeError.textContent = "";
+        }
+
+        if (endInput.value < startInput.value) {
+            endError.textContent = "End date must be after start date.";
+            valid = false;
+        }
+
+        if (valid) {
+            alert("Form submitted successfully!");
+        }
+    });
+
+    calculateDays(); // initial run
+</script>
+
+</body>
+</html>
