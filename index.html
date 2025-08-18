@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vacation System - Wireframes Hub</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 2px solid #ccc;
+        background-color: #f9f9f9;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+    }
+    .wireframe-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .wireframe-card {
+        border: 1px solid #999;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .wireframe-card h3 {
+        margin-top: 0;
+        margin-bottom: 15px;
+        color: #333;
+        font-size: 16px;
+    }
+    .wireframe-card p {
+        margin-bottom: 15px;
+        color: #666;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    .wireframe-card button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background-color: #000;
+        color: #fff;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 3px;
+        transition: background-color 0.2s;
+    }
+    .wireframe-card button:hover {
+        background-color: #333;
+    }
+    .section-header {
+        margin-top: 30px;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #ccc;
+        color: #333;
+        font-size: 20px;
+    }
+    .description {
+        text-align: center;
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 16px;
+    }
+    /* Responsive Design */
+    @media (max-width: 600px) {
+        .wireframe-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+<body>
+
+<h1>Vacation System - Wireframes Hub</h1>
+<p class="description">Click on any wireframe below to preview the interface design</p>
+
+<h2 class="section-header">Employee Functions</h2>
+<div class="wireframe-grid">
+    <div class="wireframe-card">
+        <h3>Vacation Request</h3>
+        <p>Submit new vacation requests with start/end dates, vacation type, and attachments.</p>
+        <button onclick="openWireframe('Wireframes/Vacation Request/Vacation Request.html')">View Wireframe</button>
+    </div>
+    
+    <div class="wireframe-card">
+        <h3>Vacation Cancellation Request</h3>
+        <p>Cancel previously submitted vacation requests with reason and approval workflow.</p>
+        <button onclick="openWireframe('Wireframes/Vacation Cancellation Request/Vacation Cancellation Request.html')">View Wireframe</button>
+    </div>
+</div>
+
+<h2 class="section-header">Manager Functions</h2>
+<div class="wireframe-grid">
+    <div class="wireframe-card">
+        <h3>Review Vacation Request</h3>
+        <p>Managers can review, approve, or reject employee vacation requests.</p>
+        <button onclick="openWireframe('Wireframes/Review Vacation Request/Review Vacation Request.html')">View Wireframe</button>
+    </div>
+    
+    <div class="wireframe-card">
+        <h3>Review Vacation Cancellation Request</h3>
+        <p>Managers can review and process vacation cancellation requests.</p>
+        <button onclick="openWireframe('Wireframes/Review Vacation Cancellation Request/Review Vacation Cancellation Request.html')">View Wireframe</button>
+    </div>
+</div>
+
+<h2 class="section-header">Reports & Inquiries</h2>
+<div class="wireframe-grid">
+    <div class="wireframe-card">
+        <h3>Employee Vacation Inquiry - Search Parameters</h3>
+        <p>Search interface to find employee vacation records with various filters.</p>
+        <button onclick="openWireframe('Wireframes/Employee Vacation Inquiry - Search Parameters/Employee Vacation Inquiry - Search Parameters.html')">View Wireframe</button>
+    </div>
+    
+    <div class="wireframe-card">
+        <h3>Employee Vacation Inquiry - Search Results</h3>
+        <p>Display search results for employee vacation inquiries in table format.</p>
+        <button onclick="openWireframe('Wireframes/Employee Vacation Inquiry - Search Results/Employee Vacation Inquiry - Search Results.html')">View Wireframe</button>
+    </div>
+    
+    <div class="wireframe-card">
+        <h3>Annual Comparative Report - Search Parameters</h3>
+        <p>Interface to configure parameters for annual comparative vacation reports.</p>
+        <button onclick="openWireframe('Wireframes/Annual Comparative Report - Search Parameters/Annual Comparative Report - Search Parameters.html')">View Wireframe</button>
+    </div>
+</div>
+
+<h2 class="section-header">Print Layouts</h2>
+<div class="wireframe-grid">
+    <div class="wireframe-card">
+        <h3>Single Transaction Report</h3>
+        <p>Print layout for individual vacation transaction reports.</p>
+        <button onclick="openWireframe('Wireframes/Print Layout - Single Transaction Report/Print Layout - Single Transaction Report.html')">View Wireframe</button>
+    </div>
+    
+    <div class="wireframe-card">
+        <h3>Annual Comparative Report</h3>
+        <p>Print layout for annual comparative vacation reports.</p>
+        <button onclick="openWireframe('Wireframes/Print Layout - Annual Comparative Report/Print Layout - Annual Comparative Report - Web.html')">View Wireframe</button>
+    </div>
+</div>
+
+<script>
+    function openWireframe(path) {
+        window.open(path, '_blank');
+    }
+</script>
+
+</body>
+</html> 
