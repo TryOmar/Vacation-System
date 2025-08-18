@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Layout - Single Transaction Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px 20px 80px; /* bottom space for footer */
+            border: 2px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        .report-header {
+            border: 2px solid #000;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            background: #fff;
+        }
+        .section {
+            border: 1px solid #999;
+            background: #fff;
+            margin: 10px 0;
+        }
+        .section-title {
+            border-bottom: 1px solid #999;
+            background: #eee;
+            padding: 8px 10px;
+            font-weight: bold;
+        }
+        .section-body {
+            padding: 10px;
+            line-height: 1.6;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 20px;
+        }
+        .list {
+            margin: 0;
+            padding-left: 18px;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 10px 20px;
+            border-top: 2px solid #000;
+            background: #fff;
+            font-size: 14px;
+        }
+        .footer-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 10px;
+            align-items: center;
+        }
+        .muted {
+            color: #333;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="report-header">VACATION TRANSACTION REPORT</div>
+
+    <div class="section">
+        <div class="section-title">REQUEST INFORMATION</div>
+        <div class="section-body">
+            <div>Request Date: January 10, 2025 at 2:30 PM</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">EMPLOYEE INFORMATION</div>
+        <div class="section-body grid-2">
+            <div>Employee ID: EMP001</div>
+            <div>Employee Name: Omar Abdelrahman</div>
+            <div>Department Name: IT Department</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">VACATION DETAILS</div>
+        <div class="section-body grid-2">
+            <div>Vacation Type: Annual Vacation</div>
+            <div>Start Date: January 15, 2025</div>
+            <div>End Date: January 20, 2025</div>
+            <div>Duration: 5 Days</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">APPROVAL INFORMATION</div>
+        <div class="section-body">
+            <div>Names and Job Titles of Reviewers:</div>
+            <ul class="list">
+                <li>Direct Manager: Sarah Mahmoud, IT Manager</li>
+                <li>HR Department: Khalid Hassan, HR Specialist</li>
+                <li>General Manager: Abdullah Kareem, General Manager</li>
+            </ul>
+            <div style="margin-top:8px;">Date and Time of Request Approval: January 12, 2025 at 10:30 AM</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-grid">
+            <div class="muted">Print Time: August 18, 2025 at 3:45 PM</div>
+            <div class="muted" style="text-align:center;">Page Number: Page 1 of 1</div>
+            <div class="muted" style="text-align:right;">Name of User Who Printed: Ahmad Al-Manager</div>
+        </div>
+    </div>
+
+</body>
+</html>
