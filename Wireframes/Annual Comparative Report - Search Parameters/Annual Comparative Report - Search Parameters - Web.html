@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annual Comparative Report - Search Parameters</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #999;
+            background-color: #fff; /* default white */
+            box-sizing: border-box;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+        .row .col {
+            flex: 1;
+        }
+        .readonly {
+            background-color: #ddd; /* only readonly gray */
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+        .hint {
+            font-size: 13px;
+            color: #555;
+            margin-top: 8px;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons button {
+            flex: 1;
+            margin: 0 5px;
+            padding: 12px 15px;
+            border: none;
+            background-color: #000;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .checkbox-container {
+            margin-top: 15px;
+        }
+        .checkbox-container input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        .checkbox-container label {
+            display: inline;
+            font-weight: normal;
+            margin-top: 0;
+        }
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Annual Comparative Report - Search Parameters</h1>
+<p class="hint"><em>Generate annual comparative PDF by department</em></p>
+
+<form id="annualReportForm">
+    <!-- Date Range -->
+    <div class="row">
+        <div class="col">
+            <label for="fromDate">Vacation Start Date</label>
+            <input type="date" id="fromDate" value="2025-01-01">
+        </div>
+        <div class="col">
+            <label for="toDate">Vacation End Date</label>
+            <input type="date" id="toDate" value="2025-12-31">
+        </div>
+    </div>
+    <div id="dateError" class="error"></div>
+
+    <!-- Department (Multi-select possible) -->
+    <label for="department">Department/Section (Multi-select)</label>
+    <select id="department" multiple size="6">
+        <option selected>All Departments</option>
+        <option>IT</option>
+        <option>HR</option>
+        <option>Finance</option>
+        <option>Marketing</option>
+        <option>Operations</option>
+        <option>Sales</option>
+    </select>
+
+    <!-- Employees Checkbox -->
+    <div class="checkbox-container">
+        <input type="checkbox" id="includeEmployees" checked>
+        <label for="includeEmployees">Include employee names under departments</label>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="resetBtn">Reset</button>
+        <button type="submit">Generate Report</button>
+    </div>
+</form>
+
+<script>
+    const fromDate = document.getElementById('fromDate');
+    const toDate = document.getElementById('toDate');
+    const dateError = document.getElementById('dateError');
+    const form = document.getElementById('annualReportForm');
+
+    document.getElementById('resetBtn').addEventListener('click', function() {
+        form.reset();
+        fromDate.value = '2025-01-01';
+        toDate.value = '2025-12-31';
+        document.getElementById('includeEmployees').checked = true;
+        dateError.textContent = '';
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        dateError.textContent = '';
+
+        if (fromDate.value && toDate.value && toDate.value < fromDate.value) {
+            dateError.textContent = 'End Date must be on or after Start Date.';
+            return;
+        }
+
+        // Get selected departments
+        const departmentSelect = document.getElementById('department');
+        const selectedDepartments = Array.from(departmentSelect.selectedOptions).map(option => option.text);
+        
+        // Get checkbox state
+        const includeEmployees = document.getElementById('includeEmployees').checked;
+
+        alert('Annual Comparative Report generated with:\n' +
+              'Date Range: ' + fromDate.value + ' to ' + toDate.value + '\n' +
+              'Departments: ' + selectedDepartments.join(', ') + '\n' +
+              'Include Employees: ' + (includeEmployees ? 'Yes' : 'No'));
+    });
+</script>
+
+</body>
+</html> 
