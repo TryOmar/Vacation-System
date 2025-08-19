@@ -67,6 +67,9 @@ const pageConfig={title:"Departments Master Data - Data Dictionary",description:
 const dataDictionaryFields=[
   {fieldName:"Department ID",dataType:"Text",isRequired:"Yes",dataSource:"Config",businessRules:"Unique ID",defaultValue:"Auto-assigned",isReadOnly:false},
   {fieldName:"Department Name",dataType:"Text",isRequired:"Yes",dataSource:"Config",businessRules:"Used in filters, reports, and groupings",defaultValue:"None",isReadOnly:false},
+  {fieldName:"Description",dataType:"Textarea",isRequired:"No",dataSource:"Config",businessRules:"Optional; up to 500 characters",defaultValue:"None",isReadOnly:false},
+  {fieldName:"Department Manager",dataType:"Employee Lookup",isRequired:"No",dataSource:"Employee Master Data",businessRules:"Must reference an active employee; used for approvals and escalations",defaultValue:"None",isReadOnly:false},
+  {fieldName:"Location",dataType:"Text",isRequired:"No",dataSource:"Config",businessRules:"Used for reporting and filtering",defaultValue:"None",isReadOnly:false},
   {fieldName:"Parent Dept",dataType:"Text (Optional)",isRequired:"No",dataSource:"Config",businessRules:"Supports hierarchy if needed",defaultValue:"Null",isReadOnly:false}
 ];
 function getRequirementClass(r){switch(r.toLowerCase()){case"yes":return"required";case"no":return"optional";case"conditional":return"conditional";default:return"optional"}}
