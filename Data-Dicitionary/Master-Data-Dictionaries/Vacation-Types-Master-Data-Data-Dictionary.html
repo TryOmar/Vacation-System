@@ -66,6 +66,7 @@
 const pageConfig={title:"Vacation Types Master Data - Data Dictionary",description:"Complete field specifications for the Vacation Types Master Data interface",fileName:"Vacation_Types_Master_Data_Dictionary"};
 const dataDictionaryFields=[
   {fieldName:"Vacation Type",dataType:"Enum",isRequired:"Yes",dataSource:"Config",businessRules:"Annual, Sick only",defaultValue:"None",isReadOnly:false},
+  {fieldName:"Active",dataType:"Boolean Toggle",isRequired:"Yes",dataSource:"Config",businessRules:"If false, type is hidden from selection; retrieval filters to Active=true",defaultValue:"True",isReadOnly:false},
   {fieldName:"Entitlement",dataType:"Number",isRequired:"Yes",dataSource:"Config",businessRules:"21 or 30 days depending on years of service",defaultValue:"21 days",isReadOnly:false},
   {fieldName:"Carry Over",dataType:"Boolean",isRequired:"Yes",dataSource:"Config",businessRules:"Annual: No carry-over; Sick: No carry-over",defaultValue:"False",isReadOnly:false},
   {fieldName:"Proof Required",dataType:"Boolean",isRequired:"Yes",dataSource:"Config",businessRules:"Sick leave requires attachment",defaultValue:"True for Sick",isReadOnly:false}

@@ -69,8 +69,8 @@ const dataDictionaryFields=[
   {fieldName:"Employee ID",dataType:"Text Input (Read-only)",isRequired:"Yes",dataSource:"Employee Master",businessRules:"Same employee who submitted the request",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Employee Name",dataType:"Text Input (Read-only)",isRequired:"Yes",dataSource:"Employee Master",businessRules:"Same employee",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Vacation Type",dataType:"Dropdown (Read-only)",isRequired:"Yes",dataSource:"Vacation Types",businessRules:"Same as original request",defaultValue:"Auto-filled",isReadOnly:true},
-  {fieldName:"Start Date",dataType:"Date Picker (Read-only)",isRequired:"Yes",dataSource:"Original Request",businessRules:"Must not be started yet",defaultValue:"Auto-filled",isReadOnly:true},
-  {fieldName:"End Date",dataType:"Date Picker (Read-only)",isRequired:"Yes",dataSource:"Original Request",businessRules:"Auto-filled",defaultValue:"Auto-filled",isReadOnly:true},
+  {fieldName:"Start Date",dataType:"Date Picker (Read-only)",isRequired:"Yes",dataSource:"Original Request",businessRules:"Must not be started yet; must be < End Date; uses original Date Type",defaultValue:"Auto-filled",isReadOnly:true},
+  {fieldName:"End Date",dataType:"Date Picker (Read-only)",isRequired:"Yes",dataSource:"Original Request",businessRules:"Must be after Start Date; uses original Date Type",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Reason",dataType:"Textarea",isRequired:"No",dataSource:"User Input",businessRules:"Optional cancellation justification",defaultValue:"Blank",isReadOnly:false},
   {fieldName:"Status",dataType:"Enum (Pending/Approved/Rejected)",isRequired:"Yes",dataSource:"System",businessRules:"Must pass HR/Manager approval before final cancellation",defaultValue:"Pending",isReadOnly:false}
 ];

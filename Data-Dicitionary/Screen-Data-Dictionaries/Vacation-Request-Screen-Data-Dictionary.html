@@ -67,9 +67,9 @@ const pageConfig={title:"Vacation Request Screen - Data Dictionary",description:
 const dataDictionaryFields=[
   {fieldName:"Employee ID",dataType:"Text Input (Read-only)",isRequired:"Yes",dataSource:"Employee Master",businessRules:"Unique identifier; auto-filled; cannot be changed",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Employee Name",dataType:"Text Input (Read-only)",isRequired:"Yes",dataSource:"Employee Master",businessRules:"Full legal name; auto-filled",defaultValue:"Auto-filled",isReadOnly:true},
-  {fieldName:"Vacation Type",dataType:"Dropdown (Annual, Sick)",isRequired:"Yes",dataSource:"Vacation Types",businessRules:"Must select valid type",defaultValue:"None",isReadOnly:false},
-  {fieldName:"Start Date",dataType:"Date Picker",isRequired:"Yes",dataSource:"User Input",businessRules:"Cannot be in past; must be ≤ End Date",defaultValue:"Today+1",isReadOnly:false},
-  {fieldName:"End Date",dataType:"Date Picker",isRequired:"Yes",dataSource:"User Input",businessRules:"Must be after Start Date",defaultValue:"None",isReadOnly:false},
+  {fieldName:"Vacation Type",dataType:"Dropdown (Annual, Sick)",isRequired:"Yes",dataSource:"Vacation Types",businessRules:"Only active types are selectable (Active=true)",defaultValue:"None",isReadOnly:false},
+  {fieldName:"Start Date",dataType:"Date Picker",isRequired:"Yes",dataSource:"User Input",businessRules:"Cannot be in past; must be < End Date; respects selected Date Type",defaultValue:"Today+1",isReadOnly:false},
+  {fieldName:"End Date",dataType:"Date Picker",isRequired:"Yes",dataSource:"User Input",businessRules:"Must be after Start Date; respects selected Date Type",defaultValue:"None",isReadOnly:false},
   {fieldName:"Period (Days)",dataType:"Text Display (Read-only)",isRequired:"Yes",dataSource:"System Calculation",businessRules:"End Date - Start Date + 1",defaultValue:"Auto-calculated",isReadOnly:true},
   {fieldName:"Notes",dataType:"Textarea",isRequired:"No",dataSource:"User Input",businessRules:"Optional comments",defaultValue:"Blank",isReadOnly:false},
   {fieldName:"Attachments",dataType:"File Upload",isRequired:"Conditional",dataSource:"User Upload",businessRules:"Mandatory for Sick Leave; optional for Annual Leave",defaultValue:"None",isReadOnly:false}
