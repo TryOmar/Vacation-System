@@ -70,8 +70,8 @@ const dataDictionaryFields=[
   {fieldName:"Employee Name",dataType:"Text Display",isRequired:"Yes",dataSource:"Employee Master",businessRules:"From request",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Department",dataType:"Text Display",isRequired:"Yes",dataSource:"Department Master",businessRules:"Employee's department",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Vacation Type",dataType:"Text Display",isRequired:"Yes",dataSource:"Vacation Types",businessRules:"From request",defaultValue:"Auto-filled",isReadOnly:true},
-  {fieldName:"Start Date",dataType:"Text Display",isRequired:"Yes",dataSource:"Employee Request",businessRules:"From request",defaultValue:"Auto-filled",isReadOnly:true},
-  {fieldName:"End Date",dataType:"Text Display",isRequired:"Yes",dataSource:"Employee Request",businessRules:"From request",defaultValue:"Auto-filled",isReadOnly:true},
+  {fieldName:"Start Date",dataType:"Text Display",isRequired:"Yes",dataSource:"Employee Request",businessRules:"From request; Date type: Gregorian or Hijri (set to Gregorian)",defaultValue:"Auto-filled",isReadOnly:true},
+  {fieldName:"End Date",dataType:"Text Display",isRequired:"Yes",dataSource:"Employee Request",businessRules:"From request; Date type: Gregorian or Hijri (set to Gregorian)",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Period",dataType:"Text Display",isRequired:"Yes",dataSource:"System",businessRules:"Auto-calculated",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Status",dataType:"Text Display",isRequired:"Yes",dataSource:"System",businessRules:"Pending, Approved, or Rejected",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Print Action",dataType:"Button",isRequired:"No",dataSource:"System",businessRules:"Prints single transaction report",defaultValue:"None",isReadOnly:false}

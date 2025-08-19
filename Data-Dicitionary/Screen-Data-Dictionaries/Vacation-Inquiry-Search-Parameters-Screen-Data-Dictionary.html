@@ -67,8 +67,8 @@ const pageConfig={title:"Vacation Inquiry Search Parameters Screen - Data Dictio
 const dataDictionaryFields=[
   {fieldName:"Employee ID",dataType:"Text Input",isRequired:"No",dataSource:"Employee Master",businessRules:"Optional search filter",defaultValue:"Blank",isReadOnly:false},
   {fieldName:"Vacation Type",dataType:"Dropdown (Annual, Sick)",isRequired:"No",dataSource:"Vacation Types",businessRules:"Optional filter",defaultValue:"All",isReadOnly:false},
-  {fieldName:"Start Date",dataType:"Date Picker",isRequired:"No",dataSource:"User Input",businessRules:"Optional range",defaultValue:"Blank",isReadOnly:false},
-  {fieldName:"End Date",dataType:"Date Picker",isRequired:"No",dataSource:"User Input",businessRules:"Optional range",defaultValue:"Blank",isReadOnly:false},
+  {fieldName:"Start Date",dataType:"Date Picker",isRequired:"No",dataSource:"User Input",businessRules:"Optional range; Date type: Gregorian or Hijri (set to Gregorian)",defaultValue:"Blank",isReadOnly:false},
+  {fieldName:"End Date",dataType:"Date Picker",isRequired:"No",dataSource:"User Input",businessRules:"Optional range; Date type: Gregorian or Hijri (set to Gregorian)",defaultValue:"Blank",isReadOnly:false},
   {fieldName:"Status",dataType:"Dropdown (Pending/Approved/Rejected)",isRequired:"No",dataSource:"System",businessRules:"Optional filter",defaultValue:"All",isReadOnly:false},
   {fieldName:"Department",dataType:"Dropdown",isRequired:"No",dataSource:"Department Master",businessRules:"Optional filter",defaultValue:"All Departments",isReadOnly:false}
 ];

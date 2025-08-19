@@ -70,8 +70,8 @@ const dataDictionaryFields=[
   {fieldName:"Employee ID",dataType:"Text Display (Read-only)",isRequired:"Yes",dataSource:"Employee Master",businessRules:"From employee record",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Employee Name",dataType:"Text Display (Read-only)",isRequired:"Yes",dataSource:"Employee Master",businessRules:"From employee record",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Vacation Type",dataType:"Text Display (Read-only)",isRequired:"Yes",dataSource:"Vacation Types",businessRules:"From request",defaultValue:"Auto-filled",isReadOnly:true},
-  {fieldName:"Start Date",dataType:"Text Display (Read-only)",isRequired:"Yes",dataSource:"Employee Request",businessRules:"Must not have started",defaultValue:"Auto-filled",isReadOnly:true},
-  {fieldName:"End Date",dataType:"Text Display (Read-only)",isRequired:"Yes",dataSource:"Employee Request",businessRules:"Auto-filled",defaultValue:"Auto-filled",isReadOnly:true},
+  {fieldName:"Start Date",dataType:"Text Display (Read-only)",isRequired:"Yes",dataSource:"Employee Request",businessRules:"Must not have started; Date type: Gregorian or Hijri (set to Gregorian)",defaultValue:"Auto-filled",isReadOnly:true},
+  {fieldName:"End Date",dataType:"Text Display (Read-only)",isRequired:"Yes",dataSource:"Employee Request",businessRules:"Auto-filled; Date type: Gregorian or Hijri (set to Gregorian)",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Reason",dataType:"Textarea",isRequired:"No",dataSource:"Employee Input",businessRules:"Cancellation justification",defaultValue:"Blank",isReadOnly:true},
   {fieldName:"Reviewer Notes",dataType:"Textarea",isRequired:"No",dataSource:"Manager Input",businessRules:"Optional HR/Manager comments",defaultValue:"Blank",isReadOnly:false},
   {fieldName:"Action",dataType:"Buttons (Approve/Reject)",isRequired:"Yes",dataSource:"Manager Input",businessRules:"HR/Manager must approve before effective cancellation",defaultValue:"None",isReadOnly:false}
