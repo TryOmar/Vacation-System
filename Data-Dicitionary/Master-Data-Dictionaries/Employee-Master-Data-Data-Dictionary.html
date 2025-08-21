@@ -71,7 +71,7 @@ const dataDictionaryFields=[
   {fieldName:"Job Title",dataType:"Text",isRequired:"Yes",dataSource:"HR System",businessRules:"Used in reporting",defaultValue:"None",isReadOnly:false},
   {fieldName:"Employee Status",dataType:"Enum",isRequired:"Yes",dataSource:"HR System",businessRules:"Active, Trainee, Inactive; Trainees not eligible",defaultValue:"Active",isReadOnly:false},
   {fieldName:"Hire Date",dataType:"Date",isRequired:"Yes",dataSource:"HR System",businessRules:"Used to calculate entitlement (21/30 days rule)",defaultValue:"None",isReadOnly:false},
-  {fieldName:"Leave Balance",dataType:"Number",isRequired:"Yes",dataSource:"System Calc",businessRules:"Auto-calculated: Total – Taken – Pending = Balance",defaultValue:"Auto-calc",isReadOnly:true}
+  {fieldName:"Annual Vacation Balance",dataType:"Number",isRequired:"Yes",dataSource:"System Calc",businessRules:"Auto-updated by the system whenever the employee's balance changes",defaultValue:"Auto-calc",isReadOnly:true}
 ];
 function getRequirementClass(r){switch(r.toLowerCase()){case"yes":return"required";case"no":return"optional";case"conditional":return"conditional";default:return"optional"}}
 function generateTableRow(f){return `<tr><td data-label="Field Name"><strong>${f.fieldName}</strong></td><td data-label="Data/UI Type" class="field-type">${f.dataType}</td><td data-label="Is Required" class="${getRequirementClass(f.isRequired)}">${f.isRequired}</td><td data-label="Data Source">${f.dataSource}</td><td data-label="Business Rules" class="business-rules">${f.businessRules}</td><td data-label="Default Values" class="${f.isReadOnly?"readonly":""}">${f.defaultValue}</td></tr>`}
