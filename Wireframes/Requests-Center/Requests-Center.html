@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Requests Center</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      background-color: #f9f9f9;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .tab-container {
+      margin-bottom: 20px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .tab-button {
+      padding: 10px 20px;
+      border: none;
+      background: #eee;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 0 5px;
+    }
+
+    .tab-button.active {
+      background: #000;
+      color: #fff;
+    }
+
+    /* Table-like row design */
+    .request-summary {
+      display: grid;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      background: #fff;
+      align-items: center;
+    }
+
+    /* Different grid layouts for different tabs */
+    .pending-requests .request-summary {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 120px;
+    }
+
+    .my-requests .request-summary {
+      grid-template-columns: 1fr 1fr 1fr 1fr 80px;
+    }
+
+    .request-summary.header {
+      font-weight: bold;
+      background: #eee;
+      cursor: default;
+    }
+
+    .request-summary div {
+      padding: 6px 8px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* Expanded details */
+    .request-details {
+      display: none;
+      padding: 15px;
+      background: #fafafa;
+      border: 1px solid #ccc;
+      border-top: none;
+      margin-bottom: 15px;
+    }
+
+    .form-row {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .form-row label {
+      width: 150px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .form-row input,
+    .form-row textarea {
+      flex: 1;
+      padding: 5px;
+      border: 1px solid #ccc;
+      background: #f0f0f0;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    /* Tables inside details */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    th {
+      background: #eee;
+    }
+
+    /* Buttons */
+    .view-btn, 
+    .details-actions button {
+      padding: 6px 12px;
+      border: none;
+      background: #000;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .view-btn:hover,
+    .details-actions button:hover {
+      background: #333;
+    }
+
+    .details-actions {
+      text-align: right;
+      margin-top: 15px;
+    }
+
+    .details-actions button:disabled {
+      background: #777;
+      cursor: not-allowed;
+    }
+
+    .expand-icon {
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* Tab content sections */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+
+  <script>
+    function switchTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Deactivate all buttons
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+      });
+      
+      // Show selected tab
+      document.getElementById(tabName).classList.add('active');
+      
+      // Activate selected button
+      document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+    }
+
+    function toggleDetails(id, iconId) {
+      const details = document.getElementById(id);
+      const icon = document.getElementById(iconId);
+      if (details.style.display === "block") {
+        details.style.display = "none";
+        icon.textContent = "+";
+      } else {
+        details.style.display = "block";
+        icon.textContent = "-";
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Requests Center</h1>
+
+  <div class="tab-container">
+    <div class="tab-buttons">
+      <button class="tab-button active" onclick="switchTab('pending-requests')">Pending Vacation Requests</button>
+      <button class="tab-button" onclick="switchTab('my-requests')">My Vacation Requests</button>
+    </div>
+
+    <!-- Pending Requests Tab -->
+    <div id="pending-requests" class="tab-content pending-requests active">
+      <!-- Header row -->
+      <div class="request-summary header">
+        <div>Employee ID</div>
+        <div>Name</div>
+        <div>Department</div>
+        <div>Vacation Type</div>
+        <div>Start Date</div>
+        <div>End Date</div>
+        <div>Action</div>
+      </div>
+
+      <!-- Pending Request 1 -->
+      <div class="request-summary">
+        <div>EMP101</div>
+        <div>Omar Abdelrahman</div>
+        <div>IT</div>
+        <div>Annual</div>
+        <div>2025-08-20</div>
+        <div>2025-08-25</div>
+        <div><button class="view-btn">View Request</button></div>
+      </div>
+
+      <!-- Pending Request 2 -->
+      <div class="request-summary">
+        <div>EMP202</div>
+        <div>Mohamed Ali</div>
+        <div>Finance</div>
+        <div>Sick</div>
+        <div>2025-09-01</div>
+        <div>2025-09-03</div>
+        <div><button class="view-btn">View Request</button></div>
+      </div>
+    </div>
+
+    <!-- My Requests Tab -->
+    <div id="my-requests" class="tab-content my-requests">
+      <!-- Header row -->
+      <div class="request-summary header">
+        <div>Vacation Type</div>
+        <div>Start Date</div>
+        <div>End Date</div>
+        <div>Status</div>
+        <div>Expand</div>
+      </div>
+
+      <!-- Request 1 (Pending) -->
+      <div class="request-card">
+        <div class="request-summary" onclick="toggleDetails('details1','icon1')">
+          <div>Annual Leave</div>
+          <div>08/20/2025</div>
+          <div>08/25/2025</div>
+          <div>Pending</div>
+          <div class="expand-icon" id="icon1">+</div>
+        </div>
+
+        <div class="request-details" id="details1">
+          <h3>Vacation Request Details</h3>
+          <div class="form-row"><label>Vacation Type</label><input type="text" value="Annual Leave" readonly></div>
+          <div class="form-row"><label>Start Date</label><input type="text" value="08/20/2025" readonly></div>
+          <div class="form-row"><label>End Date</label><input type="text" value="08/25/2025" readonly></div>
+          <div class="form-row"><label>Period</label><input type="text" value="6 days" readonly></div>
+          <div class="form-row"><label>Notes</label><textarea readonly>Family vacation abroad</textarea></div>
+
+          <h4>Review History</h4>
+          <table>
+            <tr><th>Reviewer</th><th>Notes</th><th>Status</th><th>Date</th></tr>
+            <tr><td>Manager Ahmed</td><td>Approved – enjoy your vacation</td><td>Approved</td><td>08/10/2025</td></tr>
+            <tr><td>HR Mariam</td><td>Pending – checking entitlements</td><td>Pending</td><td>08/11/2025</td></tr>
+          </table>
+
+          <h4>Attachments</h4>
+          <table>
+            <tr><th>#</th><th>File</th></tr>
+            <tr><td>1</td><td>FlightTicket.pdf</td></tr>
+            <tr><td>2</td><td>HotelBooking.jpg</td></tr>
+          </table>
+
+          <div class="details-actions">
+            <button>Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Request 2 (Approved) -->
+      <div class="request-card">
+        <div class="request-summary" onclick="toggleDetails('details2','icon2')">
+          <div>Sick Leave</div>
+          <div>07/01/2025</div>
+          <div>07/03/2025</div>
+          <div>Approved</div>
+          <div class="expand-icon" id="icon2">+</div>
+        </div>
+
+        <div class="request-details" id="details2">
+          <h3>Vacation Request Details</h3>
+          <div class="form-row"><label>Vacation Type</label><input type="text" value="Sick Leave" readonly></div>
+          <div class="form-row"><label>Start Date</label><input type="text" value="07/01/2025" readonly></div>
+          <div class="form-row"><label>End Date</label><input type="text" value="07/03/2025" readonly></div>
+          <div class="form-row"><label>Period</label><input type="text" value="3 days" readonly></div>
+          <div class="form-row"><label>Notes</label><textarea readonly>Medical rest</textarea></div>
+
+          <h4>Review History</h4>
+          <table>
+            <tr><th>Reviewer</th><th>Notes</th><th>Status</th><th>Date</th></tr>
+            <tr><td>Manager Laila</td><td>Approved</td><td>Approved</td><td>06/28/2025</td></tr>
+          </table>
+
+          <h4>Attachments</h4>
+          <table>
+            <tr><th>#</th><th>File</th></tr>
+            <tr><td>1</td><td>MedicalCertificate.pdf</td></tr>
+          </table>
+
+          <div class="details-actions">
+            <button disabled>Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Request 3 (Rejected) -->
+      <div class="request-card">
+        <div class="request-summary" onclick="toggleDetails('details3','icon3')">
+          <div>Emergency Leave</div>
+          <div>09/10/2025</div>
+          <div>09/11/2025</div>
+          <div>Rejected</div>
+          <div class="expand-icon" id="icon3">+</div>
+        </div>
+
+        <div class="request-details" id="details3">
+          <h3>Vacation Request Details</h3>
+          <div class="form-row"><label>Vacation Type</label><input type="text" value="Emergency Leave" readonly></div>
+          <div class="form-row"><label>Start Date</label><input type="text" value="09/10/2025" readonly></div>
+          <div class="form-row"><label>End Date</label><input type="text" value="09/11/2025" readonly></div>
+          <div class="form-row"><label>Period</label><input type="text" value="2 days" readonly></div>
+          <div class="form-row"><label>Notes</label><textarea readonly>Family issue</textarea></div>
+
+          <h4>Review History</h4>
+          <table>
+            <tr><th>Reviewer</th><th>Notes</th><th>Status</th><th>Date</th></tr>
+            <tr><td>Manager Omar</td><td>Request rejected due to overlap</td><td>Rejected</td><td>09/01/2025</td></tr>
+          </table>
+
+          <div class="details-actions">
+            <button>Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
