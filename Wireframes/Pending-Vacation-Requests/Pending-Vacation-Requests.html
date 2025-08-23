@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pending Vacation Requests (Tasks)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* Table-like row design */
+    .request-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 120px; 
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      background: #fff;
+      align-items: center;
+    }
+    .request-summary.header {
+      font-weight: bold;
+      background: #eee;
+    }
+    .request-summary div {
+      padding: 6px 8px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* Buttons */
+    .view-btn {
+      padding: 6px 12px;
+      border: none;
+      background: #000;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .view-btn:hover {
+      background: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Pending Vacation Requests (Tasks)</h1>
+
+  <!-- Header row -->
+  <div class="request-summary header">
+    <div>Employee ID</div>
+    <div>Name</div>
+    <div>Department</div>
+    <div>Vacation Type</div>
+    <div>Start Date</div>
+    <div>End Date</div>
+    <div>Action</div>
+  </div>
+
+  <!-- Request 1 -->
+  <div class="request-summary">
+    <div>EMP101</div>
+    <div>Omar Abdelrahman</div>
+    <div>IT</div>
+    <div>Annual</div>
+    <div>2025-08-20</div>
+    <div>2025-08-25</div>
+    <div><button class="view-btn">View Request</button></div>
+  </div>
+
+  <!-- Request 2 -->
+  <div class="request-summary">
+    <div>EMP202</div>
+    <div>Mohamed Ali</div>
+    <div>Finance</div>
+    <div>Sick</div>
+    <div>2025-09-01</div>
+    <div>2025-09-03</div>
+    <div><button class="view-btn">View Request</button></div>
+  </div>
+
+</body>
+</html>
