@@ -4,6 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Use Case Template</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 <style>
 :root{--border:#bdbdbd;--text:#333;--muted:#666;--bg:#f9f9f9;--white:#fff;--header:#e0e0e0;}
 body{font:16px Arial;margin:20px auto;padding:20px;max-width:1200px;background:var(--bg);color:var(--text);border:2px solid #ccc;}
@@ -23,31 +25,25 @@ tr:nth-child(even) td:not(.category){background:#fafafa;}
 </style>
 </head>
 <body>
-
 <h1 id="pageTitle">Use Case Template</h1>
 <p class="description" id="pageDescription">Dynamic use case template driven by JSON data</p>
-
 <div class="export-buttons">
-  <button onclick="exportSectionAsCSV()">Export Business Rules (CSV)</button>
+  <button onclick="exportUseCaseToCSV()">Export Use Case (CSV)</button>
+  <button onclick="exportUseCaseToPDF()">Export Use Case (PDF)</button>
   <button onclick="window.print()">Print</button>
 </div>
-
 <div id="useCaseTableContainer"></div>
-
-<p class="note"><b>Tip:</b> Keep "Actors" brief here. If you later need role responsibilities, add a dedicated "Actors & Stakeholders" section below the Summary.</p>
-
 <script>
-// Simplified JSON data structure
 const useCaseData = {
   title: "Use Case: UC-1 – Employee Submits Vacation Request",
   description: "Compact use case template with actors in the summary, rules before deviations, and qualities merged into validation rules.",
   sections: {
     Summary: [
-      ["Use Case ID", "UC-1"],
+      ["ID", "UC-1"],
       ["Name", "Employee Submits Vacation Request"],
-      ["Goal / Purpose", "Allow an employee to submit a vacation request and route it to the manager for approval."],
+      ["Goal", "Allow an employee to submit a vacation request and route it to the manager for approval."],
       ["Scope", "HR Self-Service Portal"],
-      ["Participating Actors", "Employee (primary), Manager (secondary), HR System (supporting)"]
+      ["Actors", "Employee (primary), Manager (secondary), HR System (supporting)"]
     ],
     Triggers: [
       ["Trigger", "Employee initiates a new vacation request in the portal."]
@@ -68,7 +64,7 @@ const useCaseData = {
     "Business Validation Rules": {
       headers: ["Rule ID", "Description", "Condition", "Message ID", "Notes"],
       rows: [
-        ["BV-001", "End date must be strictly after start date.", "endDate > startDate", "MSG-101", "Validated client & server."],
+        ["BV-001", "End date must be strictly aftear start date.", "endDate > startDate", "MSG-101", "Validated client & server."],
         ["BV-002", "Requested days must not exceed available leave balance.", "daysRequested ≤ leaveBalance", "MSG-102", "Override requires HR approval."],
         ["BV-003", "Sick leave requires a medical certificate attachment.", "type == \"Sick\"", "MSG-103", "Attachment is mandatory."],
         ["BV-004", "Submission should complete quickly for good UX.", "submissionTime ≤ 120s", "N/A", "Performance/quality constraint."]
@@ -93,13 +89,11 @@ const useCaseData = {
       "Manager notified; can approve or reject.",
       "Employee can track status from dashboard."
     ],
-    "Notes / Remarks": [
+    "Notes": [
       ["Note", "All details consolidated in a single table for consistency and easy export/printing."]
     ]
   }
 };
-
-// Function to render the use case table from simplified JSON data
 function renderUseCaseTable(data) {
   const container = document.getElementById('useCaseTableContainer');
   container.innerHTML = '';
@@ -107,10 +101,10 @@ function renderUseCaseTable(data) {
   document.getElementById('pageTitle').textContent = data.title;
   document.getElementById('pageDescription').textContent = data.description;
   
-  // Calculate maximum columns needed
-  let maxColumns = 5; // Default maximum
   
-  // Find the maximum number of columns needed across all sections
+  let maxColumns = 5; 
+  
+  
   Object.values(data.sections).forEach(content => {
     if (content.headers) {
       maxColumns = Math.max(maxColumns, content.headers.length);
@@ -121,91 +115,87 @@ function renderUseCaseTable(data) {
   table.setAttribute('aria-label', `Use Case ${data.title}`);
   const tbody = document.createElement('tbody');
   
-  // Render each section
+  
   Object.entries(data.sections).forEach(([title, content]) => {
-    // Section header row
-    const headerRow = document.createElement('tr');
+const headerRow = document.createElement('tr');
     const headerCell = document.createElement('td');
     headerCell.className = 'category';
     headerCell.colSpan = maxColumns;
     headerCell.textContent = title;
     headerRow.appendChild(headerCell);
     tbody.appendChild(headerRow);
-    
-    // Section content based on type
     if (Array.isArray(content)) {
-      // Key-value pairs or simple list
-      content.forEach(item => {
+  
+  content.forEach(item => {
         const tr = document.createElement('tr');
-        
-        if (Array.isArray(item)) {
-          // Key-value pair
-          const keyCell = document.createElement('td');
+    
+    if (Array.isArray(item)) {
+      
+      const keyCell = document.createElement('td');
           keyCell.textContent = item[0];
-          // Use approximately 20% of width for keys
-          keyCell.colSpan = Math.max(1, Math.floor(maxColumns * 0.2));
+      
+      keyCell.colSpan = Math.max(1, Math.floor(maxColumns * 0.2));
           tr.appendChild(keyCell);
-          
-          const valueCell = document.createElement('td');
+      
+      const valueCell = document.createElement('td');
           valueCell.colSpan = maxColumns - keyCell.colSpan;
           valueCell.textContent = item[1];
           tr.appendChild(valueCell);
         } else {
-          // Numbered list item
-          const numCell = document.createElement('td');
+      
+      const numCell = document.createElement('td');
           numCell.textContent = content.indexOf(item) + 1;
-          // Use approximately 10% of width for numbers
-          numCell.colSpan = Math.max(1, Math.floor(maxColumns * 0.1));
+      
+      numCell.colSpan = Math.max(1, Math.floor(maxColumns * 0.1));
           tr.appendChild(numCell);
-          
-          const valueCell = document.createElement('td');
+      
+      const valueCell = document.createElement('td');
           valueCell.colSpan = maxColumns - numCell.colSpan;
           valueCell.textContent = item;
           tr.appendChild(valueCell);
         }
-        
-        tbody.appendChild(tr);
+    
+    tbody.appendChild(tr);
       });
     } else if (content.headers && content.rows) {
-      // Table with headers and rows
-      const headerRow = document.createElement('tr');
-      
-      // Calculate column distribution based on content
+  
+  const headerRow = document.createElement('tr');
+  
+  
       const colDistribution = calculateColumnDistribution(content, maxColumns);
-      
-      content.headers.forEach((header, i) => {
+  
+  content.headers.forEach((header, i) => {
         const th = document.createElement('th');
         th.textContent = header;
         th.colSpan = colDistribution[i] || 1;
         headerRow.appendChild(th);
       });
-      
-      tbody.appendChild(headerRow);
-      
-      // Add data rows
+  
+  tbody.appendChild(headerRow);
+  
+  
       content.rows.forEach(row => {
         const tr = document.createElement('tr');
-        
-        row.forEach((cell, i) => {
+    
+    row.forEach((cell, i) => {
           const td = document.createElement('td');
           td.textContent = cell;
           td.colSpan = colDistribution[i] || 1;
           tr.appendChild(td);
         });
-        
-        // If row has fewer cells than headers, expand the last cell
-        if (row.length < content.headers.length) {
+    
+    if (row.length < content.headers.length) {
           const lastCell = tr.cells[tr.cells.length - 1];
           let remainingColspan = 0;
-          
-          for (let i = row.length; i < content.headers.length; i++) {
+      
+      for (let i = row.length; i < content.headers.length; i++) {
             remainingColspan += colDistribution[i] || 1;
           }
-          
-          lastCell.colSpan += remainingColspan;
+      
+      lastCell.colSpan += remainingColspan;
         }
-        
-        tbody.appendChild(tr);
+    
+    tbody.appendChild(tr);
       });
     }
   });
@@ -213,137 +203,109 @@ function renderUseCaseTable(data) {
   table.appendChild(tbody);
   container.appendChild(table);
 }
-
-// Calculate average text length for a column
 function calculateColumnMetrics(content, columnIndex) {
   if (!content || !content.headers || !content.rows) {
     return { avgLength: 0, maxLength: 0, variance: 0 };
   }
-
   const header = content.headers[columnIndex];
   const cellLengths = content.rows.map(row => {
     const cell = row[columnIndex];
     return cell ? cell.toString().length : 0;
   });
-
-  // Add header length to the calculation with a weight of 0.2
+  
   cellLengths.push(header.length * 0.2);
-
-  // Calculate average length
+  
   const avgLength = cellLengths.reduce((sum, len) => sum + len, 0) / cellLengths.length;
-
-  // Calculate variance to detect consistency in text lengths
+  
   const variance = cellLengths.reduce((sum, len) => {
     const diff = len - avgLength;
     return sum + (diff * diff);
   }, 0) / cellLengths.length;
-
-  // Find maximum length for potential capping
+  
   const maxLength = Math.max(...cellLengths);
-
   return { avgLength, maxLength, variance };
 }
-
-// Normalize values to distribute total span while respecting min/max constraints
 function normalizeToSpans(values, totalSpan, minSpan = 1, maxSpanRatio = 0.4) {
   const total = values.reduce((sum, v) => sum + v, 0);
   const maxSpan = Math.floor(totalSpan * maxSpanRatio);
   
-  // Initial distribution based on proportions
+  
   let spans = values.map(v => {
     const rawSpan = (v / total) * totalSpan;
     return Math.max(minSpan, Math.min(maxSpan, Math.round(rawSpan)));
   });
-
-  // Adjust to match total span exactly
+  
   let currentTotal = spans.reduce((sum, span) => sum + span, 0);
   
   while (currentTotal !== totalSpan) {
     const diff = totalSpan - currentTotal;
     if (diff > 0) {
-      // Find column with highest proportion that's not at max
-      const idx = values
+  
+  const idx = values
         .map((v, i) => ({ value: v, index: i }))
         .filter(({ index }) => spans[index] < maxSpan)
         .sort((a, b) => b.value - a.value)[0]?.index;
-      
-      if (idx !== undefined) spans[idx]++;
+  
+  if (idx !== undefined) spans[idx]++;
     } else {
-      // Find column with lowest proportion that's above min
-      const idx = values
+  
+  const idx = values
         .map((v, i) => ({ value: v, index: i }))
         .filter(({ index }) => spans[index] > minSpan)
         .sort((a, b) => a.value - b.value)[0]?.index;
-      
-      if (idx !== undefined) spans[idx]--;
+  
+  if (idx !== undefined) spans[idx]--;
     }
     currentTotal = spans.reduce((sum, span) => sum + span, 0);
   }
-
   return spans;
 }
-
-// Calculate optimal column distribution based purely on content metrics
 function calculateColumnDistribution(content, maxColumns) {
   if (!content || !content.headers || !content.rows) {
     return Array(maxColumns).fill(1);
   }
-
   const totalColumns = content.headers.length;
   
-  // Step 1: Calculate metrics for each column
+  
   const columnMetrics = content.headers.map((_, idx) => 
     calculateColumnMetrics(content, idx)
   );
-
-  // Step 2: Calculate base weights using average lengths and variance
+  
   const weights = columnMetrics.map(metrics => {
     const { avgLength, variance } = metrics;
-    
-    // Use linear scale for more direct relationship with text length
     const baseWeight = avgLength;
-    
-    // Penalize high variance slightly (inconsistent content)
     const variancePenalty = Math.max(0.8, 1 - Math.sqrt(variance) / 100);
-    
-    // Add small minimum weight to ensure very short columns get at least some space
     return Math.max(5, baseWeight) * variancePenalty;
   });
-
-  // Step 3: Apply dynamic constraints based on content analysis
+  
   const minSpan = 1;
   const maxSpanRatio = calculateMaxSpanRatio(columnMetrics, totalColumns);
   
-  // Step 4: Normalize to actual column spans
+  
   return normalizeToSpans(weights, maxColumns, minSpan, maxSpanRatio);
 }
-
-// Calculate maximum span ratio based on content analysis
 function calculateMaxSpanRatio(metrics, totalColumns) {
-  // Base max ratio depends on number of columns
+  
   const baseMaxRatio = 1 / totalColumns;
   
-  // Find the column with longest average text
+  
   const maxAvgLength = Math.max(...metrics.map(m => m.avgLength));
   const minAvgLength = Math.min(...metrics.map(m => m.avgLength));
   
-  // Calculate the ratio between longest and shortest text
+  
   const lengthRatio = maxAvgLength / (minAvgLength || 1);
   
-  // Adjust the max ratio based on the length difference between columns
+  
   const scaledRatio = baseMaxRatio * (1 + Math.min(3, lengthRatio / 2));
   
   return Math.min(0.6, Math.max(0.25, scaledRatio));
 }
-
-// CSV export function
 function exportSectionAsCSV() {
   const table = document.querySelector('table');
   const headerCell = Array.from(table.querySelectorAll('.category'))
     .find(cell => cell.textContent.trim().toLowerCase().includes('business validation rules'));
   
   if (!headerCell) { alert('Business Rules section not found.'); return; }
-
   const startRow = headerCell.parentElement.rowIndex + 1;
   const rows = [];
   const trs = table.rows;
@@ -355,7 +317,6 @@ function exportSectionAsCSV() {
     if (tr.cells.length && tr.cells[0].tagName === 'TH') continue;
     rows.push(Array.from(tr.cells).map(td => td.textContent.replace(/\s+/g, ' ').trim()));
   }
-
   const csv = rows.map(r => r.map(v => /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v).join(',')).join('\n');
   const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
@@ -367,10 +328,173 @@ function exportSectionAsCSV() {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+function exportUseCaseToCSV() {
+    const sections = [];
+    
+    // Add title and description
+    sections.push(['Title', useCaseData.title]);
+    sections.push(['Description', useCaseData.description]);
+    sections.push([]);  // Empty line for separation
+    
+    // Process each section
+    Object.entries(useCaseData.sections).forEach(([sectionTitle, content]) => {
+        sections.push([sectionTitle.toUpperCase()]);
+        
+        if (Array.isArray(content)) {
+            content.forEach(item => {
+                if (Array.isArray(item)) {
+                    sections.push([item[0], item[1]]);
+                } else {
+                    sections.push(['•', item]);
+                }
+            });
+        } else if (content.headers && content.rows) {
+            sections.push(content.headers);
+            content.rows.forEach(row => sections.push(row));
+        }
+        sections.push([]); // Empty line between sections
+    });
 
-// Initialize the table when the page loads
+    const csv = sections.map(row => 
+        row.map(cell => 
+            cell ? `"${cell.toString().replace(/"/g, '""')}"` : ''
+        ).join(',')
+    ).join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'use-case.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+function exportUseCaseToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt',
+        format: 'a4'
+    });
+
+    doc.setProperties({
+        title: useCaseData.title,
+        subject: useCaseData.description,
+        author: 'Use Case Generator',
+        creator: 'Use Case Generator'
+    });
+
+    const margin = 20;
+    const pageWidth = doc.internal.pageSize.width;
+    const contentWidth = pageWidth - (margin * 2);
+
+    // Common table styles
+    const tableDefaults = {
+        styles: {
+            fontSize: 8,
+            cellPadding: 3,
+            lineWidth: 0.1,
+            lineColor: [189, 189, 189]
+        },
+        margin: { left: margin, right: margin },
+        theme: 'grid'
+    };
+
+    // Title and description table
+    doc.autoTable({
+        startY: margin,
+        head: [[{
+            content: useCaseData.title,
+            styles: { halign: 'center', fontStyle: 'bold' }
+        }]],
+        body: [[{
+            content: useCaseData.description,
+            styles: { halign: 'center' }
+        }]],
+        ...tableDefaults
+    });
+
+    let yPos = doc.lastAutoTable.finalY + 5;
+
+    // Process each section
+    Object.entries(useCaseData.sections).forEach(([sectionTitle, content]) => {
+        // Section Header
+        doc.autoTable({
+            startY: yPos,
+            body: [[{
+                content: sectionTitle,
+                styles: {
+                    fillColor: [224, 224, 224],
+                    fontStyle: 'bold',
+                    halign: 'center',
+                    textTransform: 'uppercase'
+                }
+            }]],
+            ...tableDefaults
+        });
+        yPos = doc.lastAutoTable.finalY;
+
+        if (Array.isArray(content)) {
+            if (content.length > 0 && Array.isArray(content[0])) {
+                // Key-value pairs
+                doc.autoTable({
+                    startY: yPos,
+                    body: content.map(([key, value]) => [{
+                        content: key,
+                        styles: { cellWidth: 100 }
+                    }, value]),
+                    columnStyles: {
+                        0: { fillColor: [250, 250, 250] }
+                    },
+                    ...tableDefaults
+                });
+            } else {
+                // Bullet list
+                doc.autoTable({
+                    startY: yPos,
+                    body: content.map(item => [item]),
+                    ...tableDefaults
+                });
+            }
+        } else if (content.headers && content.rows) {
+            // Tables with headers
+            doc.autoTable({
+                startY: yPos,
+                head: [content.headers],
+                body: content.rows,
+                headStyles: {
+                    fillColor: [240, 240, 240],
+                    textColor: [0, 0, 0],
+                    fontStyle: 'bold'
+                },
+                alternateRowStyles: {
+                    fillColor: [250, 250, 250]
+                },
+                ...tableDefaults
+            });
+        }
+        yPos = doc.lastAutoTable.finalY + 2;
+    });
+
+    // Add page numbers
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(7);
+        doc.text(
+            `Page ${i} of ${pageCount}`,
+            pageWidth - margin - 40,
+            doc.internal.pageSize.height - 10
+        );
+    }
+
+    doc.save('use-case.pdf');
+}
+
 document.addEventListener('DOMContentLoaded', () => renderUseCaseTable(useCaseData));
 </script>
-
 </body>
 </html>
