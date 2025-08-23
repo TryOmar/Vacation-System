@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use Case Messages</title>
+<style>
+:root{--b:#bdbdbd;--t:#333;--m:#666;--bg:#f9f9f9;--w:#fff;--h:#f0f0f0;}
+body{font:15px Arial,sans-serif;margin:20px auto;padding:20px;max-width:1200px;background:var(--bg);color:var(--t);border:2px solid #ccc;}
+h1{text-align:center;margin:0 0 12px}
+p{text-align:center;color:var(--m);margin:0 0 20px}
+.export-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.export-buttons button{padding:8px 14px;border:none;border-radius:4px;background:#000;color:#fff;cursor:pointer;font-weight:700}
+.export-buttons button:hover{opacity:.85}
+table{width:100%;border-collapse:collapse;background:var(--w);box-shadow:0 2px 6px rgba(0,0,0,.1);font-size:13px;margin-bottom:20px}
+th,td{border:1px solid var(--b);padding:8px;vertical-align:top;line-height:1.3}
+th{background:var(--h);font-weight:700;text-align:left}
+tr:nth-child(even) td{background:#fafafa}
+.badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:12px;font-weight:600;color:#fff}
+.badge.info{background:#1976d2}.badge.success{background:#388e3c}.badge.warning{background:#f57c00}.badge.error{background:#d32f2f}
+@media print{
+ body{margin:0;padding:0;border:none;max-width:none;background:#fff}
+ .export-buttons{display:none}
+ thead{display:table-header-group}
+ tr{page-break-inside:avoid}
+ h1,p{page-break-after:avoid}
+ @page{size:A4 landscape;margin:1.5cm 1cm}
+}
+</style>
+</head>
+<body>
+
+<h1 id="pageTitle">Use Case Messages</h1>
+<p id="pageDescription">Centralized catalog of user/system messages with unique IDs for cross-referencing in use cases</p>
+
+<div class="export-buttons">
+  <button onclick="window.print()">Print</button>
+  <button onclick="exportToCSV()">Export CSV</button>
+  <button onclick="exportToPDF()">Export PDF</button>
+</div>
+
+<table id="messagesTable">
+  <thead id="messagesHead"></thead>
+  <tbody id="messagesBody"></tbody>
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+<script>
+const pageConfig={title:"Use Case Messages",description:"Centralized catalog of user/system messages with unique IDs for cross-referencing in use cases",fileName:"Use_Case_Messages"};
+const messagesColumns=[{header:"Message ID",key:"id"},{header:"Name",key:"name"},{header:"Audience",key:"audience"},{header:"Category",key:"category"},{header:"Trigger/Context",key:"context"},{header:"Text",key:"text"},{header:"Related Use Case IDs",key:"useCases"},{header:"Notes",key:"notes"}];
+const messages=[
+{id:"MSG-001",name:"Validation Success",audience:"System",category:"Success",context:"Form submission",text:"Your request has been submitted successfully.",useCases:"UC-1",notes:"Show after server confirms persistence"},
+{id:"MSG-002",name:"Required Field Missing",audience:"User",category:"Warning",context:"Client-side validation",text:"Please fill out all required fields.",useCases:"UC-1",notes:"Highlight missing fields"},
+{id:"MSG-003",name:"Server Error",audience:"User",category:"Error",context:"Submission failure",text:"We couldn't process your request. Please try again later.",useCases:"UC-1; UC-2",notes:"Log correlation ID; show retry option"},
+{id:"MSG-004",name:"Attachment Required",audience:"User",category:"Warning",context:"Vacation type = Sick",text:"Attachment is required for Sick leave.",useCases:"UC-1",notes:"Tied to business rule"}
+];
+
+function initializePage(){
+ document.getElementById("pageTitle").textContent=pageConfig.title;
+ document.getElementById("pageDescription").textContent=pageConfig.description;
+ document.getElementById("messagesHead").innerHTML="<tr>"+messagesColumns.map(c=>`<th>${c.header}</th>`).join("")+"</tr>";
+ document.getElementById("messagesBody").innerHTML=messages.map(r=>"<tr>"+messagesColumns.map(c=>{
+   let v=r[c.key]||"";if(c.key==="category"){return `<td><span class="badge ${v.toLowerCase()}">${v}</span></td>`}
+   return `<td>${v}</td>`}).join("")+"</tr>").join("");
+}
+
+function exportToCSV(){
+ const lines=[messagesColumns.map(c=>c.header).join(",")];
+ messages.forEach(m=>lines.push(messagesColumns.map(c=>`"${(m[c.key]||"").replace(/"/g,'""')}"`).join(",")));
+ const blob=new Blob([lines.join("\n")],{type:"text/csv;charset=utf-8;"});
+ const link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download=`${pageConfig.fileName}.csv`;link.click();
+}
+
+function exportToPDF(){
+ const { jsPDF }=window.jspdf;const doc=new jsPDF({orientation:"landscape",unit:"pt",format:"a4"});
+ doc.setProperties({title:pageConfig.title,subject:pageConfig.description});
+ doc.autoTable({head:[messagesColumns.map(c=>c.header)],body:messages.map(r=>messagesColumns.map(c=>r[c.key]||"")),styles:{fontSize:8,cellPadding:3,valign:"top"},headStyles:{fillColor:[240,240,240],textColor:[0,0,0],fontStyle:"bold"}});
+ doc.save(`${pageConfig.fileName}.pdf`);
+}
+
+document.addEventListener("DOMContentLoaded",initializePage);
+</script>
+</body>
+</html>
