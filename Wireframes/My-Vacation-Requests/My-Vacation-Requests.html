@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Vacation Requests</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* Collapsed summary rows */
+    .request-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 80px; 
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      cursor: pointer;
+      background: #fff;
+    }
+    .request-summary.header {
+      font-weight: bold;
+      background: #eee;
+      cursor: default;
+    }
+    .request-summary div {
+      padding: 6px 8px;
+      font-size: 14px;
+    }
+    .expand-icon {
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* Expanded details */
+    .request-details {
+      display: none;
+      padding: 15px;
+      background: #fafafa;
+      border: 1px solid #ccc;
+      border-top: none;
+      margin-bottom: 15px;
+    }
+
+    .form-row {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    .form-row label {
+      width: 150px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .form-row input,
+    .form-row textarea {
+      flex: 1;
+      padding: 5px;
+      border: 1px solid #ccc;
+      background: #f0f0f0;
+    }
+    textarea {
+      resize: vertical;
+    }
+
+    /* Tables inside details */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      font-size: 13px;
+      text-align: left;
+    }
+    th {
+      background: #eee;
+    }
+
+    /* Buttons inside details */
+    .details-actions {
+      text-align: right;
+      margin-top: 15px;
+    }
+    .details-actions button {
+      padding: 6px 14px;
+      border: none;
+      background: #000;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .details-actions button:disabled {
+      background: #777;
+      cursor: not-allowed;
+    }
+  </style>
+
+  <script>
+    function toggleDetails(id, iconId) {
+      const details = document.getElementById(id);
+      const icon = document.getElementById(iconId);
+      if (details.style.display === "block") {
+        details.style.display = "none";
+        icon.textContent = "+";
+      } else {
+        details.style.display = "block";
+        icon.textContent = "-";
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <h1>My Vacation Requests</h1>
+
+  <!-- Header row -->
+  <div class="request-summary header">
+    <div>Vacation Type</div>
+    <div>Start Date</div>
+    <div>End Date</div>
+    <div>Status</div>
+    <div>Expand</div>
+  </div>
+
+  <!-- Request 1 (Pending) -->
+  <div class="request-card">
+    <div class="request-summary" onclick="toggleDetails('details1','icon1')">
+      <div>Annual Leave</div>
+      <div>08/20/2025</div>
+      <div>08/25/2025</div>
+      <div>Pending</div>
+      <div class="expand-icon" id="icon1">+</div>
+    </div>
+
+    <div class="request-details" id="details1">
+      <h3>Vacation Request Details</h3>
+      <div class="form-row"><label>Vacation Type</label><input type="text" value="Annual Leave" readonly></div>
+      <div class="form-row"><label>Start Date</label><input type="text" value="08/20/2025" readonly></div>
+      <div class="form-row"><label>End Date</label><input type="text" value="08/25/2025" readonly></div>
+      <div class="form-row"><label>Period</label><input type="text" value="6 days" readonly></div>
+      <div class="form-row"><label>Notes</label><textarea readonly>Family vacation abroad</textarea></div>
+
+      <h4>Review History</h4>
+      <table>
+        <tr><th>Reviewer</th><th>Notes</th><th>Status</th><th>Date</th></tr>
+        <tr><td>Manager Ahmed</td><td>Approved – enjoy your vacation</td><td>Approved</td><td>08/10/2025</td></tr>
+        <tr><td>HR Mariam</td><td>Pending – checking entitlements</td><td>Pending</td><td>08/11/2025</td></tr>
+      </table>
+
+      <h4>Attachments</h4>
+      <table>
+        <tr><th>#</th><th>File</th></tr>
+        <tr><td>1</td><td>FlightTicket.pdf</td></tr>
+        <tr><td>2</td><td>HotelBooking.jpg</td></tr>
+      </table>
+
+      <div class="details-actions">
+        <button>Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request 2 (Approved, cannot cancel - start passed) -->
+  <div class="request-card">
+    <div class="request-summary" onclick="toggleDetails('details2','icon2')">
+      <div>Sick Leave</div>
+      <div>07/01/2025</div>
+      <div>07/03/2025</div>
+      <div>Approved</div>
+      <div class="expand-icon" id="icon2">+</div>
+    </div>
+
+    <div class="request-details" id="details2">
+      <h3>Vacation Request Details</h3>
+      <div class="form-row"><label>Vacation Type</label><input type="text" value="Sick Leave" readonly></div>
+      <div class="form-row"><label>Start Date</label><input type="text" value="07/01/2025" readonly></div>
+      <div class="form-row"><label>End Date</label><input type="text" value="07/03/2025" readonly></div>
+      <div class="form-row"><label>Period</label><input type="text" value="3 days" readonly></div>
+      <div class="form-row"><label>Notes</label><textarea readonly>Medical rest</textarea></div>
+
+      <h4>Review History</h4>
+      <table>
+        <tr><th>Reviewer</th><th>Notes</th><th>Status</th><th>Date</th></tr>
+        <tr><td>Manager Laila</td><td>Approved</td><td>Approved</td><td>06/28/2025</td></tr>
+      </table>
+
+      <h4>Attachments</h4>
+      <table>
+        <tr><th>#</th><th>File</th></tr>
+        <tr><td>1</td><td>MedicalCertificate.pdf</td></tr>
+      </table>
+
+      <div class="details-actions">
+        <button disabled>Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request 3 (Rejected) -->
+  <div class="request-card">
+    <div class="request-summary" onclick="toggleDetails('details3','icon3')">
+      <div>Emergency Leave</div>
+      <div>09/10/2025</div>
+      <div>09/11/2025</div>
+      <div>Rejected</div>
+      <div class="expand-icon" id="icon3">+</div>
+    </div>
+
+    <div class="request-details" id="details3">
+      <h3>Vacation Request Details</h3>
+      <div class="form-row"><label>Vacation Type</label><input type="text" value="Emergency Leave" readonly></div>
+      <div class="form-row"><label>Start Date</label><input type="text" value="09/10/2025" readonly></div>
+      <div class="form-row"><label>End Date</label><input type="text" value="09/11/2025" readonly></div>
+      <div class="form-row"><label>Period</label><input type="text" value="2 days" readonly></div>
+      <div class="form-row"><label>Notes</label><textarea readonly>Family issue</textarea></div>
+
+      <h4>Review History</h4>
+      <table>
+        <tr><th>Reviewer</th><th>Notes</th><th>Status</th><th>Date</th></tr>
+        <tr><td>Manager Omar</td><td>Request rejected due to overlap</td><td>Rejected</td><td>09/01/2025</td></tr>
+      </table>
+
+      <div class="details-actions">
+        <button>Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request 4 (Canceled already) -->
+  <div class="request-card">
+    <div class="request-summary" onclick="toggleDetails('details4','icon4')">
+      <div>Annual Leave</div>
+      <div>10/15/2025</div>
+      <div>10/20/2025</div>
+      <div>Canceled</div>
+      <div class="expand-icon" id="icon4">+</div>
+    </div>
+
+    <div class="request-details" id="details4">
+      <h3>Vacation Request Details</h3>
+      <div class="form-row"><label>Vacation Type</label><input type="text" value="Annual Leave" readonly></div>
+      <div class="form-row"><label>Start Date</label><input type="text" value="10/15/2025" readonly></div>
+      <div class="form-row"><label>End Date</label><input type="text" value="10/20/2025" readonly></div>
+      <div class="form-row"><label>Period</label><input type="text" value="6 days" readonly></div>
+      <div class="form-row"><label>Notes</label><textarea readonly>Trip canceled</textarea></div>
+
+      <h4>Review History</h4>
+      <table>
+        <tr><th>Reviewer</th><th>Notes</th><th>Status</th><th>Date</th></tr>
+        <tr><td>Manager Rania</td><td>Marked as canceled by employee</td><td>Canceled</td><td>10/05/2025</td></tr>
+      </table>
+
+      <div class="details-actions">
+        <button disabled>Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
