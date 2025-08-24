@@ -95,3 +95,5 @@ latexmkrc
 *.synctex.gz
 *.synctex
 
+# Test files
+test.html
