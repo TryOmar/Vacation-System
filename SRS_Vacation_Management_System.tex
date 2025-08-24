@@ -1,0 +1,714 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+% Page setup
+\geometry{margin=1in}
+\setlength{\parindent}{0pt}
+
+% Header and footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Vacation Management System - SRS}}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Title formatting
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+
+
+% Table style
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\begin{document}
+
+% Title Page
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\Huge\bfseries Vacation Management System\par}
+\vspace{1cm}
+{\Large\bfseries Software Requirements Specification\par}
+\vspace{2cm}
+{\large Version 1.0\par}
+\vspace{1cm}
+{\large \today\par}
+\vspace{2cm}
+{\large Prepared for: Ejada\par}
+\vspace{1cm}
+{\large Document Type: Software Requirements Specification\par}
+\vfill
+\end{titlepage}
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+% List of Figures
+\listoffigures
+\newpage
+
+% List of Tables
+\listoftables
+\newpage
+
+\section{Introduction}
+
+\subsection{Purpose}
+This Software Requirements Specification (SRS) document describes the functional and non-functional requirements for the Vacation Management System. The document serves as a contract between the development team and stakeholders, providing a comprehensive understanding of what the system should accomplish.
+
+\subsection{Scope}
+The Vacation Management System is designed to automate the vacation request, approval, and cancellation processes while providing robust reporting capabilities for efficient vacation management. The system addresses inefficiencies in the current paper-based system, such as processing delays and inaccurate balance tracking due to manual errors and duplicate records.
+
+\subsection{Definitions, Acronyms, and Abbreviations}
+\begin{itemize}
+    \item \textbf{HR}: Human Resources
+    \item \textbf{SRS}: Software Requirements Specification
+    \item \textbf{UI}: User Interface
+    \item \textbf{PDF}: Portable Document Format
+    \item \textbf{API}: Application Programming Interface
+    \item \textbf{DB}: Database
+    \item \textbf{UC}: Use Case
+\end{itemize}
+
+\subsection{References}
+\begin{itemize}
+    \item Project Scope Document
+    \item Requirements Specification
+    \item Wireframe Specifications
+    \item Data Dictionary Documentation
+    \item Use Case Documentation
+\end{itemize}
+
+\subsection{Overview}
+The remainder of this document is organized as follows:
+\begin{itemize}
+    \item Section 2: Overall Description
+    \item Section 3: Specific Requirements
+    \item Section 4: External Interface Requirements
+    \item Section 5: Non-Functional Requirements
+    \item Section 6: System Architecture
+    \item Section 7: Data Requirements
+    \item Section 8: Appendices
+\end{itemize}
+
+\section{Overall Description}
+
+\subsection{Product Perspective}
+The Vacation Management System is a web-based application with mobile support that integrates with existing HR systems. It operates as a standalone module that can be deployed independently or integrated with larger enterprise systems.
+
+\subsection{Product Functions}
+The system provides the following core functionalities:
+
+\begin{enumerate}
+    \item \textbf{Vacation Request Management}
+    \begin{itemize}
+        \item Create and modify vacation requests
+        \item Support for Annual and Sick leave types
+        \item File attachment capabilities
+        \item Real-time validation and balance checking
+    \end{itemize}
+    
+    \item \textbf{Vacation Cancellation Management}
+    \begin{itemize}
+        \item Cancel pending or approved requests
+        \item Cancellation reason tracking
+        \item Approval workflow for cancellations
+    \end{itemize}
+    
+    \item \textbf{Approval Workflow}
+    \begin{itemize}
+        \item Multi-level approval process
+        \item Manager and HR review capabilities
+        \item Automatic escalation after delays
+    \end{itemize}
+    
+    \item \textbf{Reporting and Analytics}
+    \begin{itemize}
+        \item Single transaction reports
+        \item Comparative annual reports
+        \item Department-wise vacation analytics
+    \end{itemize}
+    
+    \item \textbf{Inquiry and Search}
+    \begin{itemize}
+        \item Advanced search capabilities
+        \item Filter by multiple criteria
+        \item Export functionality
+    \end{itemize}
+\end{enumerate}
+
+\subsection{User Classes and Characteristics}
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{3cm}|p{4cm}|p{4cm}|}
+\hline
+\textbf{User Class} & \textbf{Characteristics} & \textbf{Access Rights} \\
+\hline
+Employees & Regular users, submit vacation requests & Create, view, modify own requests \\
+\hline
+Direct Managers & Supervisors, approve subordinate requests & Review, approve/reject requests \\
+\hline
+HR Personnel & Administrative users, manage policies & Full access, policy management \\
+\hline
+General Managers & Senior management, final approval & Final approval, reports access \\
+\hline
+System Administrators & Technical users, system maintenance & Full system access \\
+\hline
+\end{tabular}
+\caption{User Classes and Access Rights}
+\end{table}
+
+\subsection{Operating Environment}
+\begin{itemize}
+    \item \textbf{Platform}: Web-based application with mobile responsive design
+    \item \textbf{Browsers}: Chrome, Firefox, Safari, Edge (latest versions)
+    \item \textbf{Mobile}: iOS 12+, Android 8+
+    \item \textbf{Database}: SQL Server/MySQL/PostgreSQL
+    \item \textbf{Server}: Windows/Linux server environment
+\end{itemize}
+
+\subsection{Design and Implementation Constraints}
+\begin{itemize}
+    \item Compliance with Saudi vacation regulations
+    \item Integration with existing HR systems
+    \item Support for Arabic and English languages
+    \item Mobile-first responsive design
+    \item PDF generation capabilities
+    \item Real-time notifications
+\end{itemize}
+
+\subsection{Assumptions and Dependencies}
+\begin{itemize}
+    \item Existing employee database is available
+    \item Network infrastructure supports web access
+    \item Users have basic computer literacy
+    \item HR policies are well-defined and documented
+    \item Integration APIs are available for external systems
+\end{itemize}
+
+\section{Specific Requirements}
+
+\subsection{Functional Requirements}
+
+\subsubsection{FR-001: Vacation Request Creation}
+\begin{itemize}
+    \item \textbf{Description}: Employees must be able to create new vacation requests
+    \item \textbf{Inputs}: Start date, end date, vacation type, notes, attachments
+    \item \textbf{Processing}: Validate dates, check balance, calculate period
+    \item \textbf{Outputs}: Request ID, confirmation message
+    \item \textbf{Business Rules}:
+    \begin{itemize}
+        \item Start date cannot be in the past
+        \item End date must be after start date
+        \item No overlapping requests for same employee
+        \item Sick leave requires document attachments
+        \item Trainees cannot submit requests
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{FR-002: Vacation Request Modification}
+\begin{itemize}
+    \item \textbf{Description}: Employees can modify requests before submission
+    \item \textbf{Inputs}: Modified request details
+    \item \textbf{Processing}: Re-validate all fields, update request
+    \item \textbf{Outputs}: Updated request, validation results
+    \item \textbf{Business Rules}: Only pending requests can be modified
+\end{itemize}
+
+\subsubsection{FR-003: Vacation Cancellation}
+\begin{itemize}
+    \item \textbf{Description}: Employees can cancel pending or approved requests
+    \item \textbf{Inputs}: Cancellation reason
+    \item \textbf{Processing}: Validate cancellation eligibility
+    \item \textbf{Outputs}: Cancellation request, approval workflow
+    \item \textbf{Business Rules}: Cancellation only allowed before start date
+\end{itemize}
+
+\subsubsection{FR-004: Multi-Level Approval}
+\begin{itemize}
+    \item \textbf{Description}: Requests follow approval hierarchy
+    \item \textbf{Inputs}: Manager decisions, reasons
+    \item \textbf{Processing}: Route through approval levels
+    \item \textbf{Outputs}: Approval status, notifications
+    \item \textbf{Business Rules}: Employee → Direct Manager → HR → General Manager
+\end{itemize}
+
+\subsubsection{FR-005: Vacation Inquiry}
+\begin{itemize}
+    \item \textbf{Description}: Search and filter vacation requests
+    \item \textbf{Inputs}: Search criteria (dates, department, employee, type, status)
+    \item \textbf{Processing}: Apply filters, execute search
+    \item \textbf{Outputs}: Filtered results grid
+    \item \textbf{Business Rules}: Results based on user access rights
+\end{itemize}
+
+\subsubsection{FR-006: Report Generation}
+\begin{itemize}
+    \item \textbf{Description}: Generate PDF reports for vacation data
+    \item \textbf{Inputs}: Report parameters, data selection
+    \item \textbf{Processing}: Format data, generate PDF
+    \item \textbf{Outputs}: PDF report with standard footer
+    \item \textbf{Business Rules}: Include print time, page number, user name
+\end{itemize}
+
+\subsection{Non-Functional Requirements}
+
+\subsubsection{Performance Requirements}
+\begin{itemize}
+    \item \textbf{Response Time}: Page load < 3 seconds
+    \item \textbf{Throughput}: Support 100+ concurrent users
+    \item \textbf{Availability}: 99.5\% uptime during business hours
+    \item \textbf{Scalability}: Support up to 1000 employees
+\end{itemize}
+
+\subsubsection{Security Requirements}
+\begin{itemize}
+    \item \textbf{Authentication}: Secure login with session management
+    \item \textbf{Authorization}: Role-based access control
+    \item \textbf{Data Protection}: Encrypt sensitive employee information
+    \item \textbf{Audit Trail}: Log all system activities
+\end{itemize}
+
+\subsubsection{Usability Requirements}
+\begin{itemize}
+    \item \textbf{User Interface}: Intuitive, responsive design
+    \item \textbf{Accessibility}: WCAG 2.1 AA compliance
+    \item \textbf{Multi-language}: Arabic and English support
+    \item \textbf{Mobile Support}: Responsive design for all devices
+\end{itemize}
+
+\subsubsection{Reliability Requirements}
+\begin{itemize}
+    \item \textbf{Error Handling}: Graceful error messages
+    \item \textbf{Data Integrity}: Prevent data corruption
+    \item \textbf{Backup}: Daily automated backups
+    \item \textbf{Recovery}: 4-hour maximum recovery time
+\end{itemize}
+
+\section{External Interface Requirements}
+
+\subsection{User Interfaces}
+
+\subsubsection{Web Interface}
+\begin{itemize}
+    \item Modern, responsive web design
+    \item Consistent navigation and layout
+    \item Form validation with real-time feedback
+    \item Accessible design elements
+    \item Cross-browser compatibility
+\end{itemize}
+
+\subsubsection{Mobile Interface}
+\begin{itemize}
+    \item Mobile-responsive design
+    \item Touch-friendly interface elements
+    \item Optimized for small screens
+    \item Native app-like experience
+\end{itemize}
+
+\subsection{Hardware Interfaces}
+\begin{itemize}
+    \item Server hardware requirements
+    \item Network infrastructure specifications
+    \item Storage capacity planning
+    \item Backup system requirements
+\end{itemize}
+
+\subsection{Software Interfaces}
+\begin{itemize}
+    \item Database management system
+    \item Web server software
+    \item PDF generation libraries
+    \item Email notification system
+    \item Integration APIs
+\end{itemize}
+
+\subsection{Communication Interfaces}
+\begin{itemize}
+    \item HTTP/HTTPS protocols
+    \item RESTful API endpoints
+    \item Email notifications
+    \item SMS alerts (optional)
+    \item Push notifications
+\end{itemize}
+
+\section{System Architecture}
+
+\subsection{Architecture Overview}
+The system follows a three-tier architecture:
+\begin{itemize}
+    \item \textbf{Presentation Tier}: Web and mobile interfaces
+    \item \textbf{Business Logic Tier}: Application services and workflows
+    \item \textbf{Data Tier}: Database and file storage
+\end{itemize}
+
+\subsection{Component Design}
+\begin{itemize}
+    \item \textbf{User Management Module}: Authentication and authorization
+    \item \textbf{Vacation Management Module}: Core business logic
+    \item \textbf{Workflow Engine}: Approval process management
+    \item \textbf{Reporting Module}: Report generation and export
+    \item \textbf{Notification Module}: Communication services
+\end{itemize}
+
+\subsection{Database Design}
+\begin{itemize}
+    \item \textbf{Employee Master}: Employee information and balances
+    \item \textbf{Vacation Requests}: Request details and status
+    \item \textbf{Approval History}: Workflow tracking
+    \item \textbf{System Configuration}: Policies and settings
+    \item \textbf{Audit Logs}: Activity tracking
+\end{itemize}
+
+\section{Data Requirements}
+
+\subsection{Data Dictionary}
+The system includes comprehensive data dictionaries for:
+\begin{itemize}
+    \item Screen-specific data fields
+    \item Master data entities
+    \item Business rules and validation
+    \item Default values and constraints
+\end{itemize}
+
+\subsection{Data Migration}
+\begin{itemize}
+    \item Employee data from Excel to database
+    \item Historical vacation records
+    \item Department and organizational structure
+    \item User accounts and permissions
+\end{itemize}
+
+\subsection{Data Backup and Recovery}
+\begin{itemize}
+    \item Automated daily backups
+    \item Point-in-time recovery capability
+    \item Data retention policies
+    \item Disaster recovery procedures
+\end{itemize}
+
+\section{Wireframe Specifications}
+
+\subsection{Screen 1: Vacation Request Screen}
+\begin{itemize}
+    \item \textbf{Header}: Vacation Request
+    \item \textbf{Purpose}: Create new vacation requests and modify before submission
+    \item \textbf{Fields}: Employee details, vacation type, dates, notes, attachments
+    \item \textbf{Validation}: Real-time validation with error messages
+    \item \textbf{Actions}: Submit and Cancel buttons
+\end{itemize}
+
+\subsection{Screen 2: Vacation Cancellation Request Screen}
+\begin{itemize}
+    \item \textbf{Header}: Vacation Cancellation Request
+    \item \textbf{Purpose}: Cancel pending vacation requests
+    \item \textbf{Fields}: Original request details, cancellation reason
+    \item \textbf{Validation}: Cancellation eligibility checks
+    \item \textbf{Actions}: Submit Cancellation and Cancel buttons
+\end{itemize}
+
+\subsection{Screen 3: Review Vacation Request Screen}
+\begin{itemize}
+    \item \textbf{Header}: Review Vacation Request
+    \item \textbf{Purpose}: HR/Managers review and approve/reject requests
+    \item \textbf{Fields}: Request details in view mode, reviewer notes
+    \item \textbf{Workflow}: Multi-level approval process
+    \item \textbf{Actions}: Accept and Reject buttons
+\end{itemize}
+
+\subsection{Screen 4: Review Cancellation Request Screen}
+\begin{itemize}
+    \item \textbf{Header}: Review Vacation Cancellation Request
+    \item \textbf{Purpose}: Approve or reject cancellation requests
+    \item \textbf{Fields}: Original request and cancellation details
+    \item \textbf{Workflow}: Manager approval process
+    \item \textbf{Actions}: Approve and Reject Cancellation buttons
+\end{itemize}
+
+\subsection{Screen 5: Vacation Inquiry Search Parameters}
+\begin{itemize}
+    \item \textbf{Header}: Employee Vacation Inquiry - Search Parameters
+    \item \textbf{Purpose}: Enter search criteria for vacation inquiries
+    \item \textbf{Fields}: Date range, department, employee, type, status
+    \item \textbf{Filters}: Multi-select dropdown options
+    \item \textbf{Actions}: Generate Report and Reset buttons
+\end{itemize}
+
+\subsection{Screen 6: Vacation Inquiry Search Results}
+\begin{itemize}
+    \item \textbf{Header}: Employee Vacation Inquiry - Search Results
+    \item \textbf{Purpose}: Display grid of matching inquiry results
+    \item \textbf{Columns}: Employee details, vacation info, status, actions
+    \item \textbf{Pagination}: Page navigation and records per page
+    \item \textbf{Actions}: Print, Export to Excel, New Search
+\end{itemize}
+
+\subsection{Screen 7: Single Transaction Report}
+\begin{itemize}
+    \item \textbf{Header}: Leave Transaction Report
+    \item \textbf{Purpose}: PDF report for single vacation transaction
+    \item \textbf{Content}: Request details, employee info, approval history
+    \item \textbf{Footer}: Print time, page number, user name
+    \item \textbf{Format}: Professional PDF layout
+\end{itemize}
+
+\subsection{Screen 8: Comparative Annual Report}
+\begin{itemize}
+    \item \textbf{Header}: Annual Comparative Report by Department
+    \item \textbf{Purpose}: Annual view by department with vacation statistics
+    \item \textbf{Content}: Department totals, remaining balances, employee details
+    \item \textbf{Parameters}: Date range, department selection, employee inclusion
+    \item \textbf{Format}: Multi-page PDF report
+\end{itemize}
+
+\subsection{Screen 9: Pending Vacation Requests}
+\begin{itemize}
+    \item \textbf{Header}: Pending Vacation Requests (Tasks)
+    \item \textbf{Purpose}: Display pending requests requiring action
+    \item \textbf{Columns}: Employee details, vacation info, action
+    \item \textbf{Layout}: Clean table with headers
+    \item \textbf{Actions}: View Request button for each row
+\end{itemize}
+
+\subsection{Screen 10: My Vacation Requests}
+\begin{itemize}
+    \item \textbf{Header}: My Vacation Requests
+    \item \textbf{Purpose}: Personal vacation request management
+    \item \textbf{View}: Summary columns with expandable details
+    \item \textbf{Sections}: Request details, review history, attachments
+    \item \textbf{Actions}: Cancel button (when applicable)
+\end{itemize}
+
+\subsection{Screen 11: Notifications Center}
+\begin{itemize}
+    \item \textbf{Header}: Notifications Center
+    \item \textbf{Purpose}: System notifications and updates
+    \item \textbf{Components}: Notification text and action buttons
+    \item \textbf{Types}: Approval, rejection, pending, review notes
+    \item \textbf{Layout}: Card-style with clear hierarchy
+\end{itemize}
+
+\section{Business Rules and Logic}
+
+\subsection{Vacation Policy Rules}
+\begin{itemize}
+    \item \textbf{Standard Entitlement}: 21 days per year
+    \item \textbf{Extended Entitlement}: 30 days for employees with >10 years service or >50 years old
+    \item \textbf{Leave Types}: Annual and Sick leave only
+    \item \textbf{Unused Days}: Forfeited annually, no carryover
+    \item \textbf{Emergency Exceptions}: Supported via flags even with zero balance
+\end{itemize}
+
+\subsection{Approval Workflow Rules}
+\begin{itemize}
+    \item \textbf{Approval Hierarchy}: Employee → Direct Manager → HR → General Manager
+    \item \textbf{Escalation}: Automatic after 2 days of delay
+    \item \textbf{Balance Update}: Only after General Manager approval
+    \item \textbf{Rejection Reasons}: Required for all rejections
+    \item \textbf{Notification}: Sent for all status changes
+\end{itemize}
+
+\subsection{Validation Rules}
+\begin{itemize}
+    \item \textbf{Date Validation}: No past dates, logical date ranges
+    \item \textbf{Overlap Prevention}: No conflicting requests for same employee
+    \item \textbf{Balance Checking}: Requested days ≤ available balance
+    \item \textbf{Attachment Requirements}: Mandatory for sick leave
+    \item \textbf{Trainee Restrictions}: Cannot submit vacation requests
+\end{itemize}
+
+\section{Use Cases}
+
+\subsection{UC-1: Employee Submits Vacation Request}
+\begin{itemize}
+    \item \textbf{Primary Actor}: Employee
+    \item \textbf{Goal}: Submit a vacation request for approval
+    \item \textbf{Preconditions}: Employee authenticated, has leave balance
+    \item \textbf{Main Flow}: Navigate to form, enter details, submit
+    \item \textbf{Postconditions}: Request created, workflow initiated
+\end{itemize}
+
+\subsection{UC-2: Employee Cancels Vacation Request}
+\begin{itemize}
+    \item \textbf{Primary Actor}: Employee
+    \item \textbf{Goal}: Cancel a pending or approved vacation request
+    \item \textbf{Preconditions}: Request exists, not yet started
+    \item \textbf{Main Flow}: Select request, provide reason, submit cancellation
+    \item \textbf{Postconditions}: Cancellation request created
+\end{itemize}
+
+\subsection{UC-3: Manager Reviews Vacation Request}
+\begin{itemize}
+    \item \textbf{Primary Actor}: Manager/HR Personnel
+    \item \textbf{Goal}: Review and approve/reject vacation requests
+    \item \textbf{Preconditions}: Pending request exists
+    \item \textbf{Main Flow}: View details, make decision, provide notes
+    \item \textbf{Postconditions}: Request status updated, notifications sent
+\end{itemize}
+
+\subsection{UC-4: Generate Vacation Reports}
+\begin{itemize}
+    \item \textbf{Primary Actor}: Manager/HR Personnel
+    \item \textbf{Goal}: Generate vacation reports for analysis
+    \item \textbf{Preconditions}: Access to reporting functions
+    \item \textbf{Main Flow}: Select parameters, generate report, export
+    \item \textbf{Postconditions}: Report generated and available
+\end{itemize}
+
+\section{Technical Specifications}
+
+\subsection{Technology Stack}
+\begin{itemize}
+    \item \textbf{Frontend}: HTML5, CSS3, JavaScript, React/Angular
+    \item \textbf{Backend}: Node.js/Python/Java
+    \item \textbf{Database}: SQL Server/MySQL/PostgreSQL
+    \item \textbf{PDF Generation}: jsPDF, iText, or similar
+    \item \textbf{Authentication}: JWT, OAuth, or session-based
+\end{itemize}
+
+\subsection{Performance Specifications}
+\begin{itemize}
+    \item \textbf{Response Time}: < 3 seconds for page loads
+    \item \textbf{Database Queries}: < 1 second for standard operations
+    \item \textbf{PDF Generation}: < 5 seconds for standard reports
+    \item \textbf{Concurrent Users}: Support for 100+ simultaneous users
+\end{itemize}
+
+\subsection{Security Specifications}
+\begin{itemize}
+    \item \textbf{Encryption}: AES-256 for sensitive data
+    \item \textbf{Password Policy}: Minimum 8 characters, complexity requirements
+    \item \textbf{Session Management}: Secure session handling with timeout
+    \item \textbf{Input Validation}: SQL injection and XSS prevention
+\end{itemize}
+
+\section{Testing Requirements}
+
+\subsection{Functional Testing}
+\begin{itemize}
+    \item \textbf{Unit Testing}: Individual component testing
+    \item \textbf{Integration Testing}: Module interaction testing
+    \item \textbf{System Testing}: End-to-end functionality testing
+    \item \textbf{User Acceptance Testing}: Stakeholder validation
+\end{itemize}
+
+\subsection{Non-Functional Testing}
+\begin{itemize}
+    \item \textbf{Performance Testing}: Load and stress testing
+    \item \textbf{Security Testing}: Vulnerability assessment
+    \item \textbf{Usability Testing}: User experience validation
+    \item \textbf{Compatibility Testing}: Cross-browser and device testing
+\end{itemize}
+
+\section{Deployment and Maintenance}
+
+\subsection{Deployment Strategy}
+\begin{itemize}
+    \item \textbf{Environment Setup}: Development, testing, production
+    \item \textbf{Database Migration}: Schema creation and data migration
+    \item \textbf{User Training}: Comprehensive training program
+    \item \textbf{Go-Live Plan}: Phased rollout strategy
+\end{itemize}
+
+\subsection{Maintenance Requirements}
+\begin{itemize}
+    \item \textbf{Regular Updates}: Security patches and bug fixes
+    \item \textbf{Performance Monitoring}: System health tracking
+    \item \textbf{Backup Verification}: Regular backup testing
+    \item \textbf{User Support}: Help desk and documentation
+\end{itemize}
+
+\section{Appendices}
+
+\subsection{Appendix A: Glossary}
+\begin{itemize}
+    \item \textbf{Vacation}: Time off from work for personal reasons
+    \item \textbf{Leave Balance}: Remaining vacation days available
+    \item \textbf{Approval Workflow}: Process for request authorization
+    \item \textbf{Escalation}: Automatic forwarding of delayed requests
+    \item \textbf{Attachments}: Supporting documents for requests
+\end{itemize}
+
+\subsection{Appendix B: Data Models}
+\begin{itemize}
+    \item Entity-Relationship Diagrams
+    \item Database Schema Definitions
+    \item API Specification Documents
+    \item Integration Interface Definitions
+\end{itemize}
+
+\subsection{Appendix C: Wireframe Images}
+\begin{itemize}
+    \item Vacation Request Screen (Web \& Mobile)
+    \item Vacation Cancellation Screen (Web \& Mobile)
+    \item Review Screens (Web \& Mobile)
+    \item Inquiry and Search Screens
+    \item Report Layouts
+    \item Dashboard and Analytics Screens
+\end{itemize}
+
+\subsection{Appendix D: State Diagrams}
+\begin{itemize}
+    \item Vacation Request State Flow
+    \item Approval Workflow States
+    \item Cancellation Process States
+    \item System Status Transitions
+\end{itemize}
+
+\subsection{Appendix E: Workflow Diagrams}
+\begin{itemize}
+    \item Basic Vacation Request Flow
+    \item Escalation to Sponsor Flow
+    \item Resubmission After Rejection Flow
+    \item Cancellation Approval Flow
+\end{itemize}
+
+\section{Document Approval}
+
+\subsection{Stakeholder Signatures}
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+\hline
+\textbf{Name} & \textbf{Role} & \textbf{Signature \& Date} \\
+\hline
+ & Project Manager &  \\
+\hline
+ & Technical Lead &  \\
+\hline
+ & Business Analyst &  \\
+\hline
+ & Stakeholder Representative &  \\
+\hline
+\end{tabular}
+\caption{Document Approval Signatures}
+\end{table}
+
+\subsection{Version History}
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{2cm}|p{3cm}|p{4cm}|p{3cm}|}
+\hline
+\textbf{Version} & \textbf{Date} & \textbf{Changes} & \textbf{Author} \\
+\hline
+1.0 & \today & Initial SRS Document & System Analyst \\
+\hline
+\end{tabular}
+\caption{Document Version History}
+\end{table}
+
+\end{document}
