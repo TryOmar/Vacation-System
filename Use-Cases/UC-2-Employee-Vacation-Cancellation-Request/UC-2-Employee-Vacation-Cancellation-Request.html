@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Use Case Template</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    :root{--border:#bdbdbd;--text:#333;--muted:#666;--bg:#f9f9f9;--white:#fff;--header:#e0e0e0;}
+    body{font:16px Arial;margin:20px auto;padding:20px;max-width:1200px;background:var(--bg);color:var(--text);border:2px solid #ccc;}
+    h1{text-align:center;margin:0 0 18px;}
+    .description{text-align:center;color:var(--muted);margin-bottom:24px;}
+    .export-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:0 0 18px;}
+    .export-buttons button{padding:10px 16px;min-width:120px;border:none;border-radius:4px;background:#000;color:#fff;cursor:pointer;font-weight:700;transition:opacity .15s ease;}
+    .export-buttons button:hover{opacity:.85;}
+    table{width:100%;border-collapse:collapse;background:var(--white);box-shadow:0 2px 4px rgba(0,0,0,.08);font-size:13px;table-layout:fixed;margin-bottom:20px;}
+    th,td{border:1px solid var(--border);padding:8px 10px;vertical-align:top;word-wrap:break-word;overflow-wrap:break-word;word-break:normal;line-height:1.4;hyphens:auto;}
+    th{background:#f0f0f0;text-align:left;font-weight:600;white-space:normal;}
+    tr:nth-child(even) td:not(.category){background:#fafafa;}
+    .category{background:var(--header);font-weight:700;text-transform:uppercase;text-align:center;padding:10px;}
+    td > *:first-child{margin-top:0;}
+    td > *:last-child{margin-bottom:0;}
+    .note{font-size:13px;color:var(--muted);margin-top:12px;}
+    @media(max-width:768px){
+      body{margin:10px;padding:14px;}
+      .export-buttons{gap:8px;}
+      .export-buttons button{width:100%;max-width:260px;}
+      table{font-size:12px;margin-bottom:15px;}
+      th,td{padding:6px 8px;}
+    }
+    @media(max-width:480px){
+      table{display:block;overflow-x:auto;}
+      .category{white-space:normal;}
+    }
+    @media print{
+      .export-buttons{display:none;}
+      body{border:none;margin:0;padding:8px;}
+      table{page-break-inside:auto;}
+      tr{page-break-inside:avoid;}
+      thead{display:table-header-group;}
+    }
+  </style>
+</head>
+<body>
+  <h1 id="pageTitle">Use Case Template</h1>
+  <p class="description" id="pageDescription">Dynamic use case template driven by JSON data</p>
+  <div class="export-buttons">
+    <button onclick="exportUseCaseToCSV()">Export Use Case (CSV)</button>
+    <button onclick="exportUseCaseToPDF()">Export Use Case (PDF)</button>
+    <button onclick="window.print()">Print</button>
+  </div>
+  <div id="useCaseTableContainer"></div>
+
+  <script>
+const useCaseData = {
+  title: "Use Case: Employee Submits Vacation Cancellation Request",
+  description: "Simple use case template describing how an employee cancels a previously submitted vacation request before its start date.",
+  sections: {
+    Summary: [
+      ["ID", "UC-2"],
+      ["Name", "Employee Submits Vacation Cancellation Request"],
+      ["Goal", "Allow an employee to cancel a submitted vacation request before its start date."],
+      ["Actors", "Employee"]
+    ],
+    Triggers: [
+      ["Trigger", "Employee decides they no longer need a previously requested vacation."]
+    ],
+    "Pre-Conditions": [
+      "Employee has an existing vacation request in pending or approved status.",
+      "Vacation request has not yet started.",
+      "Employee is a full-time Muslim Saudi employee (system scope).",
+      "Employee is not a trainee (system scope).",
+      "System is accessible via web or mobile app."
+    ],
+    "Basic Flow (Main Success Scenario)": {
+      headers: ["#", "User Action", "System Response"],
+      rows: [
+        ["1", "Employee opens the Vacation Cancellation Request screen.", "System displays the cancellation request form."],
+        ["2", "—", "System auto-populates employee details (Name, ID) as read-only."],
+        ["3", "—", "System displays original request details (Type, Dates, Period, Notes, Attachments) in read-only mode."],
+        ["4", "Employee optionally enters a cancellation reason.", "System accepts input."],
+        ["5", "Employee reviews all details.", "System waits for confirmation."],
+        ["6", "Employee clicks Submit Cancellation.", "System validates request and submits for approval with status 'Pending'."],
+        ["7", "Employee clicks Cancel instead.", "System discards input and returns to dashboard."]
+      ]
+    },
+    "Approval Flow (Manager / HR / General Manager)": {
+      headers: ["#", "Reviewer Action", "System Response"],
+      rows: [
+        ["1", "Reviewer opens the Vacation Cancellation Request screen.", "System shows original request and cancellation details."],
+        ["2", "Reviewer optionally enters notes.", "System accepts input."],
+        ["3", "Reviewer clicks Approve or Reject.", "System updates status and records decision."]
+      ]
+    },
+    "Business Validation Rules": {
+      headers: ["Rule ID", "Description", "Condition", "Message ID"],
+      rows: [
+        ["BV-201", "Cancellation must occur before vacation start date.", "currentDate < vacationStartDate", "MSG-201"],
+        ["BV-202", "Only requests in Pending or Approved status can be cancelled.", "status ∈ {Pending, Approved}", "MSG-202"],
+        ["BV-203", "Cancellation request data must match original request.", "cancellationData == originalData", "MSG-203"]
+      ]
+    },
+    "Exceptions (Error Conditions)": {
+      headers: ["ID", "At Step", "Issue", "Resolution"],
+      rows: [
+        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message."],
+        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message."],
+        ["EX-3", "Step 6", "Data inconsistency detected.", "System rejects cancellation and notifies HR."]
+      ]
+    },
+    "Post-Conditions": [
+      "Cancellation request stored with status Pending until reviewed.",
+      "If approved: HR and Manager notified, vacation officially cancelled.",
+      "If rejected: Employee notified, original vacation request remains active."
+    ],
+    "Notes": [
+      ["Note", "Maintain link between original vacation requests and their cancellations for data integrity."]
+    ]
+  }
+};
+
+
+
+function renderUseCaseTable(data){const c=document.getElementById('useCaseTableContainer');c.innerHTML='';document.getElementById('pageTitle').textContent=data.title;document.getElementById('pageDescription').textContent=data.description;let maxCols=5;Object.values(data.sections).forEach(s=>{if(s.headers)maxCols=Math.max(maxCols,s.headers.length)});const t=document.createElement('table'),tb=document.createElement('tbody');Object.entries(data.sections).forEach(([title,content])=>{const hr=document.createElement('tr'),hc=document.createElement('td');hc.className='category';hc.colSpan=maxCols;hc.textContent=title;hr.appendChild(hc);tb.appendChild(hr);if(Array.isArray(content)){content.forEach(item=>{const tr=document.createElement('tr');if(Array.isArray(item)){const kc=document.createElement('td');kc.textContent=item[0];kc.colSpan=Math.max(1,Math.floor(maxCols*0.2));tr.appendChild(kc);const vc=document.createElement('td');vc.colSpan=maxCols-kc.colSpan;vc.textContent=item[1];tr.appendChild(vc);}else{const nc=document.createElement('td');nc.textContent=content.indexOf(item)+1;nc.colSpan=Math.max(1,Math.floor(maxCols*0.1));tr.appendChild(nc);const vc=document.createElement('td');vc.colSpan=maxCols-nc.colSpan;vc.textContent=item;tr.appendChild(vc);}tb.appendChild(tr);});}else if(content.headers&&content.rows){const hr2=document.createElement('tr'),dist=calculateColumnDistribution(content,maxCols);content.headers.forEach((h,i)=>{const th=document.createElement('th');th.textContent=h;th.colSpan=dist[i]||1;hr2.appendChild(th);});tb.appendChild(hr2);content.rows.forEach(r=>{const tr=document.createElement('tr');r.forEach((cell,i)=>{const td=document.createElement('td');td.textContent=cell;td.colSpan=dist[i]||1;tr.appendChild(td);});if(r.length<content.headers.length){const lc=tr.cells[tr.cells.length-1];let rem=0;for(let i=r.length;i<content.headers.length;i++)rem+=dist[i]||1;lc.colSpan+=rem;}tb.appendChild(tr);});}});t.appendChild(tb);c.appendChild(t);}
+function calculateColumnMetrics(c,i){if(!c||!c.headers||!c.rows)return{avgLength:0,maxLength:0,variance:0};const h=c.headers[i],lens=c.rows.map(r=>r[i]?r[i].toString().length:0);lens.push(h.length*0.2);const avg=lens.reduce((a,b)=>a+b,0)/lens.length;const variance=lens.reduce((a,b)=>a+Math.pow(b-avg,2),0)/lens.length;return{avgLength:avg,maxLength:Math.max(...lens),variance};}
+function normalizeToSpans(v,t,min=1,maxR=0.4){const total=v.reduce((a,b)=>a+b,0),maxS=Math.floor(t*maxR);let spans=v.map(x=>Math.max(min,Math.min(maxS,Math.round((x/total)*t))));let sum=spans.reduce((a,b)=>a+b,0);while(sum!==t){const diff=t-sum;if(diff>0){const idx=v.map((val,i)=>({val,i})).filter(({i})=>spans[i]<maxS).sort((a,b)=>b.val-a.val)[0]?.i;if(idx!==undefined)spans[idx]++;}else{const idx=v.map((val,i)=>({val,i})).filter(({i})=>spans[i]>min).sort((a,b)=>a.val-b.val)[0]?.i;if(idx!==undefined)spans[idx]--;}sum=spans.reduce((a,b)=>a+b,0);}return spans;}
+function calculateColumnDistribution(c,maxC){if(!c||!c.headers||!c.rows)return Array(maxC).fill(1);const m=c.headers.map((_,i)=>calculateColumnMetrics(c,i)),w=m.map(x=>Math.max(5,x.avgLength)*Math.max(0.8,1-Math.sqrt(x.variance)/100));return normalizeToSpans(w,maxC,1,calculateMaxSpanRatio(m,c.headers.length));}
+function calculateMaxSpanRatio(m,t){const base=1/t,max=Math.max(...m.map(x=>x.avgLength)),min=Math.min(...m.map(x=>x.avgLength)),ratio=max/(min||1);return Math.min(0.6,Math.max(0.25,base*(1+Math.min(3,ratio/2))));}
+function exportUseCaseToCSV(){const s=[];s.push(['Title',useCaseData.title],['Description',useCaseData.description],[]);Object.entries(useCaseData.sections).forEach(([st,c])=>{s.push([st.toUpperCase()]);if(Array.isArray(c)){c.forEach(i=>{if(Array.isArray(i))s.push([i[0],i[1]]);else s.push(['•',i]);});}else if(c.headers&&c.rows){s.push(c.headers);c.rows.forEach(r=>s.push(r));}s.push([]);});const csv=s.map(r=>r.map(cell=>cell?`"${cell.toString().replace(/"/g,'""')}"`:'').join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='use-case.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);}
+function exportUseCaseToPDF(){const{jsPDF}=window.jspdf,doc=new jsPDF({orientation:'portrait',unit:'pt',format:'a4'});doc.setProperties({title:useCaseData.title,subject:useCaseData.description,author:'Use Case Generator',creator:'Use Case Generator'});const m=20,w=doc.internal.pageSize.width,defaults={styles:{fontSize:8,cellPadding:3,lineWidth:.1,lineColor:[189,189,189]},margin:{left:m,right:m},theme:'grid'};doc.autoTable({startY:m,head:[[{content:useCaseData.title,styles:{halign:'center',fontStyle:'bold'}}]],body:[[{content:useCaseData.description,styles:{halign:'center'}}]],...defaults});let y=doc.lastAutoTable.finalY+5;Object.entries(useCaseData.sections).forEach(([st,c])=>{doc.autoTable({startY:y,body:[[{content:st,styles:{fillColor:[224,224,224],fontStyle:'bold',halign:'center',textTransform:'uppercase'}}]],...defaults});y=doc.lastAutoTable.finalY;if(Array.isArray(c)){if(c.length&&Array.isArray(c[0])){doc.autoTable({startY:y,body:c.map(([k,v])=>[{content:k,styles:{cellWidth:100}},v]),columnStyles:{0:{fillColor:[250,250,250]}},...defaults});}else{doc.autoTable({startY:y,body:c.map(i=>[i]),...defaults});}}else if(c.headers&&c.rows){doc.autoTable({startY:y,head:[c.headers],body:c.rows,headStyles:{fillColor:[240,240,240],textColor:[0,0,0],fontStyle:'bold'},alternateRowStyles:{fillColor:[250,250,250]},...defaults});}y=doc.lastAutoTable.finalY+2;});const pages=doc.internal.getNumberOfPages();for(let i=1;i<=pages;i++){doc.setPage(i);doc.setFontSize(7);doc.text(`Page ${i} of ${pages}`,w-m-40,doc.internal.pageSize.height-10);}doc.save('use-case.pdf');}
+document.addEventListener('DOMContentLoaded',()=>renderUseCaseTable(useCaseData));
+  </script>
+</body>
+</html>
