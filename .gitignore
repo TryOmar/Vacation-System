@@ -1,3 +1,97 @@
-Requirements.md
-Structure.md
+# LaTeX temporary and generated files
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.idx
+*.ind
+*.ilg
+*.glo
+*.gls
+*.glg
+*.acn
+*.acr
+*.alg
+*.ist
+*.loa
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.spl
+*.synctex
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.auxlock
+
+# LaTeX build directories
+build/
+output/
+temp/
+_cache/
+
+# PDF files (uncomment if you don't want to track PDFs)
+# *.pdf
+
+# LaTeX editor temporary files
+*.bak
+*.tmp
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Backup files
+*.backup
+*.old
+*.orig
+
+# LaTeX package files (if you have custom packages)
+*.sty
+*.cls
+*.clo
+*.def
+*.cfg
+
+# Bibliography files
+*.bib.bak
+*.bbl.bak
+
+# Makefile and build scripts
+Makefile
+makefile
+*.mk
+
+# LaTeX Workshop extension files
+.latexmkrc
+latexmkrc
+
+# Temporary LaTeX files
+*.ltjruby
+*.synctex.gz
+*.synctex
 
