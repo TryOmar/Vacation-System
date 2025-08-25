@@ -102,8 +102,8 @@ const useCaseData = {
     "Exceptions (Error Conditions)": {
       headers: ["ID", "At Step", "Issue", "Resolution"],
       rows: [
-        ["EX-1", "Step 1", "Balance calculation fails due to missing Employee Master Data fields.", "System logs error and displays message: 'Unable to update balance – employee data incomplete.'"],
-        ["EX-2", "Step 2", "Employee is ineligible (trainee or outside Saudi regulation scope).", "System blocks request and shows message: 'Vacation request not permitted for this employee type.'"],
+        ["EX-1", "Step 1", "Balance calculation fails due to missing Employee Master Data fields.", "System logs error and displays message: MSG-1201."],
+        ["EX-2", "Step 2", "Employee is ineligible (trainee or outside Saudi regulation scope).", "System blocks request and shows message: MSG-1202."],
         ["EX-3", "Step 3", "User attempts to manually override balance.", "System prevents override and enforces automation rule."]
       ]
     },

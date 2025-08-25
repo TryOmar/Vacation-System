@@ -57,18 +57,43 @@ const messages = [
   {id:"MSG-201",name:"Cancellation Date Validation",audience:"User",category:"Error",context:"Cancellation timing",text:"Cancellation must occur before vacation start date.",useCases:"UC-2",notes:"Prevents late cancellations"},
   {id:"MSG-202",name:"Invalid Status for Cancellation",audience:"User",category:"Error",context:"Status validation",text:"Only requests in Pending or Approved status can be cancelled.",useCases:"UC-2",notes:"Status-based restriction"},
   {id:"MSG-203",name:"Data Inconsistency",audience:"System",category:"Error",context:"Data validation",text:"Cancellation request data must match original request.",useCases:"UC-2",notes:"Data integrity check"},
+  {id:"MSG-204",name:"Cancellation After Start Date",audience:"User",category:"Error",context:"Cancellation timing",text:"Cancellation attempted after start date.",useCases:"UC-2",notes:"Prevents cancellation of active vacations"},
+  {id:"MSG-205",name:"Invalid Status for Cancellation Action",audience:"User",category:"Error",context:"Status validation",text:"Request not in Pending or Approved status.",useCases:"UC-2",notes:"Status-based restriction"},
 
   {id:"MSG-301",name:"Invalid Approval Action",audience:"User",category:"Error",context:"Approval workflow",text:"Only pending requests can be approved or rejected.",useCases:"UC-3",notes:"Prevents action on finalized requests"},
   {id:"MSG-302",name:"Missing Approver Comment",audience:"User",category:"Error",context:"Approval justification",text:"Rejection requires a mandatory comment.",useCases:"UC-3",notes:"Ensures rejection reason is documented"},
   {id:"MSG-303",name:"Duplicate Approval Action",audience:"System",category:"Error",context:"Workflow validation",text:"This request has already been processed.",useCases:"UC-3",notes:"Prevents double approvals/rejections"},
+  {id:"MSG-304",name:"Request Details Not Found",audience:"User",category:"Error",context:"Data retrieval",text:"Request details not found.",useCases:"UC-3",notes:"Data availability error"},
 
   {id:"MSG-401",name:"HR Access Only",audience:"User",category:"Error",context:"Permission validation",text:"Only HR staff can modify approved vacation records.",useCases:"UC-4",notes:"Restricts unauthorized modifications"},
   {id:"MSG-402",name:"Mandatory Justification",audience:"User",category:"Error",context:"Modification validation",text:"Modification requires a justification comment.",useCases:"UC-4",notes:"Ensures changes are logged with reasons"},
   {id:"MSG-403",name:"Invalid Record State",audience:"System",category:"Error",context:"Data state validation",text:"Only approved requests can be modified by HR.",useCases:"UC-4",notes:"Prevents changes to pending or cancelled requests"},
 
-  {id:"MSG-501",name:"Accrual Limit Reached",audience:"System",category:"Error",context:"Vacation accrual",text:"Employee has reached the maximum allowable vacation balance.",useCases:"UC-5",notes:"Enforces balance caps"},
-  {id:"MSG-502",name:"Negative Balance Prevention",audience:"System",category:"Error",context:"Balance update",text:"Vacation balance cannot become negative.",useCases:"UC-5",notes:"Prevents invalid deductions"},
-  {id:"MSG-503",name:"Carryover Validation",audience:"System",category:"Error",context:"Year-end processing",text:"Carryover days exceed policy limit.",useCases:"UC-5",notes:"Validates carryover rules"}
+  {id:"MSG-501",name:"Vacation Already Started",audience:"User",category:"Error",context:"Cancellation review",text:"Reviewer attempts to review cancellation for a vacation already started.",useCases:"UC-5",notes:"Prevents review of active vacations"},
+  {id:"MSG-502",name:"Invalid Request Status for Cancellation Review",audience:"User",category:"Error",context:"Status validation",text:"Original request status is not Pending or Approved.",useCases:"UC-5",notes:"Status-based restriction for cancellation review"},
+  {id:"MSG-503",name:"Accrual Limit Reached",audience:"System",category:"Error",context:"Vacation accrual",text:"Employee has reached the maximum allowable vacation balance.",useCases:"UC-5",notes:"Enforces balance caps"},
+  {id:"MSG-504",name:"Negative Balance Prevention",audience:"System",category:"Error",context:"Balance update",text:"Vacation balance cannot become negative.",useCases:"UC-5",notes:"Prevents invalid deductions"},
+  {id:"MSG-505",name:"Carryover Validation",audience:"System",category:"Error",context:"Year-end processing",text:"Carryover days exceed policy limit.",useCases:"UC-5",notes:"Validates carryover rules"},
+
+  {id:"MSG-601",name:"No Pending Requests",audience:"User",category:"Info",context:"Empty state",text:"No Pending Requests",useCases:"UC-6",notes:"Empty state message when no pending requests exist"},
+
+  {id:"MSG-701",name:"Search Parameters Required",audience:"User",category:"Error",context:"Search validation",text:"Search parameters are required.",useCases:"UC-7",notes:"Ensures search criteria are provided"},
+  {id:"MSG-702",name:"Invalid Date Range",audience:"User",category:"Error",context:"Date validation",text:"From Date is after To Date.",useCases:"UC-7",notes:"Date range validation error"},
+  {id:"MSG-703",name:"Department Not Found",audience:"User",category:"Error",context:"Data validation",text:"Department not found in master data.",useCases:"UC-7",notes:"Department data validation error"},
+
+  {id:"MSG-801",name:"Print Not Available",audience:"User",category:"Error",context:"Print validation",text:"Print option is available only for Approved requests.",useCases:"UC-8,UC-9",notes:"Print access restriction for non-approved requests"},
+
+  {id:"MSG-901",name:"Report Generation Failed",audience:"User",category:"Error",context:"Report generation",text:"Failed to generate report. Please try again.",useCases:"UC-9",notes:"Report generation error"},
+
+  {id:"MSG-1001",name:"Comparative Report Failed",audience:"User",category:"Error",context:"Report generation",text:"Failed to generate comparative report. Please try again.",useCases:"UC-10",notes:"Comparative report generation error"},
+  {id:"MSG-1002",name:"Department Selection Required",audience:"User",category:"Error",context:"Report validation",text:"At least one Department must be selected.",useCases:"UC-10",notes:"Department selection validation"},
+  {id:"MSG-902",name:"Report Generation Failed - Data Missing",audience:"User",category:"Error",context:"Report generation",text:"Unable to generate report – required data missing.",useCases:"UC-10",notes:"Data validation error for report generation"},
+
+  {id:"MSG-1101",name:"No Notifications",audience:"User",category:"Info",context:"Empty state",text:"No new notifications.",useCases:"UC-11",notes:"Empty state message when no notifications exist"},
+  {id:"MSG-1102",name:"Request Not Available",audience:"User",category:"Error",context:"Data access",text:"Request not available.",useCases:"UC-11",notes:"Request accessibility error"},
+
+  {id:"MSG-1201",name:"Balance Update Failed",audience:"System",category:"Error",context:"Balance calculation",text:"Unable to update balance – employee data incomplete.",useCases:"UC-12",notes:"Employee data validation error"},
+  {id:"MSG-1202",name:"Employee Not Eligible",audience:"System",category:"Error",context:"Eligibility validation",text:"Vacation request not permitted for this employee type.",useCases:"UC-12",notes:"Employee eligibility restriction"}
 ];
 
 
