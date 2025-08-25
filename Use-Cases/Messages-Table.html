@@ -49,14 +49,28 @@ tr:nth-child(even) td{background:#fafafa}
 <script>
 const pageConfig={title:"Use Case Messages",description:"Centralized catalog of user/system messages with unique IDs for cross-referencing in use cases",fileName:"Use_Case_Messages"};
 const messagesColumns=[{header:"Message ID",key:"id"},{header:"Name",key:"name"},{header:"Audience",key:"audience"},{header:"Category",key:"category"},{header:"Trigger/Context",key:"context"},{header:"Text",key:"text"},{header:"Related Use Case IDs",key:"useCases"},{header:"Notes",key:"notes"}];
-const messages=[
-{id:"MSG-101",name:"End Date Validation",audience:"User",category:"Error",context:"Date validation",text:"End date must be strictly after start date.",useCases:"UC-1",notes:"Basic date validation rule"},
-{id:"MSG-102",name:"Leave Balance Exceeded",audience:"User",category:"Error",context:"Balance validation",text:"Requested days exceed available leave balance.",useCases:"UC-1",notes:"Prevents over-booking"},
-{id:"MSG-103",name:"Medical Certificate Required",audience:"User",category:"Error",context:"Document validation",text:"Medical certificate attachment is required for Sick leave.",useCases:"UC-1",notes:"Mandatory for sick leave type"},
-{id:"MSG-201",name:"Cancellation Date Validation",audience:"User",category:"Error",context:"Cancellation timing",text:"Cancellation must occur before vacation start date.",useCases:"UC-2",notes:"Prevents late cancellations"},
-{id:"MSG-202",name:"Invalid Status for Cancellation",audience:"User",category:"Error",context:"Status validation",text:"Only requests in Pending or Approved status can be cancelled.",useCases:"UC-2",notes:"Status-based restriction"},
-{id:"MSG-203",name:"Data Inconsistency",audience:"System",category:"Error",context:"Data validation",text:"Cancellation request data must match original request.",useCases:"UC-2",notes:"Data integrity check"}
+const messages = [
+  {id:"MSG-101",name:"End Date Validation",audience:"User",category:"Error",context:"Date validation",text:"End date must be strictly after start date.",useCases:"UC-1",notes:"Basic date validation rule"},
+  {id:"MSG-102",name:"Leave Balance Exceeded",audience:"User",category:"Error",context:"Balance validation",text:"Requested days exceed available leave balance.",useCases:"UC-1",notes:"Prevents over-booking"},
+  {id:"MSG-103",name:"Medical Certificate Required",audience:"User",category:"Error",context:"Document validation",text:"Medical certificate attachment is required for Sick leave.",useCases:"UC-1",notes:"Mandatory for sick leave type"},
+  
+  {id:"MSG-201",name:"Cancellation Date Validation",audience:"User",category:"Error",context:"Cancellation timing",text:"Cancellation must occur before vacation start date.",useCases:"UC-2",notes:"Prevents late cancellations"},
+  {id:"MSG-202",name:"Invalid Status for Cancellation",audience:"User",category:"Error",context:"Status validation",text:"Only requests in Pending or Approved status can be cancelled.",useCases:"UC-2",notes:"Status-based restriction"},
+  {id:"MSG-203",name:"Data Inconsistency",audience:"System",category:"Error",context:"Data validation",text:"Cancellation request data must match original request.",useCases:"UC-2",notes:"Data integrity check"},
+
+  {id:"MSG-301",name:"Invalid Approval Action",audience:"User",category:"Error",context:"Approval workflow",text:"Only pending requests can be approved or rejected.",useCases:"UC-3",notes:"Prevents action on finalized requests"},
+  {id:"MSG-302",name:"Missing Approver Comment",audience:"User",category:"Error",context:"Approval justification",text:"Rejection requires a mandatory comment.",useCases:"UC-3",notes:"Ensures rejection reason is documented"},
+  {id:"MSG-303",name:"Duplicate Approval Action",audience:"System",category:"Error",context:"Workflow validation",text:"This request has already been processed.",useCases:"UC-3",notes:"Prevents double approvals/rejections"},
+
+  {id:"MSG-401",name:"HR Access Only",audience:"User",category:"Error",context:"Permission validation",text:"Only HR staff can modify approved vacation records.",useCases:"UC-4",notes:"Restricts unauthorized modifications"},
+  {id:"MSG-402",name:"Mandatory Justification",audience:"User",category:"Error",context:"Modification validation",text:"Modification requires a justification comment.",useCases:"UC-4",notes:"Ensures changes are logged with reasons"},
+  {id:"MSG-403",name:"Invalid Record State",audience:"System",category:"Error",context:"Data state validation",text:"Only approved requests can be modified by HR.",useCases:"UC-4",notes:"Prevents changes to pending or cancelled requests"},
+
+  {id:"MSG-501",name:"Accrual Limit Reached",audience:"System",category:"Error",context:"Vacation accrual",text:"Employee has reached the maximum allowable vacation balance.",useCases:"UC-5",notes:"Enforces balance caps"},
+  {id:"MSG-502",name:"Negative Balance Prevention",audience:"System",category:"Error",context:"Balance update",text:"Vacation balance cannot become negative.",useCases:"UC-5",notes:"Prevents invalid deductions"},
+  {id:"MSG-503",name:"Carryover Validation",audience:"System",category:"Error",context:"Year-end processing",text:"Carryover days exceed policy limit.",useCases:"UC-5",notes:"Validates carryover rules"}
 ];
+
 
 function initializePage(){
  document.getElementById("pageTitle").textContent=pageConfig.title;

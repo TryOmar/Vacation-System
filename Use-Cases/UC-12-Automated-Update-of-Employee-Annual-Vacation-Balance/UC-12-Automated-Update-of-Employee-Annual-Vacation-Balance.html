@@ -53,72 +53,76 @@
   <div id="useCaseTableContainer"></div>
 
   <script>
+    
 const useCaseData = {
-  title: "Use Case: Employee Submits Vacation Cancellation Request",
-  description: "Core functionality for employees to cancel a previously submitted vacation request before its start date.",
+  title: "Use Case: Automated Update of Employee Annual Vacation Balance",
+  description: "The system automatically manages and updates employee vacation balances based on entitlement rules, approved requests, and organizational policies. Manual overrides are not permitted.",
   sections: {
     Summary: [
-      ["ID", "UC-2"],
-      ["Name", "Employee Submits Vacation Cancellation Request"],
-      ["Goal", "Allow an employee to cancel a submitted vacation request before its start date."],
-      ["Actors", "Employee"]
+      ["ID", "UC-12"],
+      ["Name", "Automated Update of Employee Annual Vacation Balance"],
+      ["Goal", "To ensure employee vacation balances are automatically calculated, updated, and compliant with policies, without manual overrides."],
+      ["Actors", "System (primary), Employee (view-only), General Manager (approval trigger)"]
     ],
     Triggers: [
-      ["Trigger", "Employee decides they no longer need a previously requested vacation."]
+      ["Trigger-1", "General Manager approves a vacation request."],
+      ["Trigger-2", "Annual allocation is applied (21 or 30 days entitlement based on policy)."],
+      ["Trigger-3", "Employee eligibility changes (10+ years of service or age ≥ 50)."]
     ],
     "Pre-Conditions": [
-      "Employee has an existing vacation request in pending or approved status.",
-      "Vacation request has not yet started.",
-      "Employee is a full-time Muslim Saudi employee (system scope).",
-      "Employee is not a trainee (system scope).",
-      "System is accessible via web or mobile app."
+      "Employee is an eligible full-time Muslim Saudi employee (trainees are excluded).",
+      "Vacation Types Master Data defines annual entitlement (21 or 30 days).",
+      "Employee Master Data includes Hire Date and Birth Date (for entitlement eligibility).",
+      "Vacation request has passed the multi-level approval workflow up to General Manager."
     ],
     "Basic Flow (Main Success Scenario)": {
-      headers: ["#", "User Action", "System Response"],
+      headers: ["#", "Actor Action", "System Response"],
       rows: [
-        ["1", "Employee opens the Vacation Cancellation Request screen.", "System displays the cancellation request form."],
-        ["2", "—", "System auto-populates employee details (Name, ID) as read-only."],
-        ["3", "—", "System displays original request details (Type, Dates, Period, Notes, Attachments) in read-only mode."],
-        ["4", "Employee optionally enters a cancellation reason.", "System accepts input."],
-        ["5", "Employee reviews all details.", "System waits for confirmation."],
-        ["6", "Employee clicks Submit Cancellation.", "System validates request and submits for approval with status 'Pending'."],
-        ["7", "Employee clicks Cancel instead.", "System discards input and returns to dashboard."]
+        ["1", "General Manager approves an employee’s vacation request.", "System immediately recalculates the employee’s vacation balance (Total – Taken – Pending = Balance)."],
+        ["2", "System applies entitlement rules (21 or 30 days depending on service/age).", "Balance is updated accordingly in Employee Master Data."],
+        ["3", "Employee views their vacation balance and history in view-only mode.", "System displays updated balance and vacation access history report."],
+        ["4", "At the start of a new calendar year.", "System assigns annual entitlement (21 or 30 days), without carrying forward unused days."]
       ]
     },
-    "Approval Flow (Manager / HR / General Manager)": {
-      headers: ["#", "Reviewer Action", "System Response"],
+    "Business Rules": {
+      headers: ["Rule ID", "Description"],
       rows: [
-        ["1", "Reviewer opens the Vacation Cancellation Request screen.", "System shows original request and cancellation details."],
-        ["2", "Reviewer optionally enters notes.", "System accepts input."],
-        ["3", "Reviewer clicks Approve or Reject.", "System updates status and records decision."]
-      ]
-    },
-    "Business Validation Rules": {
-      headers: ["Rule ID", "Description", "Condition", "Message ID"],
-      rows: [
-        ["BV-201", "Cancellation must occur before vacation start date.", "currentDate < vacationStartDate", "MSG-201"],
-        ["BV-202", "Only requests in Pending or Approved status can be cancelled.", "status ∈ {Pending, Approved}", "MSG-202"],
-        ["BV-203", "Cancellation request data must match original request.", "cancellationData == originalData", "MSG-203"]
+        ["BR-1201", "Leave Balance = Total – Taken – Pending."],
+        ["BR-1202", "Vacation balance updates immediately after General Manager approval."],
+        ["BR-1203", "Annual entitlement is 21 days; increased to 30 days if service ≥ 10 years or age ≥ 50."],
+        ["BR-1204", "Unused days are forfeited at year-end (no carryover or compensation)."],
+        ["BR-1205", "Vacation Types supported: Annual and Sick only."],
+        ["BR-1206", "No overlapping requests are allowed for the same employee."],
+        ["BR-1207", "Trainees are not eligible to submit vacation requests."],
+        ["BR-1208", "Manual overrides of balance are not allowed (system-only updates)."],
+        ["BR-1209", "Vacation policies must be configurable for maintainability."],
+        ["BR-1210", "System complies with Saudi vacation regulations only (Muslim Saudi, full-time employees)."]
       ]
     },
     "Exceptions (Error Conditions)": {
       headers: ["ID", "At Step", "Issue", "Resolution"],
       rows: [
-        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message."],
-        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message."],
-        ["EX-3", "Step 6", "Data inconsistency detected.", "System rejects cancellation and notifies HR."]
+        ["EX-1", "Step 1", "Balance calculation fails due to missing Employee Master Data fields.", "System logs error and displays message: 'Unable to update balance – employee data incomplete.'"],
+        ["EX-2", "Step 2", "Employee is ineligible (trainee or outside Saudi regulation scope).", "System blocks request and shows message: 'Vacation request not permitted for this employee type.'"],
+        ["EX-3", "Step 3", "User attempts to manually override balance.", "System prevents override and enforces automation rule."]
       ]
     },
     "Post-Conditions": [
-      "Cancellation request stored with status Pending until reviewed.",
-      "If approved: HR and Manager notified, vacation officially cancelled.",
-      "If rejected: Employee notified, original vacation request remains active."
+      "Vacation balances are always up-to-date and auto-calculated.",
+      "Employees can view, but not edit, their vacation balances and history.",
+      "System enforces organizational vacation policies automatically."
     ],
     "Notes": [
-      ["Note", "Maintain link between original vacation requests and their cancellations for data integrity."]
+      ["Note", "System recalculates vacation balances immediately after GM approval."],
+      ["Note", "Hire Date and Birth Date from Employee Master Data are used for entitlement eligibility (21 or 30 days)."],
+      ["Note", "Employees can view their vacation balance history but cannot make changes."],
+      ["Note", "Vacation process automation ensures compliance and eliminates manual errors."]
     ]
   }
 };
+
+
+
 
 
 const FIRST_COL_WIDTH = '6%';

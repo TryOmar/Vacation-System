@@ -53,72 +53,77 @@
   <div id="useCaseTableContainer"></div>
 
   <script>
+
 const useCaseData = {
-  title: "Use Case: Employee Submits Vacation Cancellation Request",
-  description: "Core functionality for employees to cancel a previously submitted vacation request before its start date.",
+  title: "Use Case: Notifications Center",
+  description: "Displays system notifications and updates related to vacation requests and actions, with interactive options for quick navigation.",
   sections: {
     Summary: [
-      ["ID", "UC-2"],
-      ["Name", "Employee Submits Vacation Cancellation Request"],
-      ["Goal", "Allow an employee to cancel a submitted vacation request before its start date."],
-      ["Actors", "Employee"]
+      ["ID", "UC-11"],
+      ["Name", "Notifications Center"],
+      ["Goal", "To inform users of vacation-related events and provide quick access to related details or actions."],
+      ["Actors", "Employees, Managers, HR, General Management"]
     ],
     Triggers: [
-      ["Trigger", "Employee decides they no longer need a previously requested vacation."]
+      ["Trigger", "Vacation-related events occur in the system (e.g., request submission, approval, rejection, pending review, comments, attachment requirements)."]
     ],
     "Pre-Conditions": [
-      "Employee has an existing vacation request in pending or approved status.",
-      "Vacation request has not yet started.",
-      "Employee is a full-time Muslim Saudi employee (system scope).",
-      "Employee is not a trainee (system scope).",
-      "System is accessible via web or mobile app."
+      "User has valid system access.",
+      "Relevant vacation transactions or actions exist in the system."
     ],
     "Basic Flow (Main Success Scenario)": {
-      headers: ["#", "User Action", "System Response"],
+      headers: ["#", "Actor Action", "System Response"],
       rows: [
-        ["1", "Employee opens the Vacation Cancellation Request screen.", "System displays the cancellation request form."],
-        ["2", "—", "System auto-populates employee details (Name, ID) as read-only."],
-        ["3", "—", "System displays original request details (Type, Dates, Period, Notes, Attachments) in read-only mode."],
-        ["4", "Employee optionally enters a cancellation reason.", "System accepts input."],
-        ["5", "Employee reviews all details.", "System waits for confirmation."],
-        ["6", "Employee clicks Submit Cancellation.", "System validates request and submits for approval with status 'Pending'."],
-        ["7", "Employee clicks Cancel instead.", "System discards input and returns to dashboard."]
+        ["1", "User navigates to the Notifications Center screen.", "System displays a chronological list of notifications, newest first."],
+        ["2", "User reviews Notification Text (Action Type, Vacation Details, Employee Name, Context).", "System shows card-style notifications with clear hierarchy."],
+        ["3", "User clicks [View] button on a notification.", "System opens the detailed view of the related vacation request."],
+        ["4", "User clicks the [Context Button] on a notification.", "System navigates the user to the relevant section (e.g., 'My Requests' or 'Pending Tasks')."],
+        ["5", "User takes no action.", "System continues to display notifications until they are marked as read or expire based on rules."]
       ]
     },
-    "Approval Flow (Manager / HR / General Manager)": {
-      headers: ["#", "Reviewer Action", "System Response"],
+    "Notification Types": {
+      headers: ["Type", "Example Text"],
       rows: [
-        ["1", "Reviewer opens the Vacation Cancellation Request screen.", "System shows original request and cancellation details."],
-        ["2", "Reviewer optionally enters notes.", "System accepts input."],
-        ["3", "Reviewer clicks Approve or Reject.", "System updates status and records decision."]
+        ["Approval", "Annual Leave (20–25 Aug, 6 days) for Omar Abdelrahman was approved."],
+        ["Rejection", "Sick Leave (12–14 Sep, 3 days) for Omar Abdelrahman was rejected. Reason: No medical note."],
+        ["Pending Approval", "Annual Leave (18–20 Sep, 3 days) for Omar Abdelrahman is pending manager approval."],
+        ["Review Notes", "Reviewer Ahmed Mostafa left a note on Casual Leave (02–03 Oct): 'Please adjust dates.'"],
+        ["Attachment Review", "Sick Leave (05–06 Oct, 2 days) for Omar Abdelrahman needs attachment review."],
+        ["General Updates", "General notification to stakeholders when requests are submitted, approved, rejected, or cancelled."]
       ]
     },
-    "Business Validation Rules": {
-      headers: ["Rule ID", "Description", "Condition", "Message ID"],
+    "Business Rules": {
+      headers: ["Rule ID", "Description"],
       rows: [
-        ["BV-201", "Cancellation must occur before vacation start date.", "currentDate < vacationStartDate", "MSG-201"],
-        ["BV-202", "Only requests in Pending or Approved status can be cancelled.", "status ∈ {Pending, Approved}", "MSG-202"],
-        ["BV-203", "Cancellation request data must match original request.", "cancellationData == originalData", "MSG-203"]
+        ["BR-1101", "System displays notifications relevant to the logged-in user's role (Employee, Manager, HR, etc.)."],
+        ["BR-1102", "Notifications appear in reverse chronological order, newest first."],
+        ["BR-1103", "Employees must receive notifications upon request acceptance or rejection."],
+        ["BR-1104", "Approved vacation cancellations trigger notifications for both HR and the Manager."],
+        ["BR-1105", "When HR and Managers are notified, only the header with a link is shown; full request details are visible after clicking the link."],
+        ["BR-1106", "Each notification must contain text and at least one actionable button ([View] or Context)."]
       ]
     },
     "Exceptions (Error Conditions)": {
       headers: ["ID", "At Step", "Issue", "Resolution"],
       rows: [
-        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message."],
-        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message."],
-        ["EX-3", "Step 6", "Data inconsistency detected.", "System rejects cancellation and notifies HR."]
+        ["EX-1", "Step 1", "No notifications available.", "System displays an empty state message: 'No new notifications.'"],
+        ["EX-2", "Step 3", "User clicks [View] but underlying request has been deleted or is inaccessible.", "System shows message: 'Request not available.'"]
       ]
     },
     "Post-Conditions": [
-      "Cancellation request stored with status Pending until reviewed.",
-      "If approved: HR and Manager notified, vacation officially cancelled.",
-      "If rejected: Employee notified, original vacation request remains active."
+      "User is informed about vacation-related actions through notifications.",
+      "User can access related screens (detailed request or task list) directly from notifications.",
+      "Notifications remain available until acknowledged, expired, or cleared by system rules."
     ],
     "Notes": [
-      ["Note", "Maintain link between original vacation requests and their cancellations for data integrity."]
+      ["Note", "Notification cards follow a clean layout with clear text hierarchy and action buttons."],
+      ["Note", "System ensures contextual navigation via [View] or [Context] buttons."],
+      ["Note", "Notification messages are dynamically generated from request and system log data."]
     ]
   }
 };
+
+
 
 
 const FIRST_COL_WIDTH = '6%';

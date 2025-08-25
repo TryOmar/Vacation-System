@@ -54,72 +54,61 @@
 
   <script>
 const useCaseData = {
-  title: "Use Case: Employee Submits Vacation Cancellation Request",
-  description: "Core functionality for employees to cancel a previously submitted vacation request before its start date.",
+  title: "Use Case: Vacation Inquiry (Search Results)",
+  description: "Displays a summarized list of vacation requests matching the search criteria entered in UC-7 (Search Parameters). Provides options for printing approved transactions, exporting data, and initiating a new search.",
   sections: {
     Summary: [
-      ["ID", "UC-2"],
-      ["Name", "Employee Submits Vacation Cancellation Request"],
-      ["Goal", "Allow an employee to cancel a submitted vacation request before its start date."],
-      ["Actors", "Employee"]
+      ["ID", "UC-8"],
+      ["Name", "Vacation Inquiry (Search Results)"],
+      ["Goal", "To display inquiry results in a grid format and allow printing/export actions."],
+      ["Actors", "HR, Managers, Authorized Employees"]
     ],
     Triggers: [
-      ["Trigger", "Employee decides they no longer need a previously requested vacation."]
+      ["Trigger", "User executes a search from the 'Employee Vacation Inquiry - Search Parameters' screen (UC-7)."]
     ],
     "Pre-Conditions": [
-      "Employee has an existing vacation request in pending or approved status.",
-      "Vacation request has not yet started.",
-      "Employee is a full-time Muslim Saudi employee (system scope).",
-      "Employee is not a trainee (system scope).",
-      "System is accessible via web or mobile app."
+      "User has valid system access.",
+      "Valid search criteria executed from UC-7.",
+      "System has matching vacation request data."
     ],
     "Basic Flow (Main Success Scenario)": {
-      headers: ["#", "User Action", "System Response"],
+      headers: ["#", "Actor Action", "System Response"],
       rows: [
-        ["1", "Employee opens the Vacation Cancellation Request screen.", "System displays the cancellation request form."],
-        ["2", "—", "System auto-populates employee details (Name, ID) as read-only."],
-        ["3", "—", "System displays original request details (Type, Dates, Period, Notes, Attachments) in read-only mode."],
-        ["4", "Employee optionally enters a cancellation reason.", "System accepts input."],
-        ["5", "Employee reviews all details.", "System waits for confirmation."],
-        ["6", "Employee clicks Submit Cancellation.", "System validates request and submits for approval with status 'Pending'."],
-        ["7", "Employee clicks Cancel instead.", "System discards input and returns to dashboard."]
-      ]
-    },
-    "Approval Flow (Manager / HR / General Manager)": {
-      headers: ["#", "Reviewer Action", "System Response"],
-      rows: [
-        ["1", "Reviewer opens the Vacation Cancellation Request screen.", "System shows original request and cancellation details."],
-        ["2", "Reviewer optionally enters notes.", "System accepts input."],
-        ["3", "Reviewer clicks Approve or Reject.", "System updates status and records decision."]
+        ["1", "User completes a search in UC-7.", "System displays the 'Vacation Inquiry - Search Results' grid with matching requests."],
+        ["2", "User reviews grid with columns (Employee ID, Employee Name, Vacation Type, Start Date, End Date, Duration, Status, Actions).", "System ensures all values are loaded from Employee Master, Department Master, Vacation Type master, and request data."],
+        ["3", "User clicks [Print] button on an approved request row.", "System generates a PDF of the 'Single Transaction Report' including Request Date, Employee details, Vacation details, Reviewer details, Approval Date/Time, and footer (Print Time, Page Number, Printed By)."],
+        ["4", "User clicks [Export to Excel] button.", "System exports the current search result set to Excel file format."],
+        ["5", "User navigates through pagination controls ([Previous], page numbers, [Next], Records per page).", "System loads appropriate page of results."],
+        ["6", "User clicks [New Search] button.", "System returns user to UC-7 (Search Parameters) screen."]
       ]
     },
     "Business Validation Rules": {
       headers: ["Rule ID", "Description", "Condition", "Message ID"],
       rows: [
-        ["BV-201", "Cancellation must occur before vacation start date.", "currentDate < vacationStartDate", "MSG-201"],
-        ["BV-202", "Only requests in Pending or Approved status can be cancelled.", "status ∈ {Pending, Approved}", "MSG-202"],
-        ["BV-203", "Cancellation request data must match original request.", "cancellationData == originalData", "MSG-203"]
+        ["BV-801", "Print option allowed only for Approved requests.", "Status != Approved", "MSG-801"],
+        ["BV-802", "Pagination controls must be consistent and not exceed total record count.", "Invalid page number or out of range", "MSG-802"]
       ]
     },
     "Exceptions (Error Conditions)": {
       headers: ["ID", "At Step", "Issue", "Resolution"],
       rows: [
-        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message."],
-        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message."],
-        ["EX-3", "Step 6", "Data inconsistency detected.", "System rejects cancellation and notifies HR."]
+        ["EX-1", "Step 3", "User clicks [Print] on a non-approved request.", "System blocks action and shows MSG-801: 'Print option is available only for Approved requests.'"],
+        ["EX-2", "Step 5", "User attempts to navigate to an invalid page.", "System displays MSG-802 and retains current page view."]
       ]
     },
     "Post-Conditions": [
-      "Cancellation request stored with status Pending until reviewed.",
-      "If approved: HR and Manager notified, vacation officially cancelled.",
-      "If rejected: Employee notified, original vacation request remains active."
+      "System displays inquiry results in a structured grid.",
+      "User may print single transaction reports for approved requests.",
+      "User may export results to Excel.",
+      "User may navigate pages or initiate a new search."
     ],
     "Notes": [
-      ["Note", "Maintain link between original vacation requests and their cancellations for data integrity."]
+      ["Note", "The grid layout follows consistent styling with UC-6 Pending Requests screen."],
+      ["Note", "The Single Transaction Report layout (Screen 7) includes all mandatory footer elements."],
+      ["Note", "Export to Excel is intended for bulk reporting, while Print is for individual approved transactions."]
     ]
   }
 };
-
 
 const FIRST_COL_WIDTH = '6%';
 function renderUseCaseTable(data){const c=document.getElementById('useCaseTableContainer');c.innerHTML='';document.getElementById('pageTitle').textContent=data.title;document.getElementById('pageDescription').textContent=data.description;let maxCols=5;Object.values(data.sections).forEach(s=>{if(s.headers)maxCols=Math.max(maxCols,s.headers.length)});const t=document.createElement('table'),tb=document.createElement('tbody');Object.entries(data.sections).forEach(([title,content])=>{const hr=document.createElement('tr'),hc=document.createElement('td');hc.className='category';hc.colSpan=maxCols;hc.textContent=title;hr.appendChild(hc);tb.appendChild(hr);if(Array.isArray(content)){content.forEach(item=>{const tr=document.createElement('tr');if(Array.isArray(item)){const kc=document.createElement('td');kc.textContent=item[0];kc.colSpan=Math.max(1,Math.floor(maxCols*0.1));tr.appendChild(kc);const vc=document.createElement('td');vc.colSpan=maxCols-kc.colSpan;vc.textContent=item[1];tr.appendChild(vc);}else{const nc=document.createElement('td');nc.textContent=content.indexOf(item)+1;nc.colSpan=Math.max(1,Math.floor(maxCols*0.1));tr.appendChild(nc);const vc=document.createElement('td');vc.colSpan=maxCols-nc.colSpan;vc.textContent=item;tr.appendChild(vc);}tb.appendChild(tr);});}else if(content.headers&&content.rows){const hr2=document.createElement('tr'),dist=calculateColumnDistribution(content,maxCols);content.headers.forEach((h,i)=>{const th=document.createElement('th');th.textContent=h;th.colSpan=dist[i]||1;hr2.appendChild(th);});tb.appendChild(hr2);content.rows.forEach(r=>{const tr=document.createElement('tr');r.forEach((cell,i)=>{const td=document.createElement('td');td.textContent=cell;td.colSpan=dist[i]||1;tr.appendChild(td);});if(r.length<content.headers.length){const lc=tr.cells[tr.cells.length-1];let rem=0;for(let i=r.length;i<content.headers.length;i++)rem+=dist[i]||1;lc.colSpan+=rem;}tb.appendChild(tr);});}});const colgroup=document.createElement('colgroup');for(let i=0;i<maxCols;i++){const col=document.createElement('col');col.style.width=i===0?FIRST_COL_WIDTH:`${Math.floor(88/(maxCols-1))}%`;colgroup.appendChild(col);}t.appendChild(colgroup);t.appendChild(tb);c.appendChild(t);}

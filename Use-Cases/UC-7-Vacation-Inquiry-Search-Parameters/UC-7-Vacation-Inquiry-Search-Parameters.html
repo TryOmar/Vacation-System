@@ -54,71 +54,66 @@
 
   <script>
 const useCaseData = {
-  title: "Use Case: Employee Submits Vacation Cancellation Request",
-  description: "Core functionality for employees to cancel a previously submitted vacation request before its start date.",
+  title: "Use Case: Vacation Inquiry (Search Parameters)",
+  description: "Users enter search criteria to perform vacation inquiries. This screen acts as the first part of the inquiry process, leading to a separate Search Results screen.",
   sections: {
     Summary: [
-      ["ID", "UC-2"],
-      ["Name", "Employee Submits Vacation Cancellation Request"],
-      ["Goal", "Allow an employee to cancel a submitted vacation request before its start date."],
-      ["Actors", "Employee"]
+      ["ID", "UC-7"],
+      ["Name", "Vacation Inquiry (Search Parameters)"],
+      ["Goal", "To allow users to input search criteria for vacation inquiries."],
+      ["Actors", "HR, Managers, Authorized Employees"]
     ],
     Triggers: [
-      ["Trigger", "Employee decides they no longer need a previously requested vacation."]
+      ["Trigger", "A user navigates to 'Employee Vacation Inquiry - Search Parameters' screen."]
     ],
     "Pre-Conditions": [
-      "Employee has an existing vacation request in pending or approved status.",
-      "Vacation request has not yet started.",
-      "Employee is a full-time Muslim Saudi employee (system scope).",
-      "Employee is not a trainee (system scope).",
-      "System is accessible via web or mobile app."
+      "User has valid system access.",
+      "Department Master, Employee Master, and Vacation Type data are available.",
+      "System is available and responsive."
     ],
     "Basic Flow (Main Success Scenario)": {
-      headers: ["#", "User Action", "System Response"],
+      headers: ["#", "Actor Action", "System Response"],
       rows: [
-        ["1", "Employee opens the Vacation Cancellation Request screen.", "System displays the cancellation request form."],
-        ["2", "—", "System auto-populates employee details (Name, ID) as read-only."],
-        ["3", "—", "System displays original request details (Type, Dates, Period, Notes, Attachments) in read-only mode."],
-        ["4", "Employee optionally enters a cancellation reason.", "System accepts input."],
-        ["5", "Employee reviews all details.", "System waits for confirmation."],
-        ["6", "Employee clicks Submit Cancellation.", "System validates request and submits for approval with status 'Pending'."],
-        ["7", "Employee clicks Cancel instead.", "System discards input and returns to dashboard."]
-      ]
-    },
-    "Approval Flow (Manager / HR / General Manager)": {
-      headers: ["#", "Reviewer Action", "System Response"],
-      rows: [
-        ["1", "Reviewer opens the Vacation Cancellation Request screen.", "System shows original request and cancellation details."],
-        ["2", "Reviewer optionally enters notes.", "System accepts input."],
-        ["3", "Reviewer clicks Approve or Reject.", "System updates status and records decision."]
+        ["1", "User opens the 'Employee Vacation Inquiry - Search Parameters' screen.", "System displays screen header and all search filters in default (empty) state."],
+        ["2", "User optionally selects From Date and To Date.", "System accepts input and validates proper date formatting."],
+        ["3", "User optionally selects one or more Departments from dropdown.", "System loads Department options from Department Master and accepts multi-selection."],
+        ["4", "User optionally enters Employee Name or ID in text field.", "System cross-references Employee Master data for validation."],
+        ["5", "User optionally selects one or more Vacation Types.", "System loads options (Annual, Sick, All) from Vacation Type master data."],
+        ["6", "User optionally selects one or more Vacation Statuses.", "System loads options (Pending, Approved, Rejected, Cancelled, All) from system status list."],
+        ["7", "User clicks [Generate Report].", "System validates entered filters and navigates to the 'Search Results' screen showing matching vacation requests."],
+        ["8", "User clicks [Reset].", "System clears all filters and reloads the screen in default state."]
       ]
     },
     "Business Validation Rules": {
       headers: ["Rule ID", "Description", "Condition", "Message ID"],
       rows: [
-        ["BV-201", "Cancellation must occur before vacation start date.", "currentDate < vacationStartDate", "MSG-201"],
-        ["BV-202", "Only requests in Pending or Approved status can be cancelled.", "status ∈ {Pending, Approved}", "MSG-202"],
-        ["BV-203", "Cancellation request data must match original request.", "cancellationData == originalData", "MSG-203"]
+        ["BV-701", "From Date and To Date must be valid dates.", "Invalid date format or impossible date entered", "MSG-701"],
+        ["BV-702", "From Date must not be after To Date.", "fromDate > toDate", "MSG-702"],
+        ["BV-703", "Department dropdown options must come from Department Master.", "Invalid department selected", "MSG-703"]
       ]
     },
     "Exceptions (Error Conditions)": {
       headers: ["ID", "At Step", "Issue", "Resolution"],
       rows: [
-        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message."],
-        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message."],
-        ["EX-3", "Step 6", "Data inconsistency detected.", "System rejects cancellation and notifies HR."]
+        ["EX-1", "Step 2", "Invalid date format entered.", "System rejects input and shows error MSG-701."],
+        ["EX-2", "Step 2", "From Date is after To Date.", "System blocks report generation and shows error MSG-702."],
+        ["EX-3", "Step 3", "Department not found in master data.", "System shows error MSG-703 and prevents submission."]
       ]
     },
     "Post-Conditions": [
-      "Cancellation request stored with status Pending until reviewed.",
-      "If approved: HR and Manager notified, vacation officially cancelled.",
-      "If rejected: Employee notified, original vacation request remains active."
+      "System either displays vacation search results based on valid filters or shows appropriate validation errors.",
+      "User may reset and re-enter search filters."
     ],
     "Notes": [
-      ["Note", "Maintain link between original vacation requests and their cancellations for data integrity."]
+      ["Note", "All search parameters are optional — user can generate a report with no filters applied."],
+      ["Note", "The 'Search Results' screen is a separate use case (UC-8)."],
+      ["Note", "Consistent styling with other inquiry/approval screens must be maintained."]
     ]
   }
 };
+
+
+
 
 
 const FIRST_COL_WIDTH = '6%';

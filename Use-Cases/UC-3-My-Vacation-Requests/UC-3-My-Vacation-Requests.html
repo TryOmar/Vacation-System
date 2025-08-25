@@ -54,68 +54,60 @@
 
   <script>
 const useCaseData = {
-  title: "Use Case: Employee Submits Vacation Cancellation Request",
-  description: "Core functionality for employees to cancel a previously submitted vacation request before its start date.",
+  title: "Use Case: My Vacation Requests",
+  description: "Allows employees to view and manage their personal vacation requests, including cancellation when permitted.",
   sections: {
     Summary: [
-      ["ID", "UC-2"],
-      ["Name", "Employee Submits Vacation Cancellation Request"],
-      ["Goal", "Allow an employee to cancel a submitted vacation request before its start date."],
+      ["ID", "UC-3"],
+      ["Name", "My Vacation Requests"],
+      ["Goal", "Provide employees with a centralized screen to view, track, and manage their vacation requests."],
       ["Actors", "Employee"]
     ],
     Triggers: [
-      ["Trigger", "Employee decides they no longer need a previously requested vacation."]
+      ["Trigger", "Employee navigates to the 'My Vacation Requests' screen."]
     ],
     "Pre-Conditions": [
-      "Employee has an existing vacation request in pending or approved status.",
-      "Vacation request has not yet started.",
+      "Employee has access to the vacation management system (web or mobile).",
       "Employee is a full-time Muslim Saudi employee (system scope).",
-      "Employee is not a trainee (system scope).",
-      "System is accessible via web or mobile app."
+      "Employee is not a trainee (system scope)."
     ],
     "Basic Flow (Main Success Scenario)": {
       headers: ["#", "User Action", "System Response"],
       rows: [
-        ["1", "Employee opens the Vacation Cancellation Request screen.", "System displays the cancellation request form."],
-        ["2", "—", "System auto-populates employee details (Name, ID) as read-only."],
-        ["3", "—", "System displays original request details (Type, Dates, Period, Notes, Attachments) in read-only mode."],
-        ["4", "Employee optionally enters a cancellation reason.", "System accepts input."],
-        ["5", "Employee reviews all details.", "System waits for confirmation."],
-        ["6", "Employee clicks Submit Cancellation.", "System validates request and submits for approval with status 'Pending'."],
-        ["7", "Employee clicks Cancel instead.", "System discards input and returns to dashboard."]
-      ]
-    },
-    "Approval Flow (Manager / HR / General Manager)": {
-      headers: ["#", "Reviewer Action", "System Response"],
-      rows: [
-        ["1", "Reviewer opens the Vacation Cancellation Request screen.", "System shows original request and cancellation details."],
-        ["2", "Reviewer optionally enters notes.", "System accepts input."],
-        ["3", "Reviewer clicks Approve or Reject.", "System updates status and records decision."]
+        ["1", "Employee selects 'My Vacation Requests' from the dashboard.", "System displays a summary table of vacation requests."],
+        ["2", "Employee views columns: Vacation Type, Start Date, End Date, Status, and Expand/Collapse control.", "System shows summarized requests in tabular format."],
+        ["3", "Employee clicks the expand icon for a specific request.", "System expands and displays detailed request information."],
+        ["4", "—", "System displays Vacation Request Details (Vacation Type, Dates, Period, Notes) as read-only."],
+        ["5", "—", "System displays Review History table with Reviewer, Notes, Status, and Date."],
+        ["6", "—", "System displays Attachments table with file numbers and file names."],
+        ["7", "Employee views the Actions section with the Cancel button.", "System enables or disables the Cancel button depending on rules."]
       ]
     },
     "Business Validation Rules": {
       headers: ["Rule ID", "Description", "Condition", "Message ID"],
       rows: [
-        ["BV-201", "Cancellation must occur before vacation start date.", "currentDate < vacationStartDate", "MSG-201"],
-        ["BV-202", "Only requests in Pending or Approved status can be cancelled.", "status ∈ {Pending, Approved}", "MSG-202"],
-        ["BV-203", "Cancellation request data must match original request.", "cancellationData == originalData", "MSG-203"]
+        ["BV-301", "Cancel button disabled for approved requests.", "status == Approved", "MSG-301"],
+        ["BV-302", "Cancel button disabled for already cancelled requests.", "status == Cancelled", "MSG-302"],
+        ["BV-303", "Cancel button disabled for requests with passed start dates.", "currentDate >= startDate", "MSG-303"],
+        ["BV-304", "All request details displayed in detailed view are read-only.", "fieldEditable == false", "MSG-304"]
       ]
     },
     "Exceptions (Error Conditions)": {
       headers: ["ID", "At Step", "Issue", "Resolution"],
       rows: [
-        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message."],
-        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message."],
-        ["EX-3", "Step 6", "Data inconsistency detected.", "System rejects cancellation and notifies HR."]
+        ["EX-1", "Step 3", "Employee attempts to expand request but data is unavailable.", "System shows error message 'Request details not found.'"],
+        ["EX-2", "Step 7", "Employee clicks Cancel on a disabled button.", "System ignores action and provides tooltip explaining why."],
+        ["EX-3", "Step 7", "System fails to load attachments.", "System shows warning 'Attachments unavailable' but continues displaying other details."]
       ]
     },
     "Post-Conditions": [
-      "Cancellation request stored with status Pending until reviewed.",
-      "If approved: HR and Manager notified, vacation officially cancelled.",
-      "If rejected: Employee notified, original vacation request remains active."
+      "Employee has visibility into all their vacation requests in summary and detailed view.",
+      "Employee can only cancel requests when rules allow.",
+      "System maintains audit trail of all actions and reviews."
     ],
     "Notes": [
-      ["Note", "Maintain link between original vacation requests and their cancellations for data integrity."]
+      ["Note", "Interactive features include expandable/collapsible details and conditional cancel button enablement."],
+      ["Note", "Maintain strict data integrity by keeping all detailed fields read-only."]
     ]
   }
 };

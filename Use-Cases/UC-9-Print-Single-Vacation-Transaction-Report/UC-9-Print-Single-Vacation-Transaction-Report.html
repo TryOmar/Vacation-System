@@ -54,68 +54,55 @@
 
   <script>
 const useCaseData = {
-  title: "Use Case: Employee Submits Vacation Cancellation Request",
-  description: "Core functionality for employees to cancel a previously submitted vacation request before its start date.",
+  title: "Use Case: Print Single Vacation Transaction Report (PDF)",
+  description: "Generates a detailed PDF for an individual vacation request. Acts as an official, printable record of a single approved vacation transaction.",
   sections: {
     Summary: [
-      ["ID", "UC-2"],
-      ["Name", "Employee Submits Vacation Cancellation Request"],
-      ["Goal", "Allow an employee to cancel a submitted vacation request before its start date."],
-      ["Actors", "Employee"]
+      ["ID", "UC-9"],
+      ["Name", "Print Single Vacation Transaction Report (PDF)"],
+      ["Goal", "To generate a PDF with complete details of an approved vacation request."],
+      ["Actors", "HR, Managers, Authorized Employees"]
     ],
     Triggers: [
-      ["Trigger", "Employee decides they no longer need a previously requested vacation."]
+      ["Trigger", "User clicks the [Print] button from UC-8 (Vacation Inquiry – Search Results) on an Approved request."]
     ],
     "Pre-Conditions": [
-      "Employee has an existing vacation request in pending or approved status.",
-      "Vacation request has not yet started.",
-      "Employee is a full-time Muslim Saudi employee (system scope).",
-      "Employee is not a trainee (system scope).",
-      "System is accessible via web or mobile app."
+      "User has valid system access.",
+      "Vacation request status must be Approved.",
+      "All request data and approval logs are available in the system."
     ],
     "Basic Flow (Main Success Scenario)": {
-      headers: ["#", "User Action", "System Response"],
+      headers: ["#", "Actor Action", "System Response"],
       rows: [
-        ["1", "Employee opens the Vacation Cancellation Request screen.", "System displays the cancellation request form."],
-        ["2", "—", "System auto-populates employee details (Name, ID) as read-only."],
-        ["3", "—", "System displays original request details (Type, Dates, Period, Notes, Attachments) in read-only mode."],
-        ["4", "Employee optionally enters a cancellation reason.", "System accepts input."],
-        ["5", "Employee reviews all details.", "System waits for confirmation."],
-        ["6", "Employee clicks Submit Cancellation.", "System validates request and submits for approval with status 'Pending'."],
-        ["7", "Employee clicks Cancel instead.", "System discards input and returns to dashboard."]
-      ]
-    },
-    "Approval Flow (Manager / HR / General Manager)": {
-      headers: ["#", "Reviewer Action", "System Response"],
-      rows: [
-        ["1", "Reviewer opens the Vacation Cancellation Request screen.", "System shows original request and cancellation details."],
-        ["2", "Reviewer optionally enters notes.", "System accepts input."],
-        ["3", "Reviewer clicks Approve or Reject.", "System updates status and records decision."]
+        ["1", "User clicks the [Print] button in UC-8 for an approved request.", "System validates request status (must be Approved)."],
+        ["2", "User waits while PDF is generated.", "System fetches request, employee, vacation, and approval details."],
+        ["3", "System generates PDF including Request Information, Employee Information, Vacation Details, Approval Information, and Standard Footer.", "System ensures all mandatory fields are populated."],
+        ["4", "PDF is displayed or downloaded.", "System ensures correct footer elements (Print Time, Page Number, Printed By) are included on each page."]
       ]
     },
     "Business Validation Rules": {
       headers: ["Rule ID", "Description", "Condition", "Message ID"],
       rows: [
-        ["BV-201", "Cancellation must occur before vacation start date.", "currentDate < vacationStartDate", "MSG-201"],
-        ["BV-202", "Only requests in Pending or Approved status can be cancelled.", "status ∈ {Pending, Approved}", "MSG-202"],
-        ["BV-203", "Cancellation request data must match original request.", "cancellationData == originalData", "MSG-203"]
+        ["BV-901", "Report can only be generated for Approved vacation requests.", "If status != Approved", "MSG-801"],
+        ["BV-902", "All footer elements must be included in every page of the PDF.", "Missing footer info", "MSG-902"]
       ]
     },
     "Exceptions (Error Conditions)": {
       headers: ["ID", "At Step", "Issue", "Resolution"],
       rows: [
-        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message."],
-        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message."],
-        ["EX-3", "Step 6", "Data inconsistency detected.", "System rejects cancellation and notifies HR."]
+        ["EX-1", "Step 1", "User clicks Print on non-approved request.", "System blocks action and shows MSG-801: 'Print option is available only for Approved requests.'"],
+        ["EX-2", "Step 3", "PDF generation error due to missing mandatory data.", "System shows MSG-902: 'Unable to generate report – required data missing.'"]
       ]
     },
     "Post-Conditions": [
-      "Cancellation request stored with status Pending until reviewed.",
-      "If approved: HR and Manager notified, vacation officially cancelled.",
-      "If rejected: Employee notified, original vacation request remains active."
+      "System generates a single vacation transaction PDF.",
+      "PDF includes Request Info, Employee Info, Vacation Details, Approval Info, and Footer.",
+      "PDF is available for download or direct print."
     ],
     "Notes": [
-      ["Note", "Maintain link between original vacation requests and their cancellations for data integrity."]
+      ["Note", "The PDF layout corresponds to 'Print Layout - Single Transaction Report' as referenced in UC-8."],
+      ["Note", "Attachments are included as file links when available; mandatory for Sick leave requests."],
+      ["Note", "Approval section must display all approvers with job titles and approval timestamps."]
     ]
   }
 };

@@ -54,68 +54,62 @@
 
   <script>
 const useCaseData = {
-  title: "Use Case: Employee Submits Vacation Cancellation Request",
-  description: "Core functionality for employees to cancel a previously submitted vacation request before its start date.",
+  title: "Use Case: Review Vacation Request (Approval / Rejection)",
+  description: "Managers, HR, and the General Manager review submitted vacation requests and decide to approve or reject them, providing reasons for their decisions.",
   sections: {
     Summary: [
-      ["ID", "UC-2"],
-      ["Name", "Employee Submits Vacation Cancellation Request"],
-      ["Goal", "Allow an employee to cancel a submitted vacation request before its start date."],
-      ["Actors", "Employee"]
+      ["ID", "UC-4"],
+      ["Name", "Review Vacation Request (Approval / Rejection)"],
+      ["Goal", "Enable managers, HR, and the General Manager to review, approve, or reject employee vacation requests."],
+      ["Actors", "Direct Manager, HR, General Manager"]
     ],
     Triggers: [
-      ["Trigger", "Employee decides they no longer need a previously requested vacation."]
+      ["Trigger", "A vacation request is submitted by an employee and routed for review."]
     ],
     "Pre-Conditions": [
-      "Employee has an existing vacation request in pending or approved status.",
-      "Vacation request has not yet started.",
-      "Employee is a full-time Muslim Saudi employee (system scope).",
-      "Employee is not a trainee (system scope).",
-      "System is accessible via web or mobile app."
+      "Employee has submitted a valid vacation request.",
+      "System has routed the request to the current reviewer (Manager, HR, or General Manager).",
+      "Reviewer has access to the vacation management system (web or mobile)."
     ],
     "Basic Flow (Main Success Scenario)": {
-      headers: ["#", "User Action", "System Response"],
-      rows: [
-        ["1", "Employee opens the Vacation Cancellation Request screen.", "System displays the cancellation request form."],
-        ["2", "—", "System auto-populates employee details (Name, ID) as read-only."],
-        ["3", "—", "System displays original request details (Type, Dates, Period, Notes, Attachments) in read-only mode."],
-        ["4", "Employee optionally enters a cancellation reason.", "System accepts input."],
-        ["5", "Employee reviews all details.", "System waits for confirmation."],
-        ["6", "Employee clicks Submit Cancellation.", "System validates request and submits for approval with status 'Pending'."],
-        ["7", "Employee clicks Cancel instead.", "System discards input and returns to dashboard."]
-      ]
-    },
-    "Approval Flow (Manager / HR / General Manager)": {
       headers: ["#", "Reviewer Action", "System Response"],
       rows: [
-        ["1", "Reviewer opens the Vacation Cancellation Request screen.", "System shows original request and cancellation details."],
-        ["2", "Reviewer optionally enters notes.", "System accepts input."],
-        ["3", "Reviewer clicks Approve or Reject.", "System updates status and records decision."]
+        ["1", "Reviewer opens the vacation request from their dashboard or notification link.", "System displays request details in read-only mode."],
+        ["2", "—", "System shows Employee Name, Employee ID, Department, Vacation Type, Start Date, End Date, Period, Notes, and Attachments (if any)."],
+        ["3", "Reviewer enters a mandatory reason in the 'Reason for Accept/Reject' textarea.", "System validates that input is provided."],
+        ["4", "Reviewer clicks 'Approve'.", "System records approval, updates status, and routes to the next level (HR or General Manager)."],
+        ["5", "Reviewer clicks 'Reject'.", "System records rejection, updates status to 'Rejected', and notifies the employee immediately."],
+        ["6", "General Manager approves final request.", "System finalizes approval and updates the employee’s vacation balance."]
       ]
     },
     "Business Validation Rules": {
       headers: ["Rule ID", "Description", "Condition", "Message ID"],
       rows: [
-        ["BV-201", "Cancellation must occur before vacation start date.", "currentDate < vacationStartDate", "MSG-201"],
-        ["BV-202", "Only requests in Pending or Approved status can be cancelled.", "status ∈ {Pending, Approved}", "MSG-202"],
-        ["BV-203", "Cancellation request data must match original request.", "cancellationData == originalData", "MSG-203"]
+        ["BV-401", "Reason for decision is mandatory for all reviewers.", "reason != null && reason.trim() != ''", "MSG-401"],
+        ["BV-402", "Attachments are mandatory for sick leave requests.", "vacationType == 'Sick' → attachments.length > 0", "MSG-402"],
+        ["BV-403", "Vacation balance is updated only after General Manager approval.", "approver == GeneralManager && decision == 'Approve'", "MSG-403"],
+        ["BV-404", "System auto-escalates pending requests after 2 days.", "approvalPending > 2 days", "MSG-404"]
       ]
     },
     "Exceptions (Error Conditions)": {
       headers: ["ID", "At Step", "Issue", "Resolution"],
       rows: [
-        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message."],
-        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message."],
-        ["EX-3", "Step 6", "Data inconsistency detected.", "System rejects cancellation and notifies HR."]
+        ["EX-1", "Step 3", "Reviewer tries to approve/reject without entering a reason.", "System blocks action and displays error message MSG-401."],
+        ["EX-2", "Step 2", "Sick leave request submitted without attachments.", "System blocks progression and prompts employee to upload mandatory attachments."],
+        ["EX-3", "Step 4", "Approval delayed more than 2 days.", "System auto-escalates to the next reviewer and sends notification."]
       ]
     },
     "Post-Conditions": [
-      "Cancellation request stored with status Pending until reviewed.",
-      "If approved: HR and Manager notified, vacation officially cancelled.",
-      "If rejected: Employee notified, original vacation request remains active."
+      "Request status updated (Approved, Rejected, or Escalated).",
+      "Employee notified of decision outcome.",
+      "Vacation balance updated upon final approval by the General Manager.",
+      "System logs reviewer decision, reason, and timestamp for audit purposes."
     ],
     "Notes": [
-      ["Note", "Maintain link between original vacation requests and their cancellations for data integrity."]
+      ["Note", "System supports review and decision on both web and mobile platforms."],
+      ["Note", "Notifications contain only the header with a link to the system for full details."],
+      ["Note", "All request details are displayed in read-only mode to reviewers."],
+      ["Note", "Maintain audit trail of all review actions including reasons and timestamps."]
     ]
   }
 };

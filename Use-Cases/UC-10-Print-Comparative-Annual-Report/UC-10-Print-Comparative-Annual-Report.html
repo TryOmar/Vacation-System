@@ -53,72 +53,63 @@
   <div id="useCaseTableContainer"></div>
 
   <script>
+
+
 const useCaseData = {
-  title: "Use Case: Employee Submits Vacation Cancellation Request",
-  description: "Core functionality for employees to cancel a previously submitted vacation request before its start date.",
+  title: "Use Case: Print Comparative Annual Report (PDF)",
+  description: "Generates an annual comparative PDF grouped by department, with an optional flag to include employee-level details.",
   sections: {
     Summary: [
-      ["ID", "UC-2"],
-      ["Name", "Employee Submits Vacation Cancellation Request"],
-      ["Goal", "Allow an employee to cancel a submitted vacation request before its start date."],
-      ["Actors", "Employee"]
+      ["ID", "UC-10"],
+      ["Name", "Print Comparative Annual Report (PDF)"],
+      ["Goal", "To generate an annual comparative vacation report by department, optionally including employee details."],
+      ["Actors", "HR, Managers, General Management"]
     ],
     Triggers: [
-      ["Trigger", "Employee decides they no longer need a previously requested vacation."]
+      ["Trigger", "User defines filters (Department, Start Date, End Date, Details flag) and clicks [Print Comparative Report] button."]
     ],
     "Pre-Conditions": [
-      "Employee has an existing vacation request in pending or approved status.",
-      "Vacation request has not yet started.",
-      "Employee is a full-time Muslim Saudi employee (system scope).",
-      "Employee is not a trainee (system scope).",
-      "System is accessible via web or mobile app."
+      "User has valid access rights to reporting functionality.",
+      "Department and employee vacation data must exist in the system."
     ],
     "Basic Flow (Main Success Scenario)": {
-      headers: ["#", "User Action", "System Response"],
+      headers: ["#", "Actor Action", "System Response"],
       rows: [
-        ["1", "Employee opens the Vacation Cancellation Request screen.", "System displays the cancellation request form."],
-        ["2", "—", "System auto-populates employee details (Name, ID) as read-only."],
-        ["3", "—", "System displays original request details (Type, Dates, Period, Notes, Attachments) in read-only mode."],
-        ["4", "Employee optionally enters a cancellation reason.", "System accepts input."],
-        ["5", "Employee reviews all details.", "System waits for confirmation."],
-        ["6", "Employee clicks Submit Cancellation.", "System validates request and submits for approval with status 'Pending'."],
-        ["7", "Employee clicks Cancel instead.", "System discards input and returns to dashboard."]
-      ]
-    },
-    "Approval Flow (Manager / HR / General Manager)": {
-      headers: ["#", "Reviewer Action", "System Response"],
-      rows: [
-        ["1", "Reviewer opens the Vacation Cancellation Request screen.", "System shows original request and cancellation details."],
-        ["2", "Reviewer optionally enters notes.", "System accepts input."],
-        ["3", "Reviewer clicks Approve or Reject.", "System updates status and records decision."]
+        ["1", "User opens the Comparative Annual Report screen (print layout).", "System displays report filters: Department(s), Date Range, Details flag."],
+        ["2", "User selects Department(s) and optional filters (Start Date, End Date, Details flag).", "System accepts entered filter inputs (no validation required for Start vs End date)."],
+        ["3", "User clicks [Print Comparative Report].", "System retrieves aggregated data grouped by Department."],
+        ["4", "System generates a PDF including Department Name, Total Annual Vacation Days, Remaining Balance.", "If Details flag = true, employee names are listed under each Department."],
+        ["5", "System appends standard footer info on each page (Print Time, Page Number, Printed By).", "System outputs PDF for user to download/print."]
       ]
     },
     "Business Validation Rules": {
       headers: ["Rule ID", "Description", "Condition", "Message ID"],
       rows: [
-        ["BV-201", "Cancellation must occur before vacation start date.", "currentDate < vacationStartDate", "MSG-201"],
-        ["BV-202", "Only requests in Pending or Approved status can be cancelled.", "status ∈ {Pending, Approved}", "MSG-202"],
-        ["BV-203", "Cancellation request data must match original request.", "cancellationData == originalData", "MSG-203"]
+        ["BV-1002", "At least one Department must be selected or 'All Departments' chosen.", "If Department field is empty", "MSG-1002"],
+        ["BV-1003", "Footer elements must appear on every page of the PDF.", "If footer missing", "MSG-902"]
       ]
     },
     "Exceptions (Error Conditions)": {
       headers: ["ID", "At Step", "Issue", "Resolution"],
       rows: [
-        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message."],
-        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message."],
-        ["EX-3", "Step 6", "Data inconsistency detected.", "System rejects cancellation and notifies HR."]
+        ["EX-1", "Step 2", "No Department selected.", "System blocks action and shows MSG-1002: 'At least one Department must be selected.'"],
+        ["EX-2", "Step 4", "Report generation fails due to missing/invalid data.", "System shows MSG-902: 'Unable to generate report – required data missing.'"]
       ]
     },
     "Post-Conditions": [
-      "Cancellation request stored with status Pending until reviewed.",
-      "If approved: HR and Manager notified, vacation officially cancelled.",
-      "If rejected: Employee notified, original vacation request remains active."
+      "System generates the Comparative Annual Report PDF.",
+      "Report contains department totals and balances, with optional employee details.",
+      "Standard footer is included on all pages."
     ],
     "Notes": [
-      ["Note", "Maintain link between original vacation requests and their cancellations for data integrity."]
+      ["Note", "The report period is derived from the entered Start Date and End Date; typically the calendar year."],
+      ["Note", "If Start Date is after End Date, the system does not raise a validation error; it simply returns an empty result set."],
+      ["Note", "Employee details appear only when the 'Details flag' is checked by the user."],
+      ["Note", "The data dictionary for this report defines fields Department, Total Days, Balance, Employee Name (optional), Period, and Footer Info."]
     ]
   }
 };
+
 
 
 const FIRST_COL_WIDTH = '6%';

@@ -54,71 +54,61 @@
 
   <script>
 const useCaseData = {
-  title: "Use Case: Employee Submits Vacation Cancellation Request",
-  description: "Core functionality for employees to cancel a previously submitted vacation request before its start date.",
+  title: "Use Case: Pending Vacation Requests",
+  description: "Managers and HR view and access all vacation requests awaiting review and approval. From this screen, they can navigate to detailed review and take necessary actions.",
   sections: {
     Summary: [
-      ["ID", "UC-2"],
-      ["Name", "Employee Submits Vacation Cancellation Request"],
-      ["Goal", "Allow an employee to cancel a submitted vacation request before its start date."],
-      ["Actors", "Employee"]
+      ["ID", "UC-6"],
+      ["Name", "Pending Vacation Requests"],
+      ["Goal", "To view and manage all vacation requests currently awaiting review and approval."],
+      ["Actors", "Manager, HR"]
     ],
     Triggers: [
-      ["Trigger", "Employee decides they no longer need a previously requested vacation."]
+      ["Trigger", "A manager or HR user selects the 'Pending Vacation Requests' option from the system menu/dashboard."]
     ],
     "Pre-Conditions": [
-      "Employee has an existing vacation request in pending or approved status.",
-      "Vacation request has not yet started.",
-      "Employee is a full-time Muslim Saudi employee (system scope).",
-      "Employee is not a trainee (system scope).",
-      "System is accessible via web or mobile app."
+      "There are vacation requests in Pending status.",
+      "Reviewer has valid access rights (Manager or HR).",
+      "System is available and responsive."
     ],
     "Basic Flow (Main Success Scenario)": {
-      headers: ["#", "User Action", "System Response"],
+      headers: ["#", "Actor Action", "System Response"],
       rows: [
-        ["1", "Employee opens the Vacation Cancellation Request screen.", "System displays the cancellation request form."],
-        ["2", "—", "System auto-populates employee details (Name, ID) as read-only."],
-        ["3", "—", "System displays original request details (Type, Dates, Period, Notes, Attachments) in read-only mode."],
-        ["4", "Employee optionally enters a cancellation reason.", "System accepts input."],
-        ["5", "Employee reviews all details.", "System waits for confirmation."],
-        ["6", "Employee clicks Submit Cancellation.", "System validates request and submits for approval with status 'Pending'."],
-        ["7", "Employee clicks Cancel instead.", "System discards input and returns to dashboard."]
-      ]
-    },
-    "Approval Flow (Manager / HR / General Manager)": {
-      headers: ["#", "Reviewer Action", "System Response"],
-      rows: [
-        ["1", "Reviewer opens the Vacation Cancellation Request screen.", "System shows original request and cancellation details."],
-        ["2", "Reviewer optionally enters notes.", "System accepts input."],
-        ["3", "Reviewer clicks Approve or Reject.", "System updates status and records decision."]
+        ["1", "Reviewer opens the Pending Vacation Requests screen.", "System displays the header 'Pending Vacation Requests (Tasks)' and a grid layout of all pending requests requiring action."],
+        ["2", "—", "System shows grid columns: Employee ID, Name, Department, Vacation Type, Start Date, End Date, Action."],
+        ["3", "Reviewer locates a specific request in the list.", "System highlights the request row and shows a [View Request] button for action."],
+        ["4", "Reviewer clicks [View Request].", "System opens the 'Review Leave Request Screen' with full request details."],
+        ["5", "On the Review screen, reviewer decides: Accept or Reject.", "System validates input, records decision, updates status, and notifies the employee and stakeholders."]
       ]
     },
     "Business Validation Rules": {
       headers: ["Rule ID", "Description", "Condition", "Message ID"],
       rows: [
-        ["BV-201", "Cancellation must occur before vacation start date.", "currentDate < vacationStartDate", "MSG-201"],
-        ["BV-202", "Only requests in Pending or Approved status can be cancelled.", "status ∈ {Pending, Approved}", "MSG-202"],
-        ["BV-203", "Cancellation request data must match original request.", "cancellationData == originalData", "MSG-203"]
+        ["BV-601", "Only pending requests appear on this screen.", "status == 'Pending'", "MSG-601"],
+        ["BV-602", "Action column always provides [View Request] button.", "row ∈ PendingRequests", "MSG-602"]
       ]
     },
     "Exceptions (Error Conditions)": {
       headers: ["ID", "At Step", "Issue", "Resolution"],
       rows: [
-        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message."],
-        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message."],
-        ["EX-3", "Step 6", "Data inconsistency detected.", "System rejects cancellation and notifies HR."]
+        ["EX-1", "Step 1", "No pending requests exist.", "System displays 'No Pending Requests' message and disables grid."],
+        ["EX-2", "Step 4", "Request no longer pending when opened.", "System blocks action and shows error MSG-601."]
       ]
     },
     "Post-Conditions": [
-      "Cancellation request stored with status Pending until reviewed.",
-      "If approved: HR and Manager notified, vacation officially cancelled.",
-      "If rejected: Employee notified, original vacation request remains active."
+      "Reviewer can navigate to detailed review for any pending request.",
+      "Decisions made in Review screen trigger notifications and workflow updates.",
+      "Vacation balance updates after GM final approval."
     ],
     "Notes": [
-      ["Note", "Maintain link between original vacation requests and their cancellations for data integrity."]
+      ["Note", "This screen is for query and navigation only; decisions are made in the Review screen."],
+      ["Note", "Auto-escalation applies: requests not acted upon within 2 days escalate to the next level."],
+      ["Note", "Vacation Reporting Dashboard aggregates pending requests per department for analysis."]
     ]
   }
 };
+
+
 
 
 const FIRST_COL_WIDTH = '6%';
