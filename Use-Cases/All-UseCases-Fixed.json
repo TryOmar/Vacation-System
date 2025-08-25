@@ -115,8 +115,8 @@
     "Exceptions (Error Conditions)": {
 "headers": ["ID", "At Step", "Issue", "Resolution"],
 "rows": [
-        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message."],
-        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message."],
+        ["EX-1", "Step 6", "Cancellation attempted after start date.", "System blocks submission and shows error message MSG-204."],
+        ["EX-2", "Step 6", "Request not in Pending or Approved status.", "System prevents cancellation and shows error message MSG-205."],
         ["EX-3", "Step 6", "Data inconsistency detected.", "System rejects cancellation and notifies HR."]
       ]
     },
@@ -173,7 +173,7 @@
     "Exceptions (Error Conditions)": {
 "headers": ["ID", "At Step", "Issue", "Resolution"],
 "rows": [
-        ["EX-1", "Step 3", "Employee attempts to expand request but data is unavailable.", "System shows error message 'Request details not found.'"],
+        ["EX-1", "Step 3", "Employee attempts to expand request but data is unavailable.", "System shows error message MSG-304."],
         ["EX-2", "Step 7", "Employee clicks Cancel on a disabled button.", "System ignores action and provides tooltip explaining why."],
         ["EX-3", "Step 7", "System fails to load attachments.", "System shows warning 'Attachments unavailable' but continues displaying other details."]
       ]
@@ -349,7 +349,7 @@
     "Exceptions (Error Conditions)": {
 "headers": ["ID", "At Step", "Issue", "Resolution"],
 "rows": [
-        ["EX-1", "Step 1", "No pending requests exist.", "System displays 'No Pending Requests' message and disables grid."],
+        ["EX-1", "Step 1", "No pending requests exist.", "System displays message MSG-601 and disables grid."],
         ["EX-2", "Step 4", "Request no longer pending when opened.", "System blocks action and shows error MSG-601."]
       ]
     },
@@ -464,7 +464,7 @@
     "Exceptions (Error Conditions)": {
 "headers": ["ID", "At Step", "Issue", "Resolution"],
 "rows": [
-        ["EX-1", "Step 3", "User clicks [Print] on a non-approved request.", "System blocks action and shows MSG-801: 'Print option is available only for Approved requests.'"],
+        ["EX-1", "Step 3", "User clicks [Print] on a non-approved request.", "System blocks action and shows MSG-801."],
         ["EX-2", "Step 5", "User attempts to navigate to an invalid page.", "System displays MSG-802 and retains current page view."]
       ]
     },
@@ -519,8 +519,8 @@
     "Exceptions (Error Conditions)": {
 "headers": ["ID", "At Step", "Issue", "Resolution"],
 "rows": [
-        ["EX-1", "Step 1", "User clicks Print on non-approved request.", "System blocks action and shows MSG-801: 'Print option is available only for Approved requests.'"],
-        ["EX-2", "Step 3", "PDF generation error due to missing mandatory data.", "System shows MSG-902: 'Unable to generate report â€“ required data missing.'"]
+        ["EX-1", "Step 1", "User clicks Print on non-approved request.", "System blocks action and shows MSG-801."],
+        ["EX-2", "Step 3", "PDF generation error due to missing mandatory data.", "System shows MSG-902."]
       ]
     },
     "Post-Conditions": [
@@ -573,8 +573,8 @@
     "Exceptions (Error Conditions)": {
 "headers": ["ID", "At Step", "Issue", "Resolution"],
 "rows": [
-        ["EX-1", "Step 2", "No Department selected.", "System blocks action and shows MSG-1002: 'At least one Department must be selected.'"],
-        ["EX-2", "Step 4", "Report generation fails due to missing/invalid data.", "System shows MSG-902: 'Unable to generate report â€“ required data missing.'"]
+        ["EX-1", "Step 2", "No Department selected.", "System blocks action and shows MSG-1002."],
+        ["EX-2", "Step 4", "Report generation fails due to missing/invalid data.", "System shows MSG-902."]
       ]
     },
     "Post-Conditions": [
@@ -643,8 +643,8 @@
     "Exceptions (Error Conditions)": {
 "headers": ["ID", "At Step", "Issue", "Resolution"],
 "rows": [
-        ["EX-1", "Step 1", "No notifications available.", "System displays an empty state message: 'No new notifications.'"],
-        ["EX-2", "Step 3", "User clicks [View] but underlying request has been deleted or is inaccessible.", "System shows message: 'Request not available.'"]
+        ["EX-1", "Step 1", "No notifications available.", "System displays an empty state message: MSG-1101."],
+        ["EX-2", "Step 3", "User clicks [View] but underlying request has been deleted or is inaccessible.", "System shows message: MSG-1102."]
       ]
     },
     "Post-Conditions": [
@@ -708,8 +708,8 @@
     "Exceptions (Error Conditions)": {
 "headers": ["ID", "At Step", "Issue", "Resolution"],
 "rows": [
-        ["EX-1", "Step 1", "Balance calculation fails due to missing Employee Master Data fields.", "System logs error and displays message: 'Unable to update balance â€“ employee data incomplete.'"],
-        ["EX-2", "Step 2", "Employee is ineligible (trainee or outside Saudi regulation scope).", "System blocks request and shows message: 'Vacation request not permitted for this employee type.'"],
+        ["EX-1", "Step 1", "Balance calculation fails due to missing Employee Master Data fields.", "System logs error and displays message: MSG-1201."],
+        ["EX-2", "Step 2", "Employee is ineligible (trainee or outside Saudi regulation scope).", "System blocks request and shows message: MSG-1202."],
         ["EX-3", "Step 3", "User attempts to manually override balance.", "System prevents override and enforces automation rule."]
       ]
     },
