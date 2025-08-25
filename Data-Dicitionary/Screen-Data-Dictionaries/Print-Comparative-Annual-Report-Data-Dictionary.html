@@ -69,7 +69,7 @@ const dataDictionaryFields=[
   {fieldName:"Total Days",dataType:"Number Display",isRequired:"Yes",dataSource:"System Calculation",businessRules:"Sum of all employees' vacation days",defaultValue:"Auto-calculated",isReadOnly:true},
   {fieldName:"Details Flag",dataType:"Checkbox",isRequired:"No",dataSource:"User Input",businessRules:"If checked, expand employees under department",defaultValue:"Unchecked",isReadOnly:false},
   {fieldName:"Employee Name",dataType:"Text Display (Conditional)",isRequired:"No",dataSource:"Employee Master",businessRules:"Shown only if Details checked",defaultValue:"Auto-filled",isReadOnly:true},
-  {fieldName:"Period",dataType:"Text Display",isRequired:"Yes",dataSource:"System",businessRules:"Report year",defaultValue:"Auto-filled",isReadOnly:true},
+  {fieldName:"Report Year",dataType:"Text Display",isRequired:"Yes",dataSource:"System",businessRules:"Report year (e.g., 2025)",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Footer Info",dataType:"Text Display",isRequired:"Yes",dataSource:"System",businessRules:"Print time, page #, user who printed",defaultValue:"Auto-filled",isReadOnly:true}
 ];
 function getRequirementClass(r){switch(r.toLowerCase()){case"yes":return"required";case"no":return"optional";case"conditional":return"conditional";default:return"optional"}}

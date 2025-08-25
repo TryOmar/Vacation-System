@@ -71,7 +71,7 @@ const dataDictionaryFields=[
   {fieldName:"Vacation Type",dataType:"Text Display",isRequired:"Yes",dataSource:"Vacation Types",businessRules:"Included",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Start Date",dataType:"Text Display",isRequired:"Yes",dataSource:"Employee Request",businessRules:"Date type: Gregorian or Hijri (set to Gregorian); Start Date < End Date validated at request entry",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"End Date",dataType:"Text Display",isRequired:"Yes",dataSource:"Employee Request",businessRules:"Date type: Gregorian or Hijri (set to Gregorian)",defaultValue:"Auto-filled",isReadOnly:true},
-  {fieldName:"Period",dataType:"Text Display",isRequired:"Yes",dataSource:"System Calculation",businessRules:"Included",defaultValue:"Auto-filled",isReadOnly:true},
+  {fieldName:"Duration",dataType:"Text Display",isRequired:"Yes",dataSource:"System Calculation",businessRules:"End Date - Start Date + 1",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Notes",dataType:"Text Display",isRequired:"No",dataSource:"Employee Request",businessRules:"Optional",defaultValue:"Blank",isReadOnly:true},
   {fieldName:"Attachments",dataType:"File Link",isRequired:"Conditional",dataSource:"Employee Request",businessRules:"Required if Sick leave",defaultValue:"Auto-filled",isReadOnly:true},
   {fieldName:"Approvals",dataType:"Text List",isRequired:"Yes",dataSource:"System Log",businessRules:"Names & job titles of approvers",defaultValue:"Auto-filled",isReadOnly:true},
