@@ -30,7 +30,7 @@ tr:nth-child(even) td{background:#fafafa}
 </head>
 <body>
 
-<h1 id="pageTitle">Use Case Messages</h1>
+<h1 id="pageTitle">Messages</h1>
 <p id="pageDescription">Centralized catalog of user/system messages with unique IDs for cross-referencing in use cases</p>
 
 <div class="export-buttons">
@@ -47,7 +47,7 @@ tr:nth-child(even) td{background:#fafafa}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
 <script>
-const pageConfig={title:"Use Case Messages",description:"Centralized catalog of user/system messages with unique IDs for cross-referencing in use cases",fileName:"Use_Case_Messages"};
+const pageConfig={title:"Messages",description:"Centralized catalog of user/system messages with unique IDs for cross-referencing in use cases",fileName:"Messages"};
 const messagesColumns=[{header:"Message ID",key:"id"},{header:"Name",key:"name"},{header:"Audience",key:"audience"},{header:"Category",key:"category"},{header:"Trigger/Context",key:"context"},{header:"Text",key:"text"},{header:"Related Use Case IDs",key:"useCases"},{header:"Notes",key:"notes"}];
 const messages = [
   {id:"MSG-101",name:"End Date Validation",audience:"User",category:"Error",context:"Date validation",text:"End date must be strictly after start date.",useCases:"UC-1",notes:"Basic date validation rule"},
