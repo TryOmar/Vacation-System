@@ -8,7 +8,7 @@ const { exec } = require("child_process");
 const folderConfigs = {
   "Use-Cases": {
     pdf: { format: "letter", landscape: false, printBackground: true, displayHeaderFooter: false, scale: 0.7, margin: { top: "0in", bottom: "0in", left: "0.5in", right: "0.5in" } },
-    pngDpi: 300, cropImages: true
+    pngDpi: 600, cropImages: true
   },
   "Data-Dictionary": {
     pdf: { format: "letter", landscape: false, printBackground: true, displayHeaderFooter: false, scale: 0.8, margin: { top: "0.5in", bottom: "0in", left: "0.5in", right: "0.5in" } },
