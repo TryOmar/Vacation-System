@@ -1,0 +1,101 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Vacation Management System Context" id="VMS-Context">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Central System -->
+        <mxCell id="VMS" value="Vacation Management System" style="shape=ellipse;fillColor=#5A5A5A;fontColor=#FFFFFF;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="400" width="240" height="120" as="geometry"/>
+        </mxCell>
+        
+        <!-- Actors -->
+        <mxCell id="Employee" value="Employee" style="shape=rectangle;fillColor=#3A3A3A;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="150" y="400" width="160" height="80" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="DirectManager" value="Direct Manager" style="shape=rectangle;fillColor=#3A3A3A;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="400" width="160" height="80" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="HR" value="HR" style="shape=rectangle;fillColor=#3A3A3A;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="400" y="150" width="160" height="80" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="GeneralManager" value="General Manager" style="shape=rectangle;fillColor=#3A3A3A;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="800" y="150" width="160" height="80" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="ExtHRSystem" value="External HR System" style="shape=rectangle;fillColor=#3A3A3A;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="400" y="650" width="160" height="80" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="ExtDeptMaster" value="External Department Master Data" style="shape=rectangle;fillColor=#3A3A3A;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="650" y="650" width="180" height="80" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="ExtVacationTypes" value="External Vacation Types Master Data" style="shape=rectangle;fillColor=#3A3A3A;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="900" y="650" width="220" height="80" as="geometry"/>
+        </mxCell>
+        
+        <!-- Data flows (edges) -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#AAAAAA;fontColor=#FFFFFF;" edge="1" source="Employee" target="VMS" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxCell value="Vacation/Cancellation Request, Search, Actions" style="fontSize=10;" vertex="0" parent="1"/>
+        </mxCell>
+        
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#AAAAAA;fontColor=#FFFFFF;" edge="1" source="VMS" target="Employee" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxCell value="Forms, Current Balance, Status, Notifications, Error Messages" style="fontSize=10;" vertex="0" parent="1"/>
+        </mxCell>
+        
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#AAAAAA;fontColor=#FFFFFF;" edge="1" source="DirectManager" target="VMS" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxCell value="Review Decision, Reason, Search, Reports" style="fontSize=10;" vertex="0" parent="1"/>
+        </mxCell>
+        
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#AAAAAA;fontColor=#FFFFFF;" edge="1" source="VMS" target="DirectManager" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxCell value="Request Details, Pending List, Notifications, Reports, Errors" style="fontSize=10;" vertex="0" parent="1"/>
+        </mxCell>
+        
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#AAAAAA;fontColor=#FFFFFF;" edge="1" source="HR" target="VMS" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxCell value="Review Decision, Search & Reports" style="fontSize=10;" vertex="0" parent="1"/>
+        </mxCell>
+        
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#AAAAAA;fontColor=#FFFFFF;" edge="1" source="VMS" target="HR" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxCell value="Request Details, Pending List, Notifications, Reports" style="fontSize=10;" vertex="0" parent="1"/>
+        </mxCell>
+
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#AAAAAA;fontColor=#FFFFFF;" edge="1" source="GeneralManager" target="VMS" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxCell value="Final Approval, Reason, Search & Reports" style="fontSize=10;" vertex="0" parent="1"/>
+        </mxCell>
+
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#AAAAAA;fontColor=#FFFFFF;" edge="1" source="VMS" target="GeneralManager" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxCell value="Request Details, Notifications, Reports" style="fontSize=10;" vertex="0" parent="1"/>
+        </mxCell>
+
+        <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#AAAAAA;fontColor=#FFFFFF;" edge="1" source="ExtHRSystem" target="VMS" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxCell value="Employee Master Data" style="fontSize=10;" vertex="0" parent="1"/>
+        </mxCell>
+
+        <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#AAAAAA;fontColor=#FFFFFF;" edge="1" source="ExtDeptMaster" target="VMS" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxCell value="Department List/Details" style="fontSize=10;" vertex="0" parent="1"/>
+        </mxCell>
+
+        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#AAAAAA;fontColor=#FFFFFF;" edge="1" source="ExtVacationTypes" target="VMS" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxCell value="Vacation Type Definitions" style="fontSize=10;" vertex="0" parent="1"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

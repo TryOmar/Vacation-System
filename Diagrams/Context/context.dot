@@ -1,0 +1,56 @@
+digraph VacationManagementSystem {
+    // Global settings
+    bgcolor="#2B2B2B"; // dark gray background
+    node [shape=box, style=filled, color="#3A3A3A", fontcolor="#FFFFFF", fontsize=12, fontname="Segoe UI", width=2, height=1.2];
+    edge [color="#AAAAAA", fontcolor="#FFFFFF", fontsize=10, fontname="Segoe UI", arrowsize=0.7, penwidth=1.2];
+    splines=true;
+    overlap=false;
+
+    // Central system
+    VMS [label="Vacation Management System", shape=ellipse, color="#5A5A5A", fontcolor="#FFFFFF", style=filled, penwidth=2, width=3, height=1.5];
+
+    // External actors
+    Employee [label="Employee"];
+    DirectManager [label="Direct Manager"];
+    HR [label="HR"];
+    GeneralManager [label="General Manager"];
+    ExtHRSystem [label="External HR System"];
+    ExtDeptMaster [label="External Department Master Data"];
+    ExtVacationTypes [label="External Vacation Types Master Data"];
+
+    // Positioning clusters
+    { rank=same; Employee; DirectManager; }        // Left side
+    { rank=same; HR; GeneralManager; }            // Top side
+    { rank=same; ExtHRSystem; ExtDeptMaster; ExtVacationTypes; }  // Bottom side
+
+    // Outgoing first, incoming second
+    // Employee
+    Employee -> VMS [label="Submit Vacation/Cancellation Request\nSearch/View History\nActions", tailport=w, headport=e];
+    VMS -> Employee [label="Forms/Screens\nCurrent Balance\nStatus/Notifications\nError Messages", tailport=e, headport=w];
+
+    // Direct Manager
+    DirectManager -> VMS [label="Review Decision\nReason Input\nSearch Parameters\nGenerate Reports", tailport=w, headport=e];
+    VMS -> DirectManager [label="Request Details\nPending Requests List\nNotifications\nReports\nError Messages", tailport=e, headport=w];
+
+    // HR
+    HR -> VMS [label="Review Decision\nSearch & Reports", tailport=n, headport=s];
+    VMS -> HR [label="Request Details\nPending Requests\nNotifications\nReports", tailport=s, headport=n];
+
+    // General Manager
+    GeneralManager -> VMS [label="Final Approval\nReason Input\nSearch & Reports", tailport=n, headport=s];
+    VMS -> GeneralManager [label="Request Details\nNotifications\nReports", tailport=s, headport=n];
+
+    // External Systems (mostly incoming data)
+    ExtHRSystem -> VMS [label="Employee Master Data", tailport=s, headport=n];
+    ExtDeptMaster -> VMS [label="Department List/Details", tailport=s, headport=n];
+    ExtVacationTypes -> VMS [label="Vacation Type Definitions", tailport=s, headport=n];
+
+    // Optional: invisible nodes for better spacing
+    invis_top [style=invis, width=2];
+    invis_bottom [style=invis, width=2];
+    HR -> invis_top [style=invis];
+    GeneralManager -> invis_top [style=invis];
+    ExtHRSystem -> invis_bottom [style=invis];
+    ExtDeptMaster -> invis_bottom [style=invis];
+    ExtVacationTypes -> invis_bottom [style=invis];
+}
