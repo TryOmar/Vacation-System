@@ -152,15 +152,16 @@ The system scope includes:
 The remainder of this document is organized as follows:
 \begin{itemize}
     \item Section 2: Overall Description
-    \item Section 3: Business Rules and Logic
-    \item Section 4: User Requirements / Use Cases
-    \item Section 5: Functional Requirements
-    \item Section 6: Non-Functional Requirements
-    \item Section 7: User Interface Overview
-    \item Section 8: Data Requirements Overview
-    \item Section 9: System Messages
-    \item Section 10: Appendices
-    \item Section 11: Document Approval
+    \item Section 3: System Architecture and Context
+    \item Section 4: Business Rules and Logic
+    \item Section 5: User Requirements / Use Cases
+    \item Section 6: Functional Requirements
+    \item Section 7: Non-Functional Requirements
+    \item Section 8: User Interface Overview
+    \item Section 9: Data Requirements Overview
+    \item Section 10: System Messages
+    \item Section 11: Appendices
+    \item Section 12: Document Approval
 \end{itemize}
 
 \section{Overall Description}
@@ -273,6 +274,82 @@ System Administrators & Technical users, system maintenance & Full system access
     \item Integration APIs are available for external systems
     \item All employees are full-time Muslim Saudi employees
 \end{itemize}
+
+\section{System Architecture and Context}
+
+\subsection{System Context Diagram}
+The Vacation Management System operates within a broader organizational context, interacting with various stakeholders and external systems. The following diagram shows how the system integrates with the broader organizational ecosystem:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Diagrams/Context/context.drawio.png}
+\caption{System Context Diagram - Vacation Management System Integration}
+\label{fig:context}
+\end{figure}
+
+\subsection{System Architecture Overview}
+The system follows a three-tier architecture designed for scalability and maintainability:
+
+\begin{itemize}
+    \item \textbf{Presentation Tier}: Web and mobile interfaces with responsive design
+    \item \textbf{Business Logic Tier}: Application services, workflows, and business rules engine
+    \item \textbf{Data Tier}: Database, file storage, and integration services
+\end{itemize}
+
+\subsection{Core System Components}
+The system is built around these key components:
+
+\begin{itemize}
+    \item \textbf{User Management Module}: Authentication, authorization, and role-based access control
+    \item \textbf{Vacation Management Module}: Core business logic for request processing
+    \item \textbf{Workflow Engine}: Multi-level approval process management with escalation
+    \item \textbf{Reporting Module}: PDF generation and data export capabilities
+    \item \textbf{Notification Module}: Real-time communication and alert system
+    \item \textbf{Balance Management Module}: Automated vacation balance calculations
+\end{itemize}
+
+\subsection{System State Management}
+The system manages various states for vacation requests and the overall workflow. The following state diagram illustrates the complete lifecycle of a vacation request:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{Diagrams/State-Diagram/State-Diagram.png}
+\caption{Vacation Request State Diagram - Complete Request Lifecycle}
+\label{fig:state-diagram}
+\end{figure}
+
+\subsection{Core Workflow Processes}
+The system implements several key workflow processes that define the approval and processing logic:
+
+\subsubsection{Basic Vacation Request Flow}
+The standard vacation request follows this workflow:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Diagrams/Workflows/Vacation-Request-Basic-Flow/Vacation-Request-Basic-Flow.png}
+\caption{Basic Vacation Request Workflow - Standard Approval Process}
+\label{fig:basic-flow}
+\end{figure}
+
+\subsubsection{Escalation to Sponsor Flow}
+When approvals are delayed, the system automatically escalates requests:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Diagrams/Workflows/Vacation-Request-Escalation-to-Sponsor/Vacation-Request-Escalation-to-Sponsor.png}
+\caption{Vacation Request Escalation to Sponsor Workflow - Automatic Escalation}
+\label{fig:escalation-flow}
+\end{figure}
+
+\subsubsection{Resubmission After Rejection Flow}
+Rejected requests can be resubmitted following this process:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Diagrams/Workflows/Vacation-Request-Resubmission-After-Rejection/Vacation-Request-Resubmission-After-Rejection.png}
+\caption{Vacation Request Resubmission After Rejection Workflow}
+\label{fig:resubmission-flow}
+\end{figure}
 
 \section{Business Rules and Logic}
 
@@ -520,6 +597,52 @@ The following use cases are implemented in the system:
 \caption{UC-12: Automated Update of Employee Annual Vacation Balance Use Case}
 \label{fig:uc12}
 \end{figure}
+
+\subsection{System Component Mapping and Traceability}
+The following table provides a comprehensive mapping between use cases, business rules, functional requirements, user interfaces, and data entities to ensure complete traceability:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{2cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
+\hline
+\textbf{Use Case} & \textbf{Business Rules} & \textbf{Functional Requirements} & \textbf{User Interfaces} & \textbf{Data Entities} \\
+\hline
+UC-1 & BR-001, BR-002, BR-003, BR-011, BR-012, BR-013, BR-014 & FR-001 & Vacation Request Screen & Employee Master, Vacation Request, Vacation Types \\
+\hline
+UC-2 & BR-015, BR-016 & FR-002 & Vacation Cancellation Screen & Vacation Cancellation, Vacation Request \\
+\hline
+UC-3 & BR-015, BR-016 & FR-002 & My Vacation Requests Screen & Vacation Request, Vacation Cancellation \\
+\hline
+UC-4 & BR-006, BR-007, BR-008, BR-009, BR-014 & FR-003 & Review Vacation Request Screen & Vacation Request, Approval History \\
+\hline
+UC-5 & BR-015, BR-016, BR-009 & FR-003 & Review Cancellation Screen & Vacation Cancellation, Approval History \\
+\hline
+UC-6 & BR-006, BR-007 & FR-003 & Pending Requests Screen & Vacation Request, Approval History \\
+\hline
+UC-7 & BR-018 & FR-004 & Inquiry Search Parameters & Employee Master, Departments, Vacation Types \\
+\hline
+UC-8 & BR-018 & FR-004 & Inquiry Search Results & Vacation Request, Employee Master \\
+\hline
+UC-9 & BR-018 & FR-005 & Single Transaction Report & Vacation Request, Employee Master, Approval History \\
+\hline
+UC-10 & BR-018 & FR-005 & Comparative Report & Employee Master, Departments, Vacation Request \\
+\hline
+UC-11 & BR-017 & FR-007 & Notifications Center & Notification Data \\
+\hline
+UC-12 & BR-001, BR-002, BR-008, BR-019 & FR-006 & System Process & Employee Master, Vacation Request \\
+\hline
+\end{tabular}
+\caption{Comprehensive System Component Mapping and Traceability Matrix}
+\end{table}
+
+This mapping ensures that:
+\begin{itemize}
+    \item Each use case is supported by appropriate business rules
+    \item Functional requirements are derived from use cases
+    \item User interfaces are designed for specific use cases
+    \item Data entities support all system operations
+    \item Complete traceability is maintained throughout the system
+\end{itemize}
 
 \section{Functional Requirements}
 
@@ -1153,33 +1276,7 @@ For complete use case specifications, refer to the All-UseCases.json document. T
 \end{itemize}
 
 \subsection{Appendix G: System Architecture \& Context}
-The system operates within a broader organizational context and follows specific architectural patterns:
-
-\subsubsection{System Context Diagram}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Diagrams/Context/context.png}
-\caption{System Context Diagram}
-\label{fig:context}
-\end{figure}
-
-\subsubsection{Architecture Overview}
-The system follows a three-tier architecture:
-\begin{itemize}
-    \item \textbf{Presentation Tier}: Web and mobile interfaces
-    \item \textbf{Business Logic Tier}: Application services and workflows
-    \item \textbf{Data Tier}: Database and file storage
-\end{itemize}
-
-\subsubsection{Component Design}
-\begin{itemize}
-    \item \textbf{User Management Module}: Authentication and authorization
-    \item \textbf{Vacation Management Module}: Core business logic
-    \item \textbf{Workflow Engine}: Approval process management
-    \item \textbf{Reporting Module}: Report generation and export
-    \item \textbf{Notification Module}: Communication services
-    \item \textbf{Balance Management Module}: Automated vacation balance calculations
-\end{itemize}
+The system architecture details are now presented in Section 3: System Architecture and Context for better contextual understanding. This appendix contains additional technical implementation details that complement the main architecture section.
 
 \subsection{Appendix H: Technical Specifications}
 This appendix contains technical implementation details that are typically covered in a System Design Document:
@@ -1288,7 +1385,9 @@ This appendix contains deployment and maintenance specifications that are typica
 \hline
 2.1 & Previous & Restructured for clarity, reduced redundancy, consolidated business rules & System Analyst \\
 \hline
-2.2 & \today & Added all use case images, wireframes, and data dictionary images & System Analyst \\
+2.2 & Previous & Added all use case images, wireframes, and data dictionary images & System Analyst \\
+\hline
+2.3 & Current & Reorganized structure for logical flow, embedded key diagrams in relevant sections, added comprehensive traceability matrix & System Analyst \\
 \hline
 \end{tabular}
 \caption{Document Version History}
