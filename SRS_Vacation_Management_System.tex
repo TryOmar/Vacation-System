@@ -81,7 +81,7 @@
 \vspace{1cm}
 {\Large\bfseries Software Requirements Specification\par}
 \vspace{2cm}
-{\large Version 2.0\par}
+{\large Version 2.1\par}
 \vspace{1cm}
 {\large \today\par}
 \vspace{2cm}
@@ -110,7 +110,7 @@
 \section{Introduction}
 
 \subsection{Purpose}
-This Software Requirements Specification (SRS) document describes the functional and non-functional requirements for the Vacation Management System. The document serves as a comprehensive contract between the development team and stakeholders, providing a detailed understanding of what the system should accomplish based on the complete project scope and use cases.
+This Software Requirements Specification (SRS) document describes the functional and non-functional requirements for the Vacation Management System. The document serves as a comprehensive contract between the development team and stakeholders, providing a detailed understanding of what the system must accomplish based on the complete project scope and use cases.
 
 \subsection{Scope}
 The Vacation Management System is designed to automate the vacation request, approval, and cancellation processes while providing robust reporting capabilities for efficient vacation management. The system addresses inefficiencies in the current paper-based system, such as processing delays and inaccurate balance tracking due to manual errors and duplicate records.
@@ -136,7 +136,7 @@ The system scope includes:
     \item \textbf{DB}: Database
     \item \textbf{UC}: Use Case
     \item \textbf{GM}: General Manager
-    \item \textbf{XP}: Experience Points (for workflow diagrams)
+    \item \textbf{ERD}: Entity Relationship Diagram
 \end{itemize}
 
 \subsection{References}
@@ -152,12 +152,15 @@ The system scope includes:
 The remainder of this document is organized as follows:
 \begin{itemize}
     \item Section 2: Overall Description
-    \item Section 3: System Architecture and Context
-    \item Section 4: Use Cases and Functional Requirements
-    \item Section 5: User Interface Specifications
-    \item Section 6: Data Requirements and Dictionaries
-    \item Section 7: Non-Functional Requirements
-    \item Section 8: Appendices
+    \item Section 3: Business Rules and Logic
+    \item Section 4: User Requirements / Use Cases
+    \item Section 5: Functional Requirements
+    \item Section 6: Non-Functional Requirements
+    \item Section 7: User Interface Overview
+    \item Section 8: Data Requirements Overview
+    \item Section 9: System Messages
+    \item Section 10: Appendices
+    \item Section 11: Document Approval
 \end{itemize}
 
 \section{Overall Description}
@@ -271,47 +274,838 @@ System Administrators & Technical users, system maintenance & Full system access
     \item All employees are full-time Muslim Saudi employees
 \end{itemize}
 
-\section{System Architecture and Context}
+\section{Business Rules and Logic}
 
-\subsection{System Context Diagram}
-The Vacation Management System operates within a broader organizational context, interacting with various stakeholders and external systems.
+This section consolidates all core business rules that govern the system's behavior. These rules are referenced by use cases and functional requirements throughout the document.
 
+\subsection{Vacation Policy Rules}
+
+\subsubsection{BR-001: Annual Entitlement}
+\textbf{Rule}: Standard annual vacation entitlement is 21 days per year.
+\textbf{Applicable Use Cases}: UC-1, UC-12
+\textbf{Implementation}: System automatically allocates 21 days at the start of each calendar year.
+
+\subsubsection{BR-002: Extended Entitlement}
+\textbf{Rule}: Employees with 10+ years of service OR age >= 50 receive 30 days annual entitlement.
+\textbf{Applicable Use Cases}: UC-1, UC-12
+\textbf{Implementation}: System evaluates hire date and birth date from Employee Master Data to determine eligibility.
+
+\subsubsection{BR-003: Leave Types}
+\textbf{Rule}: System supports only Annual and Sick leave types.
+\textbf{Applicable Use Cases}: UC-1, UC-4, UC-5
+\textbf{Implementation}: Vacation Types Master Data defines these two types exclusively.
+
+\subsubsection{BR-004: Unused Days Policy}
+\textbf{Rule}: Unused vacation days are forfeited annually with no carryover or compensation.
+\textbf{Applicable Use Cases}: UC-12
+\textbf{Implementation}: System resets balance to annual entitlement at year-end without preserving unused days.
+
+\subsubsection{BR-005: Trainee Restrictions}
+\textbf{Rule}: Trainees cannot submit vacation requests.
+\textbf{Applicable Use Cases}: UC-1
+\textbf{Implementation}: System checks employee status from Employee Master Data and blocks request submission for trainees.
+
+\subsection{Approval Workflow Rules}
+
+\subsubsection{BR-006: Approval Hierarchy}
+\textbf{Rule}: Vacation requests follow the sequence: Employee → Direct Manager → HR → General Manager.
+\textbf{Applicable Use Cases}: UC-1, UC-4, UC-6
+\textbf{Implementation}: System routes requests through predefined approval levels with role-based access control.
+
+\subsubsection{BR-007: Escalation Policy}
+\textbf{Rule}: Requests automatically escalate to the next level after 2 days of inaction.
+\textbf{Applicable Use Cases}: UC-4, UC-6
+\textbf{Implementation}: System timer tracks approval delays and automatically forwards requests.
+
+\subsubsection{BR-008: Balance Update Timing}
+\textbf{Rule}: Employee vacation balance updates only after General Manager approval.
+\textbf{Applicable Use Cases}: UC-4, UC-12
+\textbf{Implementation}: System triggers balance recalculation upon GM approval, not at earlier stages.
+
+\subsubsection{BR-009: Rejection Documentation}
+\textbf{Rule}: All rejections must include a mandatory reason.
+\textbf{Applicable Use Cases}: UC-4, UC-5
+\textbf{Implementation}: System validates that reason field is populated before allowing rejection submission.
+
+\subsubsection{BR-010: No Modification Policy}
+\textbf{Rule}: Submitted vacation requests cannot be modified.
+\textbf{Applicable Use Cases}: UC-1
+\textbf{Implementation}: System locks all request fields after submission, allowing only cancellation.
+
+\subsection{Validation Rules}
+
+\subsubsection{BR-011: Date Validation}
+\textbf{Rule}: Start date must be in the future, and end date must be after start date.
+\textbf{Applicable Use Cases}: UC-1
+\textbf{Implementation}: System validates date inputs in real-time and prevents submission of invalid dates.
+
+\subsubsection{BR-012: Overlap Prevention}
+\textbf{Rule}: No overlapping vacation requests are allowed for the same employee.
+\textbf{Applicable Use Cases}: UC-1
+\textbf{Implementation}: System checks existing requests against proposed dates and blocks submission if conflicts exist.
+
+\subsubsection{BR-013: Balance Validation}
+\textbf{Rule}: Requested vacation days must not exceed available leave balance.
+\textbf{Applicable Use Cases}: UC-1
+\textbf{Implementation}: System calculates available balance (Total - Taken - Pending) and validates against request.
+
+\subsubsection{BR-014: Attachment Requirements}
+\textbf{Rule}: Medical certificates are mandatory for sick leave requests.
+\textbf{Applicable Use Cases}: UC-1, UC-4
+\textbf{Implementation}: System requires file upload for sick leave type and validates attachment presence.
+
+\subsubsection{BR-015: Cancellation Eligibility}
+\textbf{Rule}: Only requests in Pending or Approved status can be cancelled.
+\textbf{Applicable Use Cases}: UC-2, UC-3, UC-5
+\textbf{Implementation}: System checks request status and enables/disables cancellation functionality accordingly.
+
+\subsubsection{BR-016: Cancellation Timing}
+\textbf{Rule}: Cancellation must occur before vacation start date.
+\textbf{Applicable Use Cases}: UC-2, UC-5
+\textbf{Implementation}: System compares current date with vacation start date and blocks late cancellations.
+
+\subsection{System Behavior Rules}
+
+\subsubsection{BR-017: Notification Delivery}
+\textbf{Rule}: System must notify all stakeholders of status changes within 5 minutes.
+\textbf{Applicable Use Cases}: UC-1, UC-2, UC-4, UC-5, UC-11
+\textbf{Implementation}: Real-time notification system triggers alerts upon workflow state changes.
+
+\subsubsection{BR-018: Data Integrity}
+\textbf{Rule}: All vacation transactions must maintain complete audit trail.
+\textbf{Applicable Use Cases}: All UC
+\textbf{Implementation}: System logs all actions with timestamp, user ID, and action details.
+
+\subsubsection{BR-019: Policy Configuration}
+\textbf{Rule}: Vacation policies must be configurable through administrative interface.
+\textbf{Applicable Use Cases}: UC-12
+\textbf{Implementation}: System provides configuration screens for entitlement days, eligibility criteria, and escalation timeframes.
+
+\section{User Requirements / Use Cases}
+
+This section provides high-level descriptions of the system's use cases. For detailed specifications, including triggers, basic/alternate flows, business validation rules, non-functional constraints, and exceptions, please refer to the All-UseCases.json document.
+
+\subsection{Use Case Summary}
+The system implements 12 core use cases that cover all aspects of vacation management:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{1cm}|p{4cm}|p{3cm}|p{3cm}|}
+\hline
+\textbf{ID} & \textbf{Use Case Name} & \textbf{Primary Actor} & \textbf{Business Rules} \\
+\hline
+UC-1 & Employee Submits Vacation Request & Employee & BR-001, BR-002, BR-003, BR-011, BR-012, BR-013, BR-014 \\
+\hline
+UC-2 & Employee Submits Vacation Cancellation Request & Employee & BR-015, BR-016 \\
+\hline
+UC-3 & My Vacation Requests & Employee & BR-015, BR-016 \\
+\hline
+UC-4 & Review Vacation Request (Approval/Rejection) & Manager/HR/GM & BR-006, BR-007, BR-008, BR-009, BR-014 \\
+\hline
+UC-5 & Review Vacation Cancellation Request & Manager/HR & BR-015, BR-016, BR-009 \\
+\hline
+UC-6 & Pending Vacation Requests & Manager/HR & BR-006, BR-007 \\
+\hline
+UC-7 & Vacation Inquiry (Search Parameters) & HR/Managers/Employees & BR-018 \\
+\hline
+UC-8 & Vacation Inquiry (Search Results) & HR/Managers/Employees & BR-018 \\
+\hline
+UC-9 & Print Single Vacation Transaction Report (PDF) & HR/Managers/Employees & BR-018 \\
+\hline
+UC-10 & Print Comparative Annual Report (PDF) & HR/Managers/GM & BR-018 \\
+\hline
+UC-11 & Notifications Center & All Users & BR-017 \\
+\hline
+UC-12 & Automated Update of Employee Annual Vacation Balance & System & BR-001, BR-002, BR-008, BR-019 \\
+\hline
+\end{tabular}
+\caption{Use Case Summary with Business Rule References}
+\end{table}
+
+\subsection{Use Case Details}
+The following use cases are implemented in the system:
+
+\subsubsection{UC-1: Employee Submits Vacation Request}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{Diagrams/Context/context.drawio.png}
-\caption{System Context Diagram}
-\label{fig:context}
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-1-Employee-Vacation-Request/UC-1-Employee-Vacation-Request-1.png}
+\caption{UC-1: Employee Vacation Request Use Case}
+\label{fig:uc1}
 \end{figure}
 
-\subsection{Architecture Overview}
-The system follows a three-tier architecture:
-\begin{itemize}
-    \item \textbf{Presentation Tier}: Web and mobile interfaces
-    \item \textbf{Business Logic Tier}: Application services and workflows
-    \item \textbf{Data Tier}: Database and file storage
-\end{itemize}
+\subsubsection{UC-2: Employee Submits Vacation Cancellation Request}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-2-Employee-Vacation-Cancellation-Request/UC-2-Employee-Vacation-Cancellation-Request-1.png}
+\caption{UC-2: Employee Vacation Cancellation Request Use Case}
+\label{fig:uc2}
+\end{figure}
 
-\subsection{Component Design}
-\begin{itemize}
-    \item \textbf{User Management Module}: Authentication and authorization
-    \item \textbf{Vacation Management Module}: Core business logic
-    \item \textbf{Workflow Engine}: Approval process management
-    \item \textbf{Reporting Module}: Report generation and export
-    \item \textbf{Notification Module}: Communication services
-    \item \textbf{Balance Management Module}: Automated vacation balance calculations
-\end{itemize}
+\subsubsection{UC-3: My Vacation Requests}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-3-My-Vacation-Requests/UC-3-My-Vacation-Requests-1.png}
+\caption{UC-3: My Vacation Requests Use Case}
+\label{fig:uc3}
+\end{figure}
 
-\subsection{State Management}
-The system manages various states for vacation requests and the overall workflow:
+\subsubsection{UC-4: Review Vacation Request (Approval/Rejection)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-4-Review-Vacation-Request/UC-4-Review-Vacation-Request-1.png}
+\caption{UC-4: Review Vacation Request Use Case}
+\label{fig:uc4}
+\end{figure}
+
+\subsubsection{UC-5: Review Vacation Cancellation Request}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-5-Review-Vacation-Cancellation-Request/UC-5-Review-Vacation-Cancellation-Request-1.png}
+\caption{UC-5: Review Vacation Cancellation Request Use Case}
+\label{fig:uc5}
+\end{figure}
+
+\subsubsection{UC-6: Pending Vacation Requests}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-6-Pending-Vacation-Requests/UC-6-Pending-Vacation-Requests-1.png}
+\caption{UC-6: Pending Vacation Requests Use Case}
+\label{fig:uc6}
+\end{figure}
+
+\subsubsection{UC-7: Vacation Inquiry (Search Parameters)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-7-Vacation-Inquiry-Search-Parameters/UC-7-Vacation-Inquiry-Search-Parameters-1.png}
+\caption{UC-7: Vacation Inquiry Search Parameters Use Case}
+\label{fig:uc7}
+\end{figure}
+
+\subsubsection{UC-8: Vacation Inquiry (Search Results)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-8-Vacation-Inquiry-Search-Results/UC-8-Vacation-Inquiry-Search-Results-1.png}
+\caption{UC-8: Vacation Inquiry Search Results Use Case}
+\label{fig:uc8}
+\end{figure}
+
+\subsubsection{UC-9: Print Single Vacation Transaction Report (PDF)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-9-Print-Single-Vacation-Transaction-Report/UC-9-Print-Single-Vacation-Transaction-Report-1.png}
+\caption{UC-9: Print Single Vacation Transaction Report Use Case}
+\label{fig:uc9}
+\end{figure}
+
+\subsubsection{UC-10: Print Comparative Annual Report (PDF)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-10-Print-Comparative-Annual-Report/UC-10-Print-Comparative-Annual-Report-1.png}
+\caption{UC-10: Print Comparative Annual Report Use Case}
+\label{fig:uc10}
+\end{figure}
+
+\subsubsection{UC-11: Notifications Center}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-11-Notifications-Center/UC-11-Notifications-Center-1.png}
+\caption{UC-11: Notifications Center Use Case}
+\label{fig:uc11}
+\end{figure}
+
+\subsubsection{UC-12: Automated Update of Employee Annual Vacation Balance}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance-1.png}
+\caption{UC-12: Automated Update of Employee Annual Vacation Balance Use Case}
+\label{fig:uc12}
+\end{figure}
+
+\section{Functional Requirements}
+
+This section describes the system's functional requirements derived from use cases, focusing on what the system must do rather than how it does it.
+
+\subsection{FR-001: Vacation Request Management}
+\textbf{Description}: The system must allow employees to create and submit vacation requests.
+\textbf{Inputs}: Start date, end date, vacation type, notes, attachments
+\textbf{Processing}: Validate dates, check balance, calculate period, prevent overlaps
+\textbf{Outputs}: Request ID, confirmation message, workflow initiation
+\textbf{Business Rules}: BR-001, BR-002, BR-003, BR-011, BR-012, BR-013, BR-014
+\textbf{Use Cases}: UC-1
+
+\subsection{FR-002: Vacation Cancellation Management}
+\textbf{Description}: The system must allow employees to cancel pending or approved vacation requests.
+\textbf{Inputs}: Cancellation reason, original request reference
+\textbf{Processing}: Validate cancellation eligibility, create cancellation request
+\textbf{Outputs}: Cancellation request ID, approval workflow initiation
+\textbf{Business Rules}: BR-015, BR-016
+\textbf{Use Cases}: UC-2, UC-3
+
+\subsection{FR-003: Multi-Level Approval Workflow}
+\textbf{Description}: The system must implement a four-level approval process with automatic escalation.
+\textbf{Inputs}: Manager decisions, reasons, approval levels
+\textbf{Processing}: Route through approval hierarchy, track decisions, escalate delays
+\textbf{Outputs}: Approval status updates, notifications, workflow progression
+\textbf{Business Rules}: BR-006, BR-007, BR-008, BR-009
+\textbf{Use Cases}: UC-4, UC-6
+
+\subsection{FR-004: Vacation Inquiry and Search}
+\textbf{Description}: The system must provide comprehensive search and inquiry capabilities.
+\textbf{Inputs}: Search criteria (dates, department, employee, type, status)
+\textbf{Processing}: Apply filters, execute search, paginate results
+\textbf{Outputs}: Filtered results grid, export options, pagination controls
+\textbf{Business Rules}: BR-018
+\textbf{Use Cases}: UC-7, UC-8
+
+\subsection{FR-005: Report Generation}
+\textbf{Description}: The system must generate PDF reports for vacation data.
+\textbf{Inputs}: Report parameters, data selection, format preferences
+\textbf{Processing}: Format data, generate PDF, include standard footer
+\textbf{Outputs}: PDF report with complete details and footer information
+\textbf{Business Rules}: BR-018
+\textbf{Use Cases}: UC-9, UC-10
+
+\subsection{FR-006: Automated Balance Management}
+\textbf{Description}: The system must automatically calculate and update employee vacation balances.
+\textbf{Inputs}: Approval triggers, entitlement rules, usage data
+\textbf{Processing}: Calculate balance, apply entitlement rules, update records
+\textbf{Outputs}: Updated vacation balances, audit trail
+\textbf{Business Rules}: BR-001, BR-002, BR-008, BR-019
+\textbf{Use Cases}: UC-12
+
+\subsection{FR-007: Notification System}
+\textbf{Description}: The system must provide real-time notifications for all stakeholders.
+\textbf{Inputs}: System events, user preferences, notification types
+\textbf{Processing}: Generate notifications, deliver to users, track delivery
+\textbf{Outputs}: User notifications, delivery confirmations
+\textbf{Business Rules}: BR-017
+\textbf{Use Cases}: UC-11
+
+\section{Non-Functional Requirements}
+
+\subsection{Performance Requirements}
+
+\subsubsection{NFR-001: Response Time}
+\textbf{Requirement}: Page load must complete within 3 seconds from user click to interactive display.
+\textbf{Measurement}: Time from HTTP request initiation to page render completion.
+\textbf{Applicable Use Cases}: All user interface interactions.
+
+\subsubsection{NFR-002: Throughput}
+\textbf{Requirement}: System must support 100+ concurrent users without performance degradation.
+\textbf{Measurement}: Response time remains under 3 seconds with 100 simultaneous users.
+\textbf{Applicable Use Cases}: All system functions.
+
+\subsubsection{NFR-003: Availability}
+\textbf{Requirement}: System must maintain 99.5\% uptime during business hours (8 AM - 6 PM, Sunday-Thursday).
+\textbf{Measurement}: Monthly uptime calculation excluding scheduled maintenance.
+\textbf{Applicable Use Cases}: All system functions.
+
+\subsubsection{NFR-004: Scalability}
+\textbf{Requirement}: System must support up to 1000 employees without architectural changes.
+\textbf{Measurement}: Performance metrics remain within acceptable ranges at maximum capacity.
+\textbf{Applicable Use Cases}: All system functions.
+
+\subsubsection{NFR-005: PDF Generation}
+\textbf{Requirement}: PDF report generation must complete within 5 seconds for standard reports.
+\textbf{Measurement}: Time from report request to PDF download availability.
+\textbf{Applicable Use Cases}: UC-9, UC-10.
+
+\subsection{Security Requirements}
+
+\subsubsection{NFR-006: Authentication}
+\textbf{Requirement}: System must implement secure login with session management.
+\textbf{Implementation}: Multi-factor authentication, session timeout after 30 minutes of inactivity.
+\textbf{Applicable Use Cases}: All system access.
+
+\subsubsection{NFR-007: Authorization}
+\textbf{Requirement}: System must implement role-based access control.
+\textbf{Implementation}: User permissions based on organizational role and hierarchy.
+\textbf{Applicable Use Cases}: All system functions.
+
+\subsubsection{NFR-008: Data Protection}
+\textbf{Requirement}: System must encrypt sensitive employee information.
+\textbf{Implementation}: AES-256 encryption for data at rest and in transit.
+\textbf{Applicable Use Cases}: All data handling functions.
+
+\subsubsection{NFR-009: Audit Trail}
+\textbf{Requirement}: System must log all activities for audit purposes.
+\textbf{Implementation}: Comprehensive logging of user actions, system events, and data changes.
+\textbf{Applicable Use Cases}: All system functions.
+
+\subsubsection{NFR-010: Input Validation}
+\textbf{Requirement}: System must prevent SQL injection and XSS attacks.
+\textbf{Implementation}: Input sanitization, parameterized queries, output encoding.
+\textbf{Applicable Use Cases}: All user input functions.
+
+\subsection{Usability Requirements}
+
+\subsubsection{NFR-011: User Interface}
+\textbf{Requirement}: System must provide intuitive, responsive design.
+\textbf{Implementation}: Modern web standards, consistent navigation, clear visual hierarchy.
+\textbf{Applicable Use Cases}: All user interface interactions.
+
+\subsubsection{NFR-012: Accessibility}
+\textbf{Requirement}: System must comply with WCAG 2.1 AA standards.
+\textbf{Implementation}: Screen reader support, keyboard navigation, color contrast compliance.
+\textbf{Applicable Use Cases}: All user interface interactions.
+
+\subsubsection{NFR-013: Multi-language Support}
+\textbf{Requirement}: System must support Arabic and English languages.
+\textbf{Implementation}: Localized interface, right-to-left text support, cultural adaptations.
+\textbf{Applicable Use Cases}: All user interface interactions.
+
+\subsubsection{NFR-014: Mobile Support}
+\textbf{Requirement}: System must provide responsive design for all devices.
+\textbf{Implementation}: Mobile-first design, touch-friendly interfaces, adaptive layouts.
+\textbf{Applicable Use Cases}: All user interface interactions.
+
+\subsubsection{NFR-015: Error Handling}
+\textbf{Requirement}: System must provide clear, actionable error messages.
+\textbf{Implementation}: User-friendly error descriptions with specific resolution steps.
+\textbf{Applicable Use Cases}: All system functions.
+
+\subsection{Reliability Requirements}
+
+\subsubsection{NFR-016: Error Handling}
+\textbf{Requirement}: System must handle errors gracefully without data loss.
+\textbf{Implementation}: Comprehensive error catching, user notification, automatic recovery where possible.
+\textbf{Applicable Use Cases}: All system functions.
+
+\subsubsection{NFR-017: Data Integrity}
+\textbf{Requirement}: System must prevent data corruption and maintain consistency.
+\textbf{Implementation}: Transaction management, referential integrity, validation checks.
+\textbf{Applicable Use Cases}: All data operations.
+
+\subsubsection{NFR-018: Backup and Recovery}
+\textbf{Requirement}: System must provide daily automated backups with 4-hour maximum recovery time.
+\textbf{Implementation}: Automated backup scheduling, point-in-time recovery capability.
+\textbf{Applicable Use Cases}: All system functions.
+
+\subsubsection{NFR-019: Validation}
+\textbf{Requirement}: System must implement comprehensive business rule validation.
+\textbf{Implementation}: Real-time validation, business rule enforcement, error prevention.
+\textbf{Applicable Use Cases}: All data input functions.
+
+\section{User Interface Overview}
+
+This section provides the system's user interface wireframes and visual specifications.
+
+\subsection{Core Application Screens}
+
+\subsubsection{Vacation Request Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Vacation-Request/Vacation-Request-1.png}
+\caption{Vacation Request Screen}
+\label{fig:vacation-request-screen}
+\end{figure}
+
+\subsubsection{Vacation Cancellation Request Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Vacation-Cancellation-Request/Vacation-Cancellation-Request-1.png}
+\caption{Vacation Cancellation Request Screen}
+\label{fig:vacation-cancellation-screen}
+\end{figure}
+
+\subsubsection{Review Vacation Request Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Review-Vacation-Request/Review-Vacation-Request-1.png}
+\caption{Review Vacation Request Screen}
+\label{fig:review-vacation-screen}
+\end{figure}
+
+\subsubsection{Review Vacation Cancellation Request Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Review-Vacation-Cancellation-Request/Review-Vacation-Cancellation-Request-1.png}
+\caption{Review Vacation Cancellation Request Screen}
+\label{fig:review-cancellation-screen}
+\end{figure}
+
+\subsubsection{My Vacation Requests Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/My-Vacation-Requests/My-Vacation-Requests-1.png}
+\caption{My Vacation Requests Screen}
+\label{fig:my-vacation-requests-screen}
+\end{figure}
+
+\subsubsection{Pending Vacation Requests Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Pending-Vacation-Requests/Pending-Vacation-Requests-1.png}
+\caption{Pending Vacation Requests Screen}
+\label{fig:pending-vacation-requests-screen}
+\end{figure}
+
+\subsubsection{Vacation Inquiry Search Parameters Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Employee-Vacation-Inquiry-Search-Parameters/Employee-Vacation-Inquiry-Search-Parameters-1.png}
+\caption{Vacation Inquiry Search Parameters Screen}
+\label{fig:inquiry-search-params-screen}
+\end{figure}
+
+\subsubsection{Vacation Inquiry Search Results Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Employee-Vacation-Inquiry-Search-Results/Employee-Vacation-Inquiry-Search-Results-1.png}
+\caption{Vacation Inquiry Search Results Screen}
+\label{fig:inquiry-search-results-screen}
+\end{figure}
+
+\subsubsection{Notifications Center Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Notifications-Center/Notifications-Center-1.png}
+\caption{Notifications Center Screen}
+\label{fig:notifications-center-screen}
+\end{figure}
+
+\subsection{Report Layout Screens}
+
+\subsubsection{Single Transaction Report Layout}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report-1.png}
+\caption{Single Transaction Report Layout}
+\label{fig:single-transaction-report-layout}
+\end{figure}
+
+\subsubsection{Annual Comparative Report Layout}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Print-Layout-Annual-Comparative-Report/Print-Layout-Annual-Comparative-Report-Web-1.png}
+\caption{Annual Comparative Report Layout}
+\label{fig:annual-comparative-report-layout}
+\end{figure}
+
+\subsection{Additional Screens}
+
+\subsubsection{Requests Center}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Requests-Center/Requests-Center-1.png}
+\caption{Requests Center Screen}
+\label{fig:requests-center-screen}
+\end{figure}
+
+\subsubsection{Annual Comparative Report Search Parameters}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Wireframes/Annual-Comparative-Report-Search-Parameters/Annual-Comparative-Report-Search-Parameters-1.png}
+\caption{Annual Comparative Report Search Parameters Screen}
+\label{fig:annual-comparative-report-search-params}
+\end{figure}
+
+\section{Data Requirements Overview}
+
+This section provides the system's data dictionary specifications and field definitions.
+
+\subsection{Master Data Dictionaries}
+
+\subsubsection{Employee Master Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary/Employee-Master-Data-Data-Dictionary-1.png}
+\caption{Employee Master Data Dictionary}
+\label{fig:employee-master-data}
+\end{figure}
+
+\subsubsection{Departments Master Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary/Departments-Master-Data-Data-Dictionary-1.png}
+\caption{Departments Master Data Dictionary}
+\label{fig:departments-master-data}
+\end{figure}
+
+\subsubsection{Vacation Types Master Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Vacation-Types-Master-Data-Data-Dictionary/Vacation-Types-Master-Data-Data-Dictionary-1.png}
+\caption{Vacation Types Master Data Dictionary}
+\label{fig:vacation-types-master-data}
+\end{figure}
+
+\subsection{Screen-Level Data Dictionaries}
+
+\subsubsection{Vacation Request Screen Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Request-Screen-Data-Dictionary/Vacation-Request-Screen-Data-Dictionary-1.png}
+\caption{Vacation Request Screen Data Dictionary}
+\label{fig:vacation-request-data-dict}
+\end{figure}
+
+\subsubsection{Vacation Cancellation Request Screen Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Cancellation-Request-Screen-Data-Dictionary/Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png}
+\caption{Vacation Cancellation Request Screen Data Dictionary}
+\label{fig:vacation-cancellation-data-dict}
+\end{figure}
+
+\subsubsection{Review Vacation Request Screen Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Request-Screen-Data-Dictionary/Review-Vacation-Request-Screen-Data-Dictionary-1.png}
+\caption{Review Vacation Request Screen Data Dictionary}
+\label{fig:review-vacation-data-dict}
+\end{figure}
+
+\subsubsection{Review Vacation Cancellation Request Screen Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png}
+\caption{Review Vacation Cancellation Request Screen Data Dictionary}
+\label{fig:review-cancellation-data-dict}
+\end{figure}
+
+\subsubsection{My Vacation Requests Screen Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/My-Vacation-Requests-Screen-Data-Dictionary/My-Vacation-Requests-Screen-Data-Dictionary-1.png}
+\caption{My Vacation Requests Screen Data Dictionary}
+\label{fig:my-vacation-requests-data-dict}
+\end{figure}
+
+\subsubsection{Pending Vacation Requests Screen Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Pending-Vacation-Requests-Screen-Data-Dictionary/Pending-Vacation-Requests-Screen-Data-Dictionary-1.png}
+\caption{Pending Vacation Requests Screen Data Dictionary}
+\label{fig:pending-vacation-requests-data-dict}
+\end{figure}
+
+\subsubsection{Vacation Inquiry Search Parameters Screen Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary-1.png}
+\caption{Vacation Inquiry Search Parameters Screen Data Dictionary}
+\label{fig:inquiry-search-params-data-dict}
+\end{figure}
+
+\subsubsection{Vacation Inquiry Search Results Screen Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary-1.png}
+\caption{Vacation Inquiry Search Results Screen Data Dictionary}
+\label{fig:inquiry-search-results-data-dict}
+\end{figure}
+
+\subsubsection{Notifications Center Screen Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Notifications-Center-Screen-Data-Dictionary/Notifications-Center-Screen-Data-Dictionary-1.png}
+\caption{Notifications Center Screen Data Dictionary}
+\label{fig:notifications-center-data-dict}
+\end{figure}
+
+\subsubsection{Print Single Transaction Report Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Print-Single-Transaction-Report-Data-Dictionary/Print-Single-Transaction-Report-Data-Dictionary-1.png}
+\caption{Print Single Transaction Report Data Dictionary}
+\label{fig:print-single-transaction-data-dict}
+\end{figure}
+
+\subsubsection{Print Comparative Annual Report Data Dictionary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Print-Comparative-Annual-Report-Data-Dictionary/Print-Comparative-Annual-Report-Data-Dictionary-1.png}
+\caption{Print Comparative Annual Report Data Dictionary}
+\label{fig:print-comparative-annual-data-dict}
+\end{figure}
+
+\section{System Messages}
+
+The system includes a comprehensive message table for all user communications and error messages. This table defines the content, context, and display rules for system-generated messages.
+
+\subsection{System Messages Table}
+The following images show the complete system messages table:
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.6\textwidth]{Diagrams/State-Diagram/State-Diagram.png}
+\includegraphics[width=1.0\textwidth]{Use-Cases/Messages-Table/Messages-Table-1.png}
+\caption{System Messages Table - Part 1}
+\label{fig:messages-table-1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1.0\textwidth]{Use-Cases/Messages-Table/Messages-Table-2.png}
+\caption{System Messages Table - Part 2}
+\label{fig:messages-table-2}
+\end{figure}
+
+\subsection{Message Categories}
+\begin{itemize}
+    \item \textbf{Validation Messages}: Field validation errors and business rule violations
+    \item \textbf{Workflow Messages}: Approval status updates and workflow progression
+    \item \textbf{Notification Messages}: System notifications and user alerts
+    \item \textbf{Error Messages}: System errors and exception handling
+    \item \textbf{Success Messages}: Confirmation of successful operations
+\end{itemize}
+
+\section{Appendices}
+
+\subsection{Appendix A: Glossary}
+\begin{itemize}
+    \item \textbf{Vacation}: Time off from work for personal reasons
+    \item \textbf{Leave Balance}: Remaining vacation days available
+    \item \textbf{Approval Workflow}: Process for request authorization
+    \item \textbf{Escalation}: Automatic forwarding of delayed requests
+    \item \textbf{Attachments}: Supporting documents for requests
+    \item \textbf{Entitlement}: Annual vacation days allocation
+    \item \textbf{Trainee}: Employee in training status, ineligible for vacation
+    \item \textbf{Business Rule}: System behavior rule that governs functionality
+    \item \textbf{Use Case}: Specific interaction scenario between users and system
+\end{itemize}
+
+\subsection{Appendix B: Data Models}
+\begin{itemize}
+    \item Entity-Relationship Diagrams
+    \item Database Schema Definitions
+    \item API Specification Documents
+    \item Integration Interface Definitions
+    \item Master Data Entity Definitions
+\end{itemize}
+
+\subsection{Appendix B.1: Data Dictionary Template}
+The following image shows the standard data dictionary template used for documenting all system data entities:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Data-Dictionary-Template/Data-Dictionary-Template-1.png}
+\caption{Data Dictionary Template}
+\label{fig:data-dictionary-template}
+\end{figure}
+
+\subsection{Appendix C: Wireframe Images}
+This section contains all the wireframe images for the system's user interfaces:
+
+\subsubsection{Core Application Screens}
+
+\paragraph{Vacation Request Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Vacation-Request/Vacation-Request-1.png}
+\caption{Vacation Request Screen Wireframe}
+\label{fig:wireframe-vacation-request}
+\end{figure}
+
+\paragraph{Vacation Cancellation Request Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Vacation-Cancellation-Request/Vacation-Cancellation-Request-1.png}
+\caption{Vacation Cancellation Request Screen Wireframe}
+\label{fig:wireframe-vacation-cancellation}
+\end{figure}
+
+\paragraph{Review Vacation Request Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Review-Vacation-Request/Review-Vacation-Request-1.png}
+\caption{Review Vacation Request Screen Wireframe}
+\label{fig:wireframe-review-vacation}
+\end{figure}
+
+\paragraph{Review Vacation Cancellation Request Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Review-Vacation-Cancellation-Request/Review-Vacation-Cancellation-Request-1.png}
+\caption{Review Vacation Cancellation Request Screen Wireframe}
+\label{fig:wireframe-review-cancellation}
+\end{figure}
+
+\paragraph{My Vacation Requests Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/My-Vacation-Requests/My-Vacation-Requests-1.png}
+\caption{My Vacation Requests Screen Wireframe}
+\label{fig:wireframe-my-vacation-requests}
+\end{figure}
+
+\paragraph{Pending Vacation Requests Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Pending-Vacation-Requests/Pending-Vacation-Requests-1.png}
+\caption{Pending Vacation Requests Screen Wireframe}
+\label{fig:wireframe-pending-vacation-requests}
+\end{figure}
+
+\paragraph{Vacation Inquiry Search Parameters Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Employee-Vacation-Inquiry-Search-Parameters/Employee-Vacation-Inquiry-Search-Parameters-1.png}
+\caption{Vacation Inquiry Search Parameters Screen Wireframe}
+\label{fig:wireframe-inquiry-search-params}
+\end{figure}
+
+\paragraph{Vacation Inquiry Search Results Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Employee-Vacation-Inquiry-Search-Results/Employee-Vacation-Inquiry-Search-Results-1.png}
+\caption{Vacation Inquiry Search Results Screen Wireframe}
+\label{fig:wireframe-inquiry-search-results}
+\end{figure}
+
+\paragraph{Notifications Center Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Notifications-Center/Notifications-Center-1.png}
+\caption{Notifications Center Screen Wireframe}
+\label{fig:wireframe-notifications-center}
+\end{figure}
+
+\paragraph{Requests Center Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Requests-Center/Requests-Center-1.png}
+\caption{Requests Center Screen Wireframe}
+\label{fig:wireframe-requests-center}
+\end{figure}
+
+\subsubsection{Report Layout Screens}
+
+\paragraph{Single Transaction Report Layout}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report-1.png}
+\caption{Single Transaction Report Layout Wireframe}
+\label{fig:wireframe-single-transaction-report}
+\end{figure}
+
+\paragraph{Annual Comparative Report Layout}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Print-Layout-Annual-Comparative-Report/Print-Layout-Annual-Comparative-Report-Web-1.png}
+\caption{Annual Comparative Report Layout Wireframe}
+\label{fig:wireframe-annual-comparative-report}
+\end{figure}
+
+\paragraph{Annual Comparative Report Search Parameters}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Wireframes/Annual-Comparative-Report-Search-Parameters/Annual-Comparative-Report-Search-Parameters-1.png}
+\caption{Annual Comparative Report Search Parameters Wireframe}
+\label{fig:wireframe-annual-comparative-report-search-params}
+\end{figure}
+
+\subsection{Appendix D: State Diagrams}
+The system implements comprehensive state management for vacation requests and workflows:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Diagrams/State-Diagram/State-Diagram.png}
 \caption{Vacation Request State Diagram}
 \label{fig:state-diagram}
 \end{figure}
 
-\subsection{Workflow Processes}
+\subsection{Appendix E: Workflow Diagrams}
 The system implements several key workflow processes:
 
 \subsubsection{Basic Vacation Request Flow}
@@ -338,534 +1132,59 @@ The system implements several key workflow processes:
 \label{fig:resubmission-flow}
 \end{figure}
 
-\section{Use Cases and Functional Requirements}
+\subsection{Appendix F: Use Case Templates}
+The following image shows the standard use case template used for documenting all system use cases:
 
-Based on the comprehensive use case analysis in All-UseCases.json, the system implements the following key use cases:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Use-Cases/Use-Case-Template/Use-Case-Template-1.png}
+\caption{Use Case Template}
+\label{fig:use-case-template}
+\end{figure}
 
-\subsection{UC-1: Employee Submits Vacation Request}
+For complete use case specifications, refer to the All-UseCases.json document. This document contains:
+
 \begin{itemize}
-    \item \textbf{Primary Actor}: Employee
-    \item \textbf{Goal}: Submit a vacation request for approval
-    \item \textbf{Preconditions}: Employee authenticated, has leave balance, is not a trainee
-    \item \textbf{Main Flow}: Navigate to form, enter details, submit
-    \item \textbf{Postconditions}: Request created with status "Pending Approval", workflow initiated
-    \item \textbf{Business Rules}: 
-    \begin{itemize}
-        \item End date must be after start date
-        \item Requested days must not exceed available leave balance
-        \item Sick leave requires medical certificate attachment
-        \item No overlapping requests for same employee
-    \end{itemize}
+    \item Standard Use Case Template
+    \item Use Case Documentation Standards
+    \item Business Rule Definition Format
+    \item Exception Handling Documentation
+    \item Complete specifications for all 12 use cases
 \end{itemize}
 
+\subsection{Appendix G: System Architecture \& Context}
+The system operates within a broader organizational context and follows specific architectural patterns:
+
+\subsubsection{System Context Diagram}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-1-Employee-Vacation-Request/UC-1-Employee-Vacation-Request-1.png}
-\caption{UC-1: Employee Vacation Request Use Case}
-\label{fig:uc1}
+\includegraphics[width=0.8\textwidth]{Diagrams/Context/context.png}
+\caption{System Context Diagram}
+\label{fig:context}
 \end{figure}
 
-\subsection{UC-2: Employee Submits Vacation Cancellation Request}
+\subsubsection{Architecture Overview}
+The system follows a three-tier architecture:
 \begin{itemize}
-    \item \textbf{Primary Actor}: Employee
-    \item \textbf{Goal}: Cancel a pending or approved vacation request before its start date
-    \item \textbf{Preconditions}: Request exists in Pending or Approved status, vacation has not started
-    \item \textbf{Main Flow}: Select request, provide cancellation reason, submit
-    \item \textbf{Postconditions}: Cancellation request created with status "Pending"
-    \item \textbf{Business Rules}: Only requests in Pending or Approved status can be cancelled
+    \item \textbf{Presentation Tier}: Web and mobile interfaces
+    \item \textbf{Business Logic Tier}: Application services and workflows
+    \item \textbf{Data Tier}: Database and file storage
 \end{itemize}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-2-Employee-Vacation-Cancellation-Request/UC-2-Employee-Vacation-Cancellation-Request-1.png}
-\caption{UC-2: Employee Vacation Cancellation Request Use Case}
-\label{fig:uc2}
-\end{figure}
-
-\subsection{UC-3: My Vacation Requests}
+\subsubsection{Component Design}
 \begin{itemize}
-    \item \textbf{Primary Actor}: Employee
-    \item \textbf{Goal}: View and manage personal vacation requests
-    \item \textbf{Preconditions}: Employee has access to the system
-    \item \textbf{Main Flow}: Navigate to dashboard, view summary, expand details
-    \item \textbf{Postconditions}: Employee has visibility into all requests with detailed view
-    \item \textbf{Business Rules}: Cancel button only enabled when rules allow
+    \item \textbf{User Management Module}: Authentication and authorization
+    \item \textbf{Vacation Management Module}: Core business logic
+    \item \textbf{Workflow Engine}: Approval process management
+    \item \textbf{Reporting Module}: Report generation and export
+    \item \textbf{Notification Module}: Communication services
+    \item \textbf{Balance Management Module}: Automated vacation balance calculations
 \end{itemize}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-3-My-Vacation-Requests/UC-3-My-Vacation-Requests-1.png}
-\caption{UC-3: My Vacation Requests Use Case}
-\label{fig:uc3}
-\end{figure}
+\subsection{Appendix H: Technical Specifications}
+This appendix contains technical implementation details that are typically covered in a System Design Document:
 
-\subsection{UC-4: Review Vacation Request (Approval/Rejection)}
-\begin{itemize}
-    \item \textbf{Primary Actor}: Direct Manager, HR, General Manager
-    \item \textbf{Goal}: Review, approve, or reject employee vacation requests
-    \item \textbf{Preconditions}: Valid vacation request exists for review
-    \item \textbf{Main Flow}: View request details, make decision, provide reason
-    \item \textbf{Postconditions}: Request status updated, notifications sent
-    \item \textbf{Business Rules}: Reason for decision is mandatory for all reviewers
-\end{itemize}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-4-Review-Vacation-Request/UC-4-Review-Vacation-Request-1.png}
-\caption{UC-4: Review Vacation Request Use Case}
-\label{fig:uc4}
-\end{figure}
-
-\subsection{UC-5: Review Vacation Cancellation Request}
-\begin{itemize}
-    \item \textbf{Primary Actor}: Manager, HR
-    \item \textbf{Goal}: Review and approve/reject vacation cancellation requests
-    \item \textbf{Preconditions}: Valid cancellation request exists
-    \item \textbf{Main Flow}: View original and cancellation details, make decision
-    \item \textbf{Postconditions}: Cancellation status updated, notifications sent
-    \item \textbf{Business Rules}: Cancellation must occur before vacation start date
-\end{itemize}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-5-Review-Vacation-Cancellation-Request/UC-5-Review-Vacation-Cancellation-Request-1.png}
-\caption{UC-5: Review Vacation Cancellation Request Use Case}
-\label{fig:uc5}
-\end{figure}
-
-\subsection{UC-6: Pending Vacation Requests}
-\begin{itemize}
-    \item \textbf{Primary Actor}: Manager, HR
-    \item \textbf{Goal}: View and manage all pending vacation requests
-    \item \textbf{Preconditions}: Pending requests exist, user has access rights
-    \item \textbf{Main Flow}: View grid of pending requests, navigate to detailed review
-    \item \textbf{Postconditions}: Reviewer can access detailed review for any pending request
-    \item \textbf{Business Rules}: Only pending requests appear on this screen
-\end{itemize}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-6-Pending-Vacation-Requests/UC-6-Pending-Vacation-Requests-1.png}
-\caption{UC-6: Pending Vacation Requests Use Case}
-\label{fig:uc6}
-\end{figure}
-
-\subsection{UC-7: Vacation Inquiry (Search Parameters)}
-\begin{itemize}
-    \item \textbf{Primary Actor}: HR, Managers, Authorized Employees
-    \item \textbf{Goal}: Input search criteria for vacation inquiries
-    \item \textbf{Preconditions}: User has valid system access
-    \item \textbf{Main Flow}: Select filters, generate report
-    \item \textbf{Postconditions}: Search results displayed or validation errors shown
-    \item \textbf{Business Rules}: All search parameters are optional
-\end{itemize}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-7-Vacation-Inquiry-Search-Parameters/UC-7-Vacation-Inquiry-Search-Parameters-1.png}
-\caption{UC-7: Vacation Inquiry Search Parameters Use Case}
-\label{fig:uc7}
-\end{figure}
-
-\subsection{UC-8: Vacation Inquiry (Search Results)}
-\begin{itemize}
-    \item \textbf{Primary Actor}: HR, Managers, Authorized Employees
-    \item \textbf{Goal}: Display inquiry results and provide action options
-    \item \textbf{Preconditions}: Valid search criteria executed from UC-7
-    \item \textbf{Main Flow}: View results grid, perform actions (print, export, pagination)
-    \item \textbf{Postconditions}: User can interact with results and perform actions
-    \item \textbf{Business Rules}: Print option only available for approved requests
-\end{itemize}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-8-Vacation-Inquiry-Search-Results/UC-8-Vacation-Inquiry-Search-Results-1.png}
-\caption{UC-8: Vacation Inquiry Search Results Use Case}
-\label{fig:uc8}
-\end{figure}
-
-\subsection{UC-9: Print Single Vacation Transaction Report (PDF)}
-\begin{itemize}
-    \item \textbf{Primary Actor}: HR, Managers, Authorized Employees
-    \item \textbf{Goal}: Generate PDF for individual approved vacation request
-    \item \textbf{Preconditions}: Vacation request status must be Approved
-    \item \textbf{Main Flow}: Click print button, wait for PDF generation
-    \item \textbf{Postconditions}: PDF report generated with complete details
-    \item \textbf{Business Rules}: Report can only be generated for approved requests
-\end{itemize}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-9-Print-Single-Vacation-Transaction-Report/UC-9-Print-Single-Vacation-Transaction-Report-1.png}
-\caption{UC-9: Print Single Vacation Transaction Report Use Case}
-\label{fig:uc9}
-\end{figure}
-
-\subsection{UC-10: Print Comparative Annual Report (PDF)}
-\begin{itemize}
-    \item \textbf{Primary Actor}: HR, Managers, General Management
-    \item \textbf{Goal}: Generate annual comparative vacation report by department
-    \item \textbf{Preconditions}: User has access to reporting functionality
-    \item \textbf{Main Flow}: Select parameters, generate report
-    \item \textbf{Postconditions}: Comparative report PDF generated
-    \item \textbf{Business Rules}: At least one department must be selected
-\end{itemize}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-10-Print-Comparative-Annual-Report/UC-10-Print-Comparative-Annual-Report-1.png}
-\caption{UC-10: Print Comparative Annual Report Use Case}
-\label{fig:uc10}
-\end{figure}
-
-\subsection{UC-11: Notifications Center}
-\begin{itemize}
-    \item \textbf{Primary Actor}: Employees, Managers, HR, General Management
-    \item \textbf{Goal}: Inform users of vacation-related events and provide quick access
-    \item \textbf{Preconditions}: User has valid system access
-    \item \textbf{Main Flow}: View notifications, click action buttons
-    \item \textbf{Postconditions}: User informed and can navigate to related screens
-    \item \textbf{Business Rules}: Notifications appear in reverse chronological order
-\end{itemize}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-11-Notifications-Center/UC-11-Notifications-Center-1.png}
-\caption{UC-11: Notifications Center Use Case}
-\label{fig:uc11}
-\end{figure}
-
-\subsection{UC-12: Automated Update of Employee Annual Vacation Balance}
-\begin{itemize}
-    \item \textbf{Primary Actor}: System (primary), Employee (view-only), General Manager (approval trigger)
-    \item \textbf{Goal}: Automatically manage and update employee vacation balances
-    \item \textbf{Preconditions}: Employee is eligible, vacation request approved by GM
-    \item \textbf{Main Flow}: System recalculates balance after GM approval
-    \item \textbf{Postconditions}: Vacation balances always up-to-date and auto-calculated
-    \item \textbf{Business Rules}: No manual overrides permitted, system-only updates
-\end{itemize}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Use-Cases/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance-1.png}
-\caption{UC-12: Automated Update of Employee Annual Vacation Balance Use Case}
-\label{fig:uc12}
-\end{figure}
-
-\section{User Interface Specifications}
-
-The system provides comprehensive user interfaces for all functionality, designed with modern web standards and mobile responsiveness.
-
-\subsection{Core Application Screens}
-
-\subsubsection{Vacation Request Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/Vacation-Request/Vacation-Request-1.png}
-\caption{Vacation Request Screen}
-\label{fig:vacation-request-screen}
-\end{figure}
-
-\subsubsection{Vacation Cancellation Request Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/Vacation-Cancellation-Request/Vacation-Cancellation-Request-1.png}
-\caption{Vacation Cancellation Request Screen}
-\label{fig:vacation-cancellation-screen}
-\end{figure}
-
-\subsubsection{Review Vacation Request Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/Review-Vacation-Request/Review-Vacation-Request-1.png}
-\caption{Review Vacation Request Screen}
-\label{fig:review-vacation-screen}
-\end{figure}
-
-\subsubsection{Review Vacation Cancellation Request Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/Review-Vacation-Cancellation-Request/Review-Vacation-Cancellation-Request-1.png}
-\caption{Review Vacation Cancellation Request Screen}
-\label{fig:review-cancellation-screen}
-\end{figure}
-
-\subsubsection{My Vacation Requests Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/My-Vacation-Requests/My-Vacation-Requests-1.png}
-\caption{My Vacation Requests Screen}
-\label{fig:my-vacation-requests-screen}
-\end{figure}
-
-\subsubsection{Pending Vacation Requests Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/Pending-Vacation-Requests/Pending-Vacation-Requests-1.png}
-\caption{Pending Vacation Requests Screen}
-\label{fig:pending-vacation-requests-screen}
-\end{figure}
-
-\subsubsection{Vacation Inquiry Search Parameters Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/Employee-Vacation-Inquiry-Search-Parameters/Employee-Vacation-Inquiry-Search-Parameters-1.png}
-\caption{Vacation Inquiry Search Parameters Screen}
-\label{fig:inquiry-search-params-screen}
-\end{figure}
-
-\subsubsection{Vacation Inquiry Search Results Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/Employee-Vacation-Inquiry-Search-Results/Employee-Vacation-Inquiry-Search-Results-1.png}
-\caption{Vacation Inquiry Search Results Screen}
-\label{fig:inquiry-search-results-screen}
-\end{figure}
-
-\subsubsection{Notifications Center Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/Notifications-Center/Notifications-Center-1.png}
-\caption{Notifications Center Screen}
-\label{fig:notifications-center-screen}
-\end{figure}
-
-\subsection{Report Layout Screens}
-
-\subsubsection{Single Transaction Report Layout}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report-1.png}
-\caption{Single Transaction Report Layout}
-\label{fig:single-transaction-report-layout}
-\end{figure}
-
-\subsubsection{Annual Comparative Report Layout}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/Print-Layout-Annual-Comparative-Report/Print-Layout-Annual-Comparative-Report-Web-1.png}
-\caption{Annual Comparative Report Layout}
-\label{fig:annual-comparative-report-layout}
-\end{figure}
-
-\subsection{Requests Center}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Wireframes/Requests-Center/Requests-Center-1.png}
-\caption{Requests Center Screen}
-\label{fig:requests-center-screen}
-\end{figure}
-
-\section{Data Requirements and Dictionaries}
-
-The system maintains comprehensive data dictionaries for all entities and screens, ensuring data consistency and proper validation.
-
-\subsection{Master Data Dictionaries}
-
-\subsubsection{Employee Master Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary/Employee-Master-Data-Data-Dictionary-1.png}
-\caption{Employee Master Data Dictionary}
-\label{fig:employee-master-data}
-\end{figure}
-
-\subsubsection{Departments Master Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary/Departments-Master-Data-Data-Dictionary-1.png}
-\caption{Departments Master Data Dictionary}
-\label{fig:departments-master-data}
-\end{figure}
-
-\subsubsection{Vacation Types Master Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Vacation-Types-Master-Data-Data-Dictionary/Vacation-Types-Master-Data-Data-Dictionary-1.png}
-\caption{Vacation Types Master Data Dictionary}
-\label{fig:vacation-types-master-data}
-\end{figure}
-
-\subsection{Screen-Level Data Dictionaries}
-
-\subsubsection{Vacation Request Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Request-Screen-Data-Dictionary/Vacation-Request-Screen-Data-Dictionary-1.png}
-\caption{Vacation Request Screen Data Dictionary}
-\label{fig:vacation-request-data-dict}
-\end{figure}
-
-\subsubsection{Vacation Cancellation Request Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Cancellation-Request-Screen-Data-Dictionary/Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png}
-\caption{Vacation Cancellation Request Screen Data Dictionary}
-\label{fig:vacation-cancellation-data-dict}
-\end{figure}
-
-\subsubsection{Review Vacation Request Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Request-Screen-Data-Dictionary/Review-Vacation-Request-Screen-Data-Dictionary-1.png}
-\caption{Review Vacation Request Screen Data Dictionary}
-\label{fig:review-vacation-data-dict}
-\end{figure}
-
-\subsubsection{Review Vacation Cancellation Request Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png}
-\caption{Review Vacation Cancellation Request Screen Data Dictionary}
-\label{fig:review-cancellation-data-dict}
-\end{figure}
-
-\subsubsection{My Vacation Requests Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/My-Vacation-Requests-Screen-Data-Dictionary/My-Vacation-Requests-Screen-Data-Dictionary-1.png}
-\caption{My Vacation Requests Screen Data Dictionary}
-\label{fig:my-vacation-requests-data-dict}
-\end{figure}
-
-\subsubsection{Pending Vacation Requests Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Pending-Vacation-Requests-Screen-Data-Dictionary/Pending-Vacation-Requests-Screen-Data-Dictionary-1.png}
-\caption{Pending Vacation Requests Screen Data Dictionary}
-\label{fig:pending-vacation-requests-data-dict}
-\end{figure}
-
-\subsubsection{Vacation Inquiry Search Parameters Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary-1.png}
-\caption{Vacation Inquiry Search Parameters Screen Data Dictionary}
-\label{fig:inquiry-search-params-data-dict}
-\end{figure}
-
-\subsubsection{Vacation Inquiry Search Results Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary-1.png}
-\caption{Vacation Inquiry Search Results Screen Data Dictionary}
-\label{fig:inquiry-search-results-data-dict}
-\end{figure}
-
-\subsubsection{Notifications Center Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Notifications-Center-Screen-Data-Dictionary/Notifications-Center-Screen-Data-Dictionary-1.png}
-\caption{Notifications Center Screen Data Dictionary}
-\label{fig:notifications-center-data-dict}
-\end{figure}
-
-\subsubsection{Print Single Transaction Report Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Print-Single-Transaction-Report-Data-Dictionary/Print-Single-Transaction-Report-Data-Dictionary-1.png}
-\caption{Print Single Transaction Report Data Dictionary}
-\label{fig:print-single-transaction-data-dict}
-\end{figure}
-
-\subsubsection{Print Comparative Annual Report Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Print-Comparative-Annual-Report-Data-Dictionary/Print-Comparative-Annual-Report-Data-Dictionary-1.png}
-\caption{Print Comparative Annual Report Data Dictionary}
-\label{fig:print-comparative-annual-data-dict}
-\end{figure}
-
-\subsection{System Messages Table}
-The system includes a comprehensive message table for all user communications and error messages.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=1\textwidth]{Use-Cases/Messages-Table/Messages-Table-1.png}
-\caption{System Messages Table - Part 1}
-\label{fig:messages-table-1}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=1\textwidth]{Use-Cases/Messages-Table/Messages-Table-2.png}
-\caption{System Messages Table - Part 2}
-\label{fig:messages-table-2}
-\end{figure}
-
-\section{Non-Functional Requirements}
-
-\subsection{Performance Requirements}
-\begin{itemize}
-    \item \textbf{Response Time}: Page load < 3 seconds
-    \item \textbf{Throughput}: Support 100+ concurrent users
-    \item \textbf{Availability}: 99.5\% uptime during business hours
-    \item \textbf{Scalability}: Support up to 1000 employees
-    \item \textbf{PDF Generation}: < 5 seconds for standard reports
-\end{itemize}
-
-\subsection{Security Requirements}
-\begin{itemize}
-    \item \textbf{Authentication}: Secure login with session management
-    \item \textbf{Authorization}: Role-based access control
-    \item \textbf{Data Protection}: Encrypt sensitive employee information
-    \item \textbf{Audit Trail}: Log all system activities
-    \item \textbf{Input Validation}: SQL injection and XSS prevention
-\end{itemize}
-
-\subsection{Usability Requirements}
-\begin{itemize}
-    \item \textbf{User Interface}: Intuitive, responsive design
-    \item \textbf{Accessibility}: WCAG 2.1 AA compliance
-    \item \textbf{Multi-language}: Arabic and English support
-    \item \textbf{Mobile Support}: Responsive design for all devices
-    \item \textbf{Error Handling}: Clear, actionable error messages
-\end{itemize}
-
-\subsection{Reliability Requirements}
-\begin{itemize}
-    \item \textbf{Error Handling}: Graceful error messages
-    \item \textbf{Data Integrity}: Prevent data corruption
-    \item \textbf{Backup}: Daily automated backups
-    \item \textbf{Recovery}: 4-hour maximum recovery time
-    \item \textbf{Validation}: Comprehensive business rule validation
-\end{itemize}
-
-\section{Business Rules and Logic}
-
-\subsection{Vacation Policy Rules}
-\begin{itemize}
-    \item \textbf{Standard Entitlement}: 21 days per year
-    \item \textbf{Extended Entitlement}: 30 days for employees with >10 years service or >50 years old
-    \item \textbf{Leave Types}: Annual and Sick leave only
-    \item \textbf{Unused Days}: Forfeited annually, no carryover
-    \item \textbf{Emergency Exceptions}: Supported via flags even with zero balance
-    \item \textbf{Trainee Restrictions}: Cannot submit vacation requests
-\end{itemize}
-
-\subsection{Approval Workflow Rules}
-\begin{itemize}
-    \item \textbf{Approval Hierarchy}: Employee → Direct Manager → HR → General Manager
-    \item \textbf{Escalation}: Automatic after 2 days of delay
-    \item \textbf{Balance Update}: Only after General Manager approval
-    \item \textbf{Rejection Reasons}: Required for all rejections
-    \item \textbf{Notification}: Sent for all status changes
-    \item \textbf{No Modification}: Submitted requests cannot be modified
-\end{itemize}
-
-\subsection{Validation Rules}
-\begin{itemize}
-    \item \textbf{Date Validation}: No past dates, logical date ranges
-    \item \textbf{Overlap Prevention}: No conflicting requests for same employee
-    \item \textbf{Balance Checking}: Requested days < available balance
-    \item \textbf{Attachment Requirements}: Mandatory for sick leave
-    \item \textbf{Cancellation Rules}: Only before vacation start date
-    \item \textbf{Status Validation}: Only Pending or Approved requests can be cancelled
-\end{itemize}
-
-\section{Technical Specifications}
-
-\subsection{Technology Stack}
+\subsubsection{Technology Stack}
 \begin{itemize}
     \item \textbf{Frontend}: HTML5, CSS3, JavaScript, React/Angular
     \item \textbf{Backend}: Node.js/Python/Java
@@ -875,7 +1194,7 @@ The system includes a comprehensive message table for all user communications an
     \item \textbf{Workflow Engine}: Custom implementation or BPMS
 \end{itemize}
 
-\subsection{Performance Specifications}
+\subsubsection{Performance Specifications}
 \begin{itemize}
     \item \textbf{Response Time}: < 3 seconds for page loads
     \item \textbf{Database Queries}: < 1 second for standard operations
@@ -884,18 +1203,19 @@ The system includes a comprehensive message table for all user communications an
     \item \textbf{File Upload}: Support for multiple file types and sizes
 \end{itemize}
 
-\subsection{Security Specifications}
+\subsubsection{Security Specifications}
 \begin{itemize}
     \item \textbf{Encryption}: AES-256 for sensitive data
     \item \textbf{Password Policy}: Minimum 8 characters, complexity requirements
     \item \textbf{Session Management}: Secure session handling with timeout
-    \textbf{Input Validation}: SQL injection and XSS prevention
+    \item \textbf{Input Validation}: SQL injection and XSS prevention
     \item \textbf{File Security}: Secure file upload and storage
 \end{itemize}
 
-\section{Testing Requirements}
+\subsection{Appendix I: Testing Requirements}
+This appendix contains testing specifications that are typically covered in a Test Plan:
 
-\subsection{Functional Testing}
+\subsubsection{Functional Testing}
 \begin{itemize}
     \item \textbf{Unit Testing}: Individual component testing
     \item \textbf{Integration Testing}: Module interaction testing
@@ -904,7 +1224,7 @@ The system includes a comprehensive message table for all user communications an
     \item \textbf{Workflow Testing}: Approval process validation
 \end{itemize}
 
-\subsection{Non-Functional Testing}
+\subsubsection{Non-Functional Testing}
 \begin{itemize}
     \item \textbf{Performance Testing}: Load and stress testing
     \item \textbf{Security Testing}: Vulnerability assessment
@@ -913,9 +1233,10 @@ The system includes a comprehensive message table for all user communications an
     \item \textbf{PDF Generation Testing}: Report output validation
 \end{itemize}
 
-\section{Deployment and Maintenance}
+\subsection{Appendix J: Deployment and Maintenance}
+This appendix contains deployment and maintenance specifications that are typically covered in a Project Plan:
 
-\subsection{Deployment Strategy}
+\subsubsection{Deployment Strategy}
 \begin{itemize}
     \item \textbf{Environment Setup}: Development, testing, production
     \item \textbf{Database Migration}: Schema creation and data migration
@@ -924,72 +1245,13 @@ The system includes a comprehensive message table for all user communications an
     \item \textbf{Integration Testing}: External system integration validation
 \end{itemize}
 
-\subsection{Maintenance Requirements}
+\subsubsection{Maintenance Requirements}
 \begin{itemize}
     \item \textbf{Regular Updates}: Security patches and bug fixes
     \item \textbf{Performance Monitoring}: System health tracking
     \item \textbf{Backup Verification}: Regular backup testing
     \item \textbf{User Support}: Help desk and documentation
     \item \textbf{Policy Updates}: Vacation policy configuration management
-\end{itemize}
-
-\section{Appendices}
-
-\subsection{Appendix A: Glossary}
-\begin{itemize}
-    \item \textbf{Vacation}: Time off from work for personal reasons
-    \item \textbf{Leave Balance}: Remaining vacation days available
-    \item \textbf{Approval Workflow}: Process for request authorization
-    \item \textbf{Escalation}: Automatic forwarding of delayed requests
-    \item \textbf{Attachments}: Supporting documents for requests
-    \item \textbf{Entitlement}: Annual vacation days allocation
-    \item \textbf{Trainee}: Employee in training status, ineligible for vacation
-\end{itemize}
-
-\subsection{Appendix B: Data Models}
-\begin{itemize}
-    \item Entity-Relationship Diagrams
-    \item Database Schema Definitions
-    \item API Specification Documents
-    \item Integration Interface Definitions
-    \item Master Data Entity Definitions
-\end{itemize}
-
-\subsection{Appendix C: Wireframe Images}
-\begin{itemize}
-    \item Vacation Request Screen (Web \& Mobile)
-    \item Vacation Cancellation Screen (Web \& Mobile)
-    \item Review Screens (Web \& Mobile)
-    \item Inquiry and Search Screens
-    \item Report Layouts
-    \item Dashboard and Analytics Screens
-    \item Notifications Center
-\end{itemize}
-
-\subsection{Appendix D: State Diagrams}
-\begin{itemize}
-    \item Vacation Request State Flow
-    \item Approval Workflow States
-    \item Cancellation Process States
-    \item System Status Transitions
-    \item Employee Balance Update States
-\end{itemize}
-
-\subsection{Appendix E: Workflow Diagrams}
-\begin{itemize}
-    \item Basic Vacation Request Flow
-    \item Escalation to Sponsor Flow
-    \item Resubmission After Rejection Flow
-    \item Cancellation Approval Flow
-    \item Multi-level Approval Process
-\end{itemize}
-
-\subsection{Appendix F: Use Case Templates}
-\begin{itemize}
-    \item Standard Use Case Template
-    \item Use Case Documentation Standards
-    \item Business Rule Definition Format
-    \item Exception Handling Documentation
 \end{itemize}
 
 \section{Document Approval}
@@ -1022,7 +1284,11 @@ The system includes a comprehensive message table for all user communications an
 \hline
 1.0 & Initial & Initial SRS Document & System Analyst \\
 \hline
-2.0 & \today & Complete rewrite with all project materials & System Analyst \\
+2.0 & Previous & Complete rewrite with all project materials & System Analyst \\
+\hline
+2.1 & Previous & Restructured for clarity, reduced redundancy, consolidated business rules & System Analyst \\
+\hline
+2.2 & \today & Added all use case images, wireframes, and data dictionary images & System Analyst \\
 \hline
 \end{tabular}
 \caption{Document Version History}
