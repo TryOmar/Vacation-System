@@ -97,3 +97,8 @@ latexmkrc
 
 # Test files
 test.html
+
+# Node modules
+node_modules/
+package-lock.json
+package.json
