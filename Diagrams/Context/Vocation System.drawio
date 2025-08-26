@@ -1,0 +1,104 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" version="28.1.1">
+  <diagram name="Vacation Management Context" id="zyUnGOJ74NOyQU0aYtZx">
+    <mxGraphModel dx="1501" dy="818" grid="1" gridSize="50" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-112" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;dashPattern=12 12;" vertex="1" parent="1">
+          <mxGeometry x="350" y="200" width="1050" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-92" value="Vacation Management System" style="ellipse;fillColor=#2B2B2B;fontColor=#FFFFFF;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="500" width="300" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-93" value="Employee" style="rounded=1;fillColor=#3C3F41;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="190" y="650" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-94" value="Direct Manager" style="rounded=1;fillColor=#3C3F41;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="430" y="900" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-95" value="HR" style="rounded=1;fillColor=#3C3F41;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="900" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-96" value="General Manager" style="rounded=1;fillColor=#3C3F41;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="570" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-97" value="External HR System" style="rounded=1;fillColor=#3C3F41;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="410" y="250" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-98" value="External Department Master Data" style="rounded=1;fillColor=#3C3F41;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="750" y="250" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-99" value="External Vacation Types Master Data" style="rounded=1;fillColor=#3C3F41;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="250" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-100" value="Vacation Request / Cancellation / Search" style="edgeStyle=elbowEdgeStyle;curved=1;endArrow=classic;strokeColor=#BBBBBB;fontColor=#000000;html=1;align=center;verticalAlign=middle;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="MQ_Y-KA0zIuLEXS8BEDK-93" target="MQ_Y-KA0zIuLEXS8BEDK-92">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="600" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="400" y="550" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-101" value="Request Status / Notifications / Balance / Search Results" style="edgeStyle=elbowEdgeStyle;curved=1;endArrow=classic;strokeColor=#BBBBBB;fontColor=#000000;html=1;align=center;verticalAlign=middle;entryX=1;entryY=0.625;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="MQ_Y-KA0zIuLEXS8BEDK-92" target="MQ_Y-KA0zIuLEXS8BEDK-93">
+          <mxGeometry x="0.3014" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="450" y="500" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-102" value="Approve/Reject Requests / Reason / Search / Report Commands" style="edgeStyle=elbowEdgeStyle;curved=1;endArrow=classic;strokeColor=#BBBBBB;fontColor=#000000;html=1;align=center;verticalAlign=middle;exitX=0.916;exitY=-0.015;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.333;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="MQ_Y-KA0zIuLEXS8BEDK-94" target="MQ_Y-KA0zIuLEXS8BEDK-92">
+          <mxGeometry x="-0.322" y="-12" relative="1" as="geometry">
+            <mxPoint x="750.0800000000002" y="1025" as="sourcePoint" />
+            <mxPoint x="750.0000000000002" y="700" as="targetPoint" />
+            <Array as="points" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-103" value="Request Details / Pending Requests / Notifications / Reports / Search Results" style="edgeStyle=elbowEdgeStyle;curved=1;endArrow=classic;strokeColor=#BBBBBB;fontColor=#000000;html=1;align=center;verticalAlign=middle;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MQ_Y-KA0zIuLEXS8BEDK-92" target="MQ_Y-KA0zIuLEXS8BEDK-94">
+          <mxGeometry x="0.0477" relative="1" as="geometry">
+            <Array as="points" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-104" value="Approve/Reject Requests / Reason / Search / Report Commands" style="edgeStyle=elbowEdgeStyle;curved=1;endArrow=classic;strokeColor=#BBBBBB;fontColor=#000000;html=1;align=center;verticalAlign=middle;exitX=0.201;exitY=0.045;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.594;entryY=1.018;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="MQ_Y-KA0zIuLEXS8BEDK-95" target="MQ_Y-KA0zIuLEXS8BEDK-92">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-105" value="Request Details / Pending Requests / Notifications / Reports / Search Results" style="edgeStyle=elbowEdgeStyle;curved=1;endArrow=classic;strokeColor=#BBBBBB;fontColor=#000000;html=1;align=center;verticalAlign=middle;entryX=0.688;entryY=0;entryDx=0;entryDy=0;exitX=0.791;exitY=0.896;exitDx=0;exitDy=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="MQ_Y-KA0zIuLEXS8BEDK-92" target="MQ_Y-KA0zIuLEXS8BEDK-95">
+          <mxGeometry x="0.3074" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1100" y="750" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-106" value="Final Approval / Reason / Search / Report Commands" style="edgeStyle=elbowEdgeStyle;curved=1;endArrow=classic;strokeColor=#BBBBBB;fontColor=#000000;html=1;align=center;verticalAlign=middle;exitX=-0.005;exitY=0.572;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.936;entryY=0.746;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="MQ_Y-KA0zIuLEXS8BEDK-96" target="MQ_Y-KA0zIuLEXS8BEDK-92">
+          <mxGeometry x="-0.1984" y="34" relative="1" as="geometry">
+            <mxPoint x="1000" y="600" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1150" y="650" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-107" value="Request Details / Notifications / Reports" style="edgeStyle=elbowEdgeStyle;curved=1;endArrow=classic;strokeColor=#BBBBBB;fontColor=#000000;html=1;align=center;verticalAlign=middle;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=0.994;exitY=0.653;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="MQ_Y-KA0zIuLEXS8BEDK-92" target="MQ_Y-KA0zIuLEXS8BEDK-96">
+          <mxGeometry x="-0.1561" y="23" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1200" y="550" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-108" value="Employee Master Data" style="edgeStyle=elbowEdgeStyle;curved=1;endArrow=classic;strokeColor=#BBBBBB;fontColor=#000000;html=1;align=center;verticalAlign=middle;entryX=0;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MQ_Y-KA0zIuLEXS8BEDK-97" target="MQ_Y-KA0zIuLEXS8BEDK-92">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-109" value="Department List / Details" style="edgeStyle=elbowEdgeStyle;curved=1;endArrow=classic;strokeColor=#BBBBBB;fontColor=#000000;html=1;align=center;verticalAlign=middle;" edge="1" parent="1" source="MQ_Y-KA0zIuLEXS8BEDK-98" target="MQ_Y-KA0zIuLEXS8BEDK-92">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MQ_Y-KA0zIuLEXS8BEDK-110" value="Vacation Type Definitions / Entitlements / Rules" style="edgeStyle=elbowEdgeStyle;curved=1;endArrow=classic;strokeColor=#BBBBBB;fontColor=#000000;html=1;align=center;verticalAlign=middle;" edge="1" parent="1" source="MQ_Y-KA0zIuLEXS8BEDK-99" target="MQ_Y-KA0zIuLEXS8BEDK-92">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

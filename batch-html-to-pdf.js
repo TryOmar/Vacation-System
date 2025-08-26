@@ -158,6 +158,8 @@ async function chooseFolder(folders) {
       logStep(`HTML → ${htmlFile}`);
       const page = await browser.newPage();
       await page.goto("file://" + htmlPath, { waitUntil: "networkidle0" });
+
+      // PDF generation: normal default Puppeteer quality
       logStep(`PDF → ${path.basename(pdfPath)}`);
       await page.pdf({ path: pdfPath, ...config.pdf });
       await page.close();
@@ -165,6 +167,7 @@ async function chooseFolder(folders) {
       await waitForFile(pdfPath);
       logSuccess(`HTML to PDF: ${htmlFile} → ${path.basename(pdfPath)}`);
 
+      // PNG conversion: user-configured DPI only
       logStep(`PNG → ${path.basename(baseImagePath)} (crop: ${config.cropImages})`);
       await pdfToAllImages(pdfPath, baseImagePath, config.pngDpi, config.cropImages);
       
