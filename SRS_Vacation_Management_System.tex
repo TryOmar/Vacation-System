@@ -143,8 +143,8 @@ The system scope includes:
 \begin{itemize}
     \item Project Scope Document
     \item All-UseCases.json - Complete Use Case Specifications
-    \item Wireframe Specifications (All Screen Designs)
-    \item Data Dictionary Documentation (Master and Screen-level)
+    \item Wireframe Specifications (see Appendix C)
+    \item Data Dictionary Documentation (see Appendix B.2)
     \item System Diagrams (Context, State, Workflow)
 \end{itemize}
 
@@ -243,6 +243,27 @@ System Administrators & Technical users, system maintenance & Full system access
 \hline
 \end{tabular}
 \caption{User Classes and Access Rights}
+\end{table}
+
+\subsection{Stakeholder Register}
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{3cm}|p{3cm}|p{1cm}|p{1.5cm}|p{4cm}|p{4cm}|}
+\hline
+\textbf{Stakeholder} & \textbf{Role / Title} & \textbf{Power} & \textbf{Interest} & \textbf{Key Requirements} & \textbf{Main Concerns} \\
+\hline
+Employees & Staff & L & H & Submit and track vacation requests & Rejections, delays, unclear process \\
+\hline
+Direct Managers & Supervisor & H & H & Approve/reject requests & Delays, incomplete information \\
+\hline
+HR Personnel & HR Officer & H & H & Manage policies, approve requests & Misuse, balance errors \\
+\hline
+General Managers & GM / Senior Manager & H & H & Final approvals, system oversight & Delayed approvals, wrong balances \\
+\hline
+System & Automated Actor & H & H & Update balances, enforce policies & Wrong calculations, workflow errors \\
+\hline
+\end{tabular}
+\caption{Stakeholder Register}
 \end{table}
 
 \subsection{Operating Environment}
@@ -353,7 +374,7 @@ Rejected requests can be resubmitted following this process:
 
 \section{Business Rules and Logic}
 
-This section consolidates all core business rules that govern the system's behavior. These rules are referenced by use cases and functional requirements throughout the document.
+This section is the single source of truth for all business rules that govern system behavior. Use cases and functional requirements must reference rules here by ID (e.g., BR-011). If any use case introduces a new rule, it must be added here and assigned a unique identifier.
 
 \subsection{Vacation Policy Rules}
 
@@ -417,7 +438,7 @@ This section consolidates all core business rules that govern the system's behav
 \textbf{Implementation}: System validates date inputs in real-time and prevents submission of invalid dates.
 
 \subsubsection{BR-012: Overlap Prevention}
-\textbf{Rule}: No overlapping vacation requests are allowed for the same employee.
+\textbf{Rule}: The system must ensure an employee has at most one active vacation request for any given date range.
 \textbf{Applicable Use Cases}: UC-1
 \textbf{Implementation}: System checks existing requests against proposed dates and blocks submission if conflicts exist.
 
@@ -646,7 +667,7 @@ This mapping ensures that:
 
 \section{Functional Requirements}
 
-This section describes the system's functional requirements derived from use cases, focusing on what the system must do rather than how it does it.
+This section lists what the system must do. Each functional requirement references applicable business rules (Section 4) and is traced to use cases (Section 5), where detailed flows illustrate scenarios. Avoid duplicating scenario steps here; use cases serve as the canonical behavioral narratives.
 
 \subsection{FR-001: Vacation Request Management}
 \textbf{Description}: The system must allow employees to create and submit vacation requests.
@@ -765,6 +786,7 @@ This section describes the system's functional requirements derived from use cas
 \subsubsection{NFR-011: User Interface}
 \textbf{Requirement}: System must provide intuitive, responsive design.
 \textbf{Implementation}: Modern web standards, consistent navigation, clear visual hierarchy.
+\textbf{Measurement}: SUS score \(\geq\) 80 from usability tests.
 \textbf{Applicable Use Cases}: All user interface interactions.
 
 \subsubsection{NFR-012: Accessibility}
@@ -780,6 +802,7 @@ This section describes the system's functional requirements derived from use cas
 \subsubsection{NFR-014: Mobile Support}
 \textbf{Requirement}: System must provide responsive design for all devices.
 \textbf{Implementation}: Mobile-first design, touch-friendly interfaces, adaptive layouts.
+\textbf{Measurement}: Lighthouse mobile performance score \(\geq\) 80.
 \textbf{Applicable Use Cases}: All user interface interactions.
 
 \subsubsection{NFR-015: Error Handling}
@@ -811,237 +834,26 @@ This section describes the system's functional requirements derived from use cas
 
 \section{User Interface Overview}
 
-This section provides the system's user interface wireframes and visual specifications.
+This section provides a high-level overview of the user interface structure and references the comprehensive wireframes. Detailed visual specifications are centralized in Appendix C: Wireframe Images.
 
 \subsection{Core Application Screens}
-
-\subsubsection{Vacation Request Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Vacation-Request/Vacation-Request-1.png}
-\caption{Vacation Request Screen}
-\label{fig:vacation-request-screen}
-\end{figure}
-
-\subsubsection{Vacation Cancellation Request Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Vacation-Cancellation-Request/Vacation-Cancellation-Request-1.png}
-\caption{Vacation Cancellation Request Screen}
-\label{fig:vacation-cancellation-screen}
-\end{figure}
-
-\subsubsection{Review Vacation Request Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Review-Vacation-Request/Review-Vacation-Request-1.png}
-\caption{Review Vacation Request Screen}
-\label{fig:review-vacation-screen}
-\end{figure}
-
-\subsubsection{Review Vacation Cancellation Request Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Review-Vacation-Cancellation-Request/Review-Vacation-Cancellation-Request-1.png}
-\caption{Review Vacation Cancellation Request Screen}
-\label{fig:review-cancellation-screen}
-\end{figure}
-
-\subsubsection{My Vacation Requests Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/My-Vacation-Requests/My-Vacation-Requests-1.png}
-\caption{My Vacation Requests Screen}
-\label{fig:my-vacation-requests-screen}
-\end{figure}
-
-\subsubsection{Pending Vacation Requests Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Pending-Vacation-Requests/Pending-Vacation-Requests-1.png}
-\caption{Pending Vacation Requests Screen}
-\label{fig:pending-vacation-requests-screen}
-\end{figure}
-
-\subsubsection{Vacation Inquiry Search Parameters Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Employee-Vacation-Inquiry-Search-Parameters/Employee-Vacation-Inquiry-Search-Parameters-1.png}
-\caption{Vacation Inquiry Search Parameters Screen}
-\label{fig:inquiry-search-params-screen}
-\end{figure}
-
-\subsubsection{Vacation Inquiry Search Results Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Employee-Vacation-Inquiry-Search-Results/Employee-Vacation-Inquiry-Search-Results-1.png}
-\caption{Vacation Inquiry Search Results Screen}
-\label{fig:inquiry-search-results-screen}
-\end{figure}
-
-\subsubsection{Notifications Center Screen}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Notifications-Center/Notifications-Center-1.png}
-\caption{Notifications Center Screen}
-\label{fig:notifications-center-screen}
-\end{figure}
+The application includes the following primary screens: Vacation Request, Vacation Cancellation Request, Review Vacation Request, Review Vacation Cancellation, My Vacation Requests, Pending Requests, Notifications Center, and Inquiry (Search Parameters and Results). For full layouts and annotations, see Appendix C.
 
 \subsection{Report Layout Screens}
-
-\subsubsection{Single Transaction Report Layout}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report-1.png}
-\caption{Single Transaction Report Layout}
-\label{fig:single-transaction-report-layout}
-\end{figure}
-
-\subsubsection{Annual Comparative Report Layout}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Print-Layout-Annual-Comparative-Report/Print-Layout-Annual-Comparative-Report-Web-1.png}
-\caption{Annual Comparative Report Layout}
-\label{fig:annual-comparative-report-layout}
-\end{figure}
+Single Transaction Report and Annual Comparative Report layouts are provided in Appendix C with full details.
 
 \subsection{Additional Screens}
-
-\subsubsection{Requests Center}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Requests-Center/Requests-Center-1.png}
-\caption{Requests Center Screen}
-\label{fig:requests-center-screen}
-\end{figure}
-
-\subsubsection{Annual Comparative Report Search Parameters}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Wireframes/Annual-Comparative-Report-Search-Parameters/Annual-Comparative-Report-Search-Parameters-1.png}
-\caption{Annual Comparative Report Search Parameters Screen}
-\label{fig:annual-comparative-report-search-params}
-\end{figure}
+Requests Center and Annual Comparative Report Search Parameters are provided in Appendix C.
 
 \section{Data Requirements Overview}
 
-This section provides the system's data dictionary specifications and field definitions.
+This section provides a high-level overview of the system's data entities and references a centralized appendix for complete data dictionaries and field definitions.
 
-\subsection{Master Data Dictionaries}
+\subsection{Master Data}
+Employee, Departments, and Vacation Types constitute the core master data used across the system. Complete field definitions, constraints, and validation rules are provided in Appendix B.2.
 
-\subsubsection{Employee Master Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary/Employee-Master-Data-Data-Dictionary-1.png}
-\caption{Employee Master Data Dictionary}
-\label{fig:employee-master-data}
-\end{figure}
-
-\subsubsection{Departments Master Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary/Departments-Master-Data-Data-Dictionary-1.png}
-\caption{Departments Master Data Dictionary}
-\label{fig:departments-master-data}
-\end{figure}
-
-\subsubsection{Vacation Types Master Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Vacation-Types-Master-Data-Data-Dictionary/Vacation-Types-Master-Data-Data-Dictionary-1.png}
-\caption{Vacation Types Master Data Dictionary}
-\label{fig:vacation-types-master-data}
-\end{figure}
-
-\subsection{Screen-Level Data Dictionaries}
-
-\subsubsection{Vacation Request Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Request-Screen-Data-Dictionary/Vacation-Request-Screen-Data-Dictionary-1.png}
-\caption{Vacation Request Screen Data Dictionary}
-\label{fig:vacation-request-data-dict}
-\end{figure}
-
-\subsubsection{Vacation Cancellation Request Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Cancellation-Request-Screen-Data-Dictionary/Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png}
-\caption{Vacation Cancellation Request Screen Data Dictionary}
-\label{fig:vacation-cancellation-data-dict}
-\end{figure}
-
-\subsubsection{Review Vacation Request Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Request-Screen-Data-Dictionary/Review-Vacation-Request-Screen-Data-Dictionary-1.png}
-\caption{Review Vacation Request Screen Data Dictionary}
-\label{fig:review-vacation-data-dict}
-\end{figure}
-
-\subsubsection{Review Vacation Cancellation Request Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png}
-\caption{Review Vacation Cancellation Request Screen Data Dictionary}
-\label{fig:review-cancellation-data-dict}
-\end{figure}
-
-\subsubsection{My Vacation Requests Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/My-Vacation-Requests-Screen-Data-Dictionary/My-Vacation-Requests-Screen-Data-Dictionary-1.png}
-\caption{My Vacation Requests Screen Data Dictionary}
-\label{fig:my-vacation-requests-data-dict}
-\end{figure}
-
-\subsubsection{Pending Vacation Requests Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Pending-Vacation-Requests-Screen-Data-Dictionary/Pending-Vacation-Requests-Screen-Data-Dictionary-1.png}
-\caption{Pending Vacation Requests Screen Data Dictionary}
-\label{fig:pending-vacation-requests-data-dict}
-\end{figure}
-
-\subsubsection{Vacation Inquiry Search Parameters Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary-1.png}
-\caption{Vacation Inquiry Search Parameters Screen Data Dictionary}
-\label{fig:inquiry-search-params-data-dict}
-\end{figure}
-
-\subsubsection{Vacation Inquiry Search Results Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary-1.png}
-\caption{Vacation Inquiry Search Results Screen Data Dictionary}
-\label{fig:inquiry-search-results-data-dict}
-\end{figure}
-
-\subsubsection{Notifications Center Screen Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Notifications-Center-Screen-Data-Dictionary/Notifications-Center-Screen-Data-Dictionary-1.png}
-\caption{Notifications Center Screen Data Dictionary}
-\label{fig:notifications-center-data-dict}
-\end{figure}
-
-\subsubsection{Print Single Transaction Report Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Print-Single-Transaction-Report-Data-Dictionary/Print-Single-Transaction-Report-Data-Dictionary-1.png}
-\caption{Print Single Transaction Report Data Dictionary}
-\label{fig:print-single-transaction-data-dict}
-\end{figure}
-
-\subsubsection{Print Comparative Annual Report Data Dictionary}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Print-Comparative-Annual-Report-Data-Dictionary/Print-Comparative-Annual-Report-Data-Dictionary-1.png}
-\caption{Print Comparative Annual Report Data Dictionary}
-\label{fig:print-comparative-annual-data-dict}
-\end{figure}
+\subsection{Operational Data}
+Vacation Requests, Vacation Cancellations, Approval History, and Notification Data constitute the operational entities. See Appendix B.2 for full data dictionaries.
 
 \section{System Messages}
 
@@ -1105,6 +917,109 @@ The following image shows the standard data dictionary template used for documen
 \includegraphics[width=0.9\textwidth]{Data-Dictionary/Data-Dictionary-Template/Data-Dictionary-Template-1.png}
 \caption{Data Dictionary Template}
 \label{fig:data-dictionary-template}
+\end{figure}
+
+\subsection{Appendix B.2: Comprehensive Data Dictionaries}
+This appendix consolidates all master and screen-level data dictionaries.
+
+\paragraph{Master Data Dictionaries}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary/Employee-Master-Data-Data-Dictionary-1.png}
+\caption{Employee Master Data Dictionary}
+\label{fig:employee-master-data}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary/Departments-Master-Data-Data-Dictionary-1.png}
+\caption{Departments Master Data Dictionary}
+\label{fig:departments-master-data}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Master-Data-Dictionaries/Vacation-Types-Master-Data-Data-Dictionary/Vacation-Types-Master-Data-Data-Dictionary-1.png}
+\caption{Vacation Types Master Data Dictionary}
+\label{fig:vacation-types-master-data}
+\end{figure}
+
+\paragraph{Screen-Level Data Dictionaries}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Request-Screen-Data-Dictionary/Vacation-Request-Screen-Data-Dictionary-1.png}
+\caption{Vacation Request Screen Data Dictionary}
+\label{fig:vacation-request-data-dict}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Cancellation-Request-Screen-Data-Dictionary/Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png}
+\caption{Vacation Cancellation Request Screen Data Dictionary}
+\label{fig:vacation-cancellation-data-dict}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Request-Screen-Data-Dictionary/Review-Vacation-Request-Screen-Data-Dictionary-1.png}
+\caption{Review Vacation Request Screen Data Dictionary}
+\label{fig:review-vacation-data-dict}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png}
+\caption{Review Vacation Cancellation Request Screen Data Dictionary}
+\label{fig:review-cancellation-data-dict}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/My-Vacation-Requests-Screen-Data-Dictionary/My-Vacation-Requests-Screen-Data-Dictionary-1.png}
+\caption{My Vacation Requests Screen Data Dictionary}
+\label{fig:my-vacation-requests-data-dict}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Pending-Vacation-Requests-Screen-Data-Dictionary/Pending-Vacation-Requests-Screen-Data-Dictionary-1.png}
+\caption{Pending Vacation Requests Screen Data Dictionary}
+\label{fig:pending-vacation-requests-data-dict}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary-1.png}
+\caption{Vacation Inquiry Search Parameters Screen Data Dictionary}
+\label{fig:inquiry-search-params-data-dict}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary-1.png}
+\caption{Vacation Inquiry Search Results Screen Data Dictionary}
+\label{fig:inquiry-search-results-data-dict}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Notifications-Center-Screen-Data-Dictionary/Notifications-Center-Screen-Data-Dictionary-1.png}
+\caption{Notifications Center Screen Data Dictionary}
+\label{fig:notifications-center-data-dict}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Print-Single-Transaction-Report-Data-Dictionary/Print-Single-Transaction-Report-Data-Dictionary-1.png}
+\caption{Print Single Transaction Report Data Dictionary}
+\label{fig:print-single-transaction-data-dict}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Print-Comparative-Annual-Report-Data-Dictionary/Print-Comparative-Annual-Report-Data-Dictionary-1.png}
+\caption{Print Comparative Annual Report Data Dictionary}
+\label{fig:print-comparative-annual-data-dict}
 \end{figure}
 
 \subsection{Appendix C: Wireframe Images}
@@ -1293,7 +1208,7 @@ This appendix contains technical implementation details that are typically cover
 
 \subsubsection{Performance Specifications}
 \begin{itemize}
-    \item \textbf{Response Time}: < 3 seconds for page loads
+    \item \textbf{Response Time}: under 3 seconds for page loads
     \item \textbf{Database Queries}: < 1 second for standard operations
     \item \textbf{PDF Generation}: < 5 seconds for standard reports
     \item \textbf{Concurrent Users}: Support for 100+ simultaneous users
@@ -1349,6 +1264,29 @@ This appendix contains deployment and maintenance specifications that are typica
     \item \textbf{Backup Verification}: Regular backup testing
     \item \textbf{User Support}: Help desk and documentation
     \item \textbf{Policy Updates}: Vacation policy configuration management
+\end{itemize}
+
+\subsection{Appendix K: Quality Criteria and Review Practices}
+This appendix articulates how the SRS adheres to quality criteria and the review process to maintain clarity and traceability.
+
+\subsubsection{Quality Criteria Mapping}
+\begin{itemize}
+    \item \textbf{Correct \\ Complete}: Centralized Business Rules (Section 4) and comprehensive traceability matrix (Section 5) ensure accuracy and coverage.
+    \item \textbf{Clear \\ Unambiguous}: Quantified NFRs (Section 7) and explicit field definitions (Appendix B.2) reduce ambiguity.
+    \item \textbf{Consistent}: Glossary (Appendix A) governs terminology across sections; references avoid duplicate definitions.
+    \item \textbf{Feasible}: Constraints and architecture (Sections 2 and 3) bound implementation scope.
+    \item \textbf{Traceable}: Table mappings in Section 5 link UCs, BRs, FRs, UIs, and Data.
+    \item \textbf{Testable}: Each FR/NFR includes measurable outcomes enabling verification.
+    \item \textbf{INVEST for Stories}: Use cases and FRs are structured to be valuable, estimable, and testable; large items are decomposed.
+\end{itemize}
+
+\subsubsection{Review Techniques}
+\begin{itemize}
+    \item \textbf{Peer Review}: Cross-functional review sessions to identify ambiguities and inconsistencies.
+    \item \textbf{Timed Re-read}: Authors re-read after a cooling-off period (\(\geq\) 2 weeks) to spot unclear phrasing.
+    \item \textbf{Checklist}: Verify against quality criteria above before approval.
+    \item \textbf{Traceability Audit}: Confirm every FR/NFR maps to UCs and BRs.
+    \item \textbf{Terminology Audit}: Ensure all terms align with the glossary; replace "e.g."/"i.e." with full words.
 \end{itemize}
 
 \section{Document Approval}
