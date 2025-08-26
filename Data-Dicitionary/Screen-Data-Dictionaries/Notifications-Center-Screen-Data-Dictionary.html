@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -40,7 +40,7 @@
   td:before{content:attr(data-label)": ";position:absolute;left:6px;width:45%;padding-right:10px;white-space:nowrap;font-weight:bold;color:#333}
   .business-rules{max-width:none;font-size:12px}
   }}
-  @media print{.export-buttons{display:none}body{border:none;margin:0;padding:10px}}
+  @media print{.export-buttons{display:none}html,body{margin:0!important;padding:10px!important;max-width:none!important;width:100%!important;background:#fff!important;box-shadow:none!important;border:none!important;text-align:center!important}table{width:auto!important;margin:0 auto!important;display:table}th,td{text-align:left!important}}
   </style>
   
 </head>
@@ -91,3 +91,4 @@ document.addEventListener("DOMContentLoaded",initializePage);
 </script>
 </body>
 </html>
+
