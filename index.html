@@ -105,38 +105,66 @@
     .file-note { color: #888; font-size: 12px; margin-left: 8px; }
     /* Cards */
     .card-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        display: flex;
+        flex-direction: column;
         gap: 12px;
         padding: 12px 14px;
     }
     .doc-card {
         border: 1px solid #e5e5e5;
         border-radius: 6px;
-        padding: 10px 12px;
+        padding: 15px;
         background-color: #fff;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: box-shadow 0.3s ease;
+    }
+    .doc-card:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .doc-card h4 {
         margin: 0;
-        font-size: 14px;
+        font-size: 15px;
         color: #222;
         font-weight: 600;
+        line-height: 1.4;
     }
-    .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
     .btn {
+        flex-grow: 1;
+        text-align: center;
         display: inline-block;
-        padding: 6px 10px;
-        font-size: 12px;
+        padding: 8px 12px;
+        font-size: 13px;
         border-radius: 4px;
         border: 1px solid #111;
         background: #111;
         color: #fff;
         text-decoration: none;
+        transition: all 0.2s ease;
+        min-width: 80px;
     }
-    .btn:hover { background: #333; border-color: #333; }
+    .btn:hover {
+        background: #333;
+        border-color: #333;
+        transform: translateY(-1px);
+    }
+    @media (max-width: 600px) {
+        .doc-card {
+            padding: 12px;
+        }
+        .btn {
+            font-size: 12px;
+            padding: 6px 10px;
+        }
+    }
 </style>
 </head>
 <body>
@@ -148,20 +176,20 @@
 <details open>
     <summary>Context</summary>
     <div class="card-grid">
-        <div class="doc-card"><h4>context.png</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/Context/context.png">Open</a></div></div>
-        <div class="doc-card"><h4>context.drawio.png</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/Context/context.drawio.png">Open</a></div></div>
-        <div class="doc-card"><h4>context.drawio</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/Context/context.drawio">Open</a></div></div>
-        <div class="doc-card"><h4>context.dot</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/Context/context.dot">Open</a></div></div>
-        <div class="doc-card"><h4>Vocation System.drawio</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/Context/Vocation System.drawio">Open</a></div></div>
+        <div class="doc-card"><h4>context.png</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/Context/context.png">View</a></div></div>
+        <div class="doc-card"><h4>context.drawio.png</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/Context/context.drawio.png">View</a></div></div>
+        <div class="doc-card"><h4>context.drawio</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/Context/context.drawio">View</a></div></div>
+        <div class="doc-card"><h4>context.dot</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/Context/context.dot">View</a></div></div>
+        <div class="doc-card"><h4>Vocation System.drawio</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/Context/Vocation System.drawio">View</a></div></div>
     </div>
 </details>
 <details open>
     <summary>State Diagram</summary>
     <div class="card-grid">
-        <div class="doc-card"><h4>State-Diagram.png</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/State-Diagram/State-Diagram.png">Open</a></div></div>
-        <div class="doc-card"><h4>State-Diagram-Dark.png</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/State-Diagram/State-Diagram-Dark.png">Open</a></div></div>
-        <div class="doc-card"><h4>plantuml_export.puml</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/State-Diagram/plantuml_export.puml">Open</a></div></div>
-        <div class="doc-card"><h4>Website.txt</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/State-Diagram/Website.txt">Open</a></div></div>
+        <div class="doc-card"><h4>State-Diagram.png</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/State-Diagram/State-Diagram.png">View</a></div></div>
+        <div class="doc-card"><h4>State-Diagram-Dark.png</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/State-Diagram/State-Diagram-Dark.png">View</a></div></div>
+        <div class="doc-card"><h4>plantuml_export.puml</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/State-Diagram/plantuml_export.puml">View</a></div></div>
+        <div class="doc-card"><h4>Website.txt</h4><div class="actions"><a class="btn" target="_blank" href="Diagrams/State-Diagram/Website.txt">View</a></div></div>
     </div>
 </details>
 <details open>
@@ -286,11 +314,11 @@
 </details>
 
 <h2 class="section-header">Use Cases</h2>
-<details>
+<details open>
     <summary>All Use Cases</summary>
     <div class="card-grid">
-        <div class="doc-card"><h4>All-UseCases.json</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/All-UseCases.json">Open</a></div></div>
-        <div class="doc-card"><h4>All-UseCases-Fixed.json</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/All-UseCases-Fixed.json">Open</a></div></div>
+        <div class="doc-card"><h4>All-UseCases.json</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/All-UseCases.json">View</a></div></div>
+        <div class="doc-card"><h4>All-UseCases-Fixed.json</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/All-UseCases-Fixed.json">View</a></div></div>
     </div>
 </details>
 <details open>
@@ -336,11 +364,11 @@
         <div class="doc-card"><h4>Employee</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary/Employee-Master-Data-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary/Employee-Master-Data-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary/Employee-Master-Data-Data-Dictionary-1.png">PNG</a></div></div>
         <div class="doc-card"><h4>Vacation-Types</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Vacation-Types-Master-Data-Data-Dictionary/Vacation-Types-Master-Data-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Vacation-Types-Master-Data-Data-Dictionary/Vacation-Types-Master-Data-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Vacation-Types-Master-Data-Data-Dictionary/Vacation-Types-Master-Data-Data-Dictionary-1.png">PNG</a></div></div>
         <div class="doc-card"><h4>Departments</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary/Departments-Master-Data-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary/Departments-Master-Data-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary/Departments-Master-Data-Data-Dictionary-1.png">PNG</a></div></div>
-        <div class="doc-card"><h4>Departments (Legacy HTML)</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dicitionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary.html">Open</a></div></div>
+        <div class="doc-card"><h4>Departments (Legacy HTML)</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dicitionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary.html">View</a></div></div>
     </div>
     </ul>
 </details>
-<details>
+<details open>
     <summary>Templates & Indexes</summary>
     <ul>
         <li>Data-Dictionary-Template: <a target="_blank" href="Data-Dictionary/Data-Dictionary-Template/Data-Dictionary-Template.html">HTML</a> | <a target="_blank" href="Data-Dictionary/Data-Dictionary-Template/Data-Dictionary-Template.pdf">PDF</a> | <a target="_blank" href="Data-Dictionary/Data-Dictionary-Template/Data-Dictionary-Template-1.png">PNG</a></li>
@@ -350,7 +378,7 @@
 </details>
 
 <h2 class="section-header">Print Layouts</h2>
-<details>
+<details open>
     <summary>Layouts</summary>
     <ul>
         <li>Single Transaction Report: <a target="_blank" href="Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report.html">HTML</a> | <a target="_blank" href="Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report.pdf">PDF</a> | <a target="_blank" href="Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report-1.png">PNG</a> | <a target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Print-Single-Transaction-Report-Data-Dictionary/Print-Single-Transaction-Report-Data-Dictionary.html">Data Dictionary</a></li>
@@ -359,7 +387,7 @@
 </details>
 
 <h2 class="section-header">Master Data Dictionaries (Legacy quick links)</h2>
-<details>
+<details open>
     <summary>Legacy shortcuts</summary>
     <ul>
         <li><a target="_blank" href="Data-Dicitionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary.html">Employee (HTML)</a></li>
@@ -369,7 +397,7 @@
 </details>
 
 <h2 class="section-header">Use Cases (Legacy quick links)</h2>
-<details>
+<details open>
     <summary>Legacy shortcuts</summary>
     <ul>
         <li><a target="_blank" href="Use-Cases/UC-1-Employee-Vacation-Request/UC-1-Employee-Vacation-Request.html">UC-1 (HTML)</a></li>
@@ -395,3 +423,396 @@
 
 </body>
 </html>
+
+
+        </div>
+
+        <div class="doc-card">
+
+            <h4>Requests-Center</h4>
+
+            <div class="actions">
+
+                <a class="btn" target="_blank" href="Wireframes/Requests-Center/Requests-Center.html">HTML</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Requests-Center/Requests-Center.pdf">PDF</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Requests-Center/Requests-Center-1.png">PNG</a>
+
+            </div>
+
+        </div>
+
+        <div class="doc-card">
+
+            <h4>Notifications-Center</h4>
+
+            <div class="actions">
+
+                <a class="btn" target="_blank" href="Wireframes/Notifications-Center/Notifications-Center.html">HTML</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Notifications-Center/Notifications-Center.pdf">PDF</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Notifications-Center/Notifications-Center-1.png">PNG</a>
+
+            </div>
+
+        </div>
+
+        <div class="doc-card">
+
+            <h4>Pending-Vacation-Requests</h4>
+
+            <div class="actions">
+
+                <a class="btn" target="_blank" href="Wireframes/Pending-Vacation-Requests/Pending-Vacation-Requests.html">HTML</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Pending-Vacation-Requests/Pending-Vacation-Requests.pdf">PDF</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Pending-Vacation-Requests/Pending-Vacation-Requests-1.png">PNG</a>
+
+            </div>
+
+        </div>
+
+        <div class="doc-card">
+
+            <h4>Review-Vacation-Request</h4>
+
+            <div class="actions">
+
+                <a class="btn" target="_blank" href="Wireframes/Review-Vacation-Request/Review-Vacation-Request.html">HTML</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Review-Vacation-Request/Review-Vacation-Request.pdf">PDF</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Review-Vacation-Request/Review-Vacation-Request-1.png">PNG</a>
+
+            </div>
+
+        </div>
+
+        <div class="doc-card">
+
+            <h4>Review-Vacation-Cancellation-Request</h4>
+
+            <div class="actions">
+
+                <a class="btn" target="_blank" href="Wireframes/Review-Vacation-Cancellation-Request/Review-Vacation-Cancellation-Request.html">HTML</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Review-Vacation-Cancellation-Request/Review-Vacation-Cancellation-Request.pdf">PDF</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Review-Vacation-Cancellation-Request/Review-Vacation-Cancellation-Request-1.png">PNG</a>
+
+            </div>
+
+        </div>
+
+        <div class="doc-card">
+
+            <h4>Employee-Vacation-Inquiry-Search-Parameters</h4>
+
+            <div class="actions">
+
+                <a class="btn" target="_blank" href="Wireframes/Employee-Vacation-Inquiry-Search-Parameters/Employee-Vacation-Inquiry-Search-Parameters.html">HTML</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Employee-Vacation-Inquiry-Search-Parameters/Employee-Vacation-Inquiry-Search-Parameters.pdf">PDF</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Employee-Vacation-Inquiry-Search-Parameters/Employee-Vacation-Inquiry-Search-Parameters-1.png">PNG</a>
+
+            </div>
+
+        </div>
+
+        <div class="doc-card">
+
+            <h4>Employee-Vacation-Inquiry-Search-Results</h4>
+
+            <div class="actions">
+
+                <a class="btn" target="_blank" href="Wireframes/Employee-Vacation-Inquiry-Search-Results/Employee-Vacation-Inquiry-Search-Results.html">HTML</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Employee-Vacation-Inquiry-Search-Results/Employee-Vacation-Inquiry-Search-Results.pdf">PDF</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Employee-Vacation-Inquiry-Search-Results/Employee-Vacation-Inquiry-Search-Results-1.png">PNG 1</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Employee-Vacation-Inquiry-Search-Results/Employee-Vacation-Inquiry-Search-Results-2.png">PNG 2</a>
+
+            </div>
+
+        </div>
+
+        <div class="doc-card">
+
+            <h4>Annual-Comparative-Report-Search-Parameters</h4>
+
+            <div class="actions">
+
+                <a class="btn" target="_blank" href="Wireframes/Annual-Comparative-Report-Search-Parameters/Annual-Comparative-Report-Search-Parameters.html">HTML</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Annual-Comparative-Report-Search-Parameters/Annual-Comparative-Report-Search-Parameters.pdf">PDF</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Annual-Comparative-Report-Search-Parameters/Annual-Comparative-Report-Search-Parameters-1.png">PNG</a>
+
+            </div>
+
+        </div>
+
+        <div class="doc-card">
+
+            <h4>Print-Layout-Single-Transaction-Report</h4>
+
+            <div class="actions">
+
+                <a class="btn" target="_blank" href="Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report.html">HTML</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report.pdf">PDF</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report-1.png">PNG</a>
+
+            </div>
+
+        </div>
+
+        <div class="doc-card">
+
+            <h4>Print-Layout-Annual-Comparative-Report</h4>
+
+            <div class="actions">
+
+                <a class="btn" target="_blank" href="Wireframes/Print-Layout-Annual-Comparative-Report/Print-Layout-Annual-Comparative-Report-Web.html">HTML</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Print-Layout-Annual-Comparative-Report/Print-Layout-Annual-Comparative-Report-Web.pdf">PDF</a>
+
+                <a class="btn" target="_blank" href="Wireframes/Print-Layout-Annual-Comparative-Report/Print-Layout-Annual-Comparative-Report-Web-1.png">PNG</a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</details>
+
+
+
+<h2 class="section-header">Use Cases</h2>
+
+<details>
+
+    <summary>All Use Cases</summary>
+
+    <div class="card-grid">
+
+        <div class="doc-card"><h4>All-UseCases.json</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/All-UseCases.json">Open</a></div></div>
+
+        <div class="doc-card"><h4>All-UseCases-Fixed.json</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/All-UseCases-Fixed.json">Open</a></div></div>
+
+    </div>
+
+</details>
+
+<details open>
+
+    <summary>Individual Use Cases</summary>
+
+    <div class="card-grid">
+
+        <div class="doc-card"><h4>UC-1 Employee Vacation Request</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-1-Employee-Vacation-Request/UC-1-Employee-Vacation-Request.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-1-Employee-Vacation-Request/UC-1-Employee-Vacation-Request.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-1-Employee-Vacation-Request/UC-1-Employee-Vacation-Request-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>UC-2 Employee Vacation Cancellation Request</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-2-Employee-Vacation-Cancellation-Request/UC-2-Employee-Vacation-Cancellation-Request.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-2-Employee-Vacation-Cancellation-Request/UC-2-Employee-Vacation-Cancellation-Request.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-2-Employee-Vacation-Cancellation-Request/UC-2-Employee-Vacation-Cancellation-Request-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>UC-3 My Vacation Requests</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-3-My-Vacation-Requests/UC-3-My-Vacation-Requests.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-3-My-Vacation-Requests/UC-3-My-Vacation-Requests.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-3-My-Vacation-Requests/UC-3-My-Vacation-Requests-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>UC-4 Review Vacation Request</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-4-Review-Vacation-Request/UC-4-Review-Vacation-Request.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-4-Review-Vacation-Request/UC-4-Review-Vacation-Request.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-4-Review-Vacation-Request/UC-4-Review-Vacation-Request-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>UC-5 Review Vacation Cancellation Request</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-5-Review-Vacation-Cancellation-Request/UC-5-Review-Vacation-Cancellation-Request.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-5-Review-Vacation-Cancellation-Request/UC-5-Review-Vacation-Cancellation-Request.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-5-Review-Vacation-Cancellation-Request/UC-5-Review-Vacation-Cancellation-Request-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>UC-6 Pending Vacation Requests</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-6-Pending-Vacation-Requests/UC-6-Pending-Vacation-Requests.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-6-Pending-Vacation-Requests/UC-6-Pending-Vacation-Requests.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-6-Pending-Vacation-Requests/UC-6-Pending-Vacation-Requests-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>UC-7 Vacation Inquiry - Search Parameters</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-7-Vacation-Inquiry-Search-Parameters/UC-7-Vacation-Inquiry-Search-Parameters.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-7-Vacation-Inquiry-Search-Parameters/UC-7-Vacation-Inquiry-Search-Parameters.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-7-Vacation-Inquiry-Search-Parameters/UC-7-Vacation-Inquiry-Search-Parameters-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>UC-8 Vacation Inquiry - Search Results</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-8-Vacation-Inquiry-Search-Results/UC-8-Vacation-Inquiry-Search-Results.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-8-Vacation-Inquiry-Search-Results/UC-8-Vacation-Inquiry-Search-Results.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-8-Vacation-Inquiry-Search-Results/UC-8-Vacation-Inquiry-Search-Results-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>UC-9 Print Single Vacation Transaction Report</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-9-Print-Single-Vacation-Transaction-Report/UC-9-Print-Single-Vacation-Transaction-Report.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-9-Print-Single-Vacation-Transaction-Report/UC-9-Print-Single-Vacation-Transaction-Report.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-9-Print-Single-Vacation-Transaction-Report/UC-9-Print-Single-Vacation-Transaction-Report-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>UC-10 Print Comparative Annual Report</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-10-Print-Comparative-Annual-Report/UC-10-Print-Comparative-Annual-Report.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-10-Print-Comparative-Annual-Report/UC-10-Print-Comparative-Annual-Report.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-10-Print-Comparative-Annual-Report/UC-10-Print-Comparative-Annual-Report-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>UC-11 Notifications Center</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-11-Notifications-Center/UC-11-Notifications-Center.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-11-Notifications-Center/UC-11-Notifications-Center.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-11-Notifications-Center/UC-11-Notifications-Center-1.png">PNG 1</a><a class="btn" target="_blank" href="Use-Cases/UC-11-Notifications-Center/UC-11-Notifications-Center-2.png">PNG 2</a></div></div>
+
+        <div class="doc-card"><h4>UC-12 Automated Update of Employee Annual Vacation Balance</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance-1.png">PNG 1</a><a class="btn" target="_blank" href="Use-Cases/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance/UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance-2.png">PNG 2</a></div></div>
+
+        <div class="doc-card"><h4>Messages Table</h4><div class="actions"><a class="btn" target="_blank" href="Use-Cases/Messages-Table/Messages-Table.html">HTML</a><a class="btn" target="_blank" href="Use-Cases/Messages-Table/Messages-Table.pdf">PDF</a><a class="btn" target="_blank" href="Use-Cases/Messages-Table/Messages-Table-1.png">PNG 1</a><a class="btn" target="_blank" href="Use-Cases/Messages-Table/Messages-Table-2.png">PNG 2</a></div></div>
+
+    </div>
+
+</details>
+
+
+
+<h2 class="section-header">Data Dictionaries</h2>
+
+<details open>
+
+    <summary>Screen Data Dictionaries</summary>
+
+    <div class="card-grid">
+
+        <div class="doc-card"><h4>Vacation-Request</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Request-Screen-Data-Dictionary/Vacation-Request-Screen-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Request-Screen-Data-Dictionary/Vacation-Request-Screen-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Request-Screen-Data-Dictionary/Vacation-Request-Screen-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Vacation-Cancellation-Request</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Cancellation-Request-Screen-Data-Dictionary/Vacation-Cancellation-Request-Screen-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Cancellation-Request-Screen-Data-Dictionary/Vacation-Cancellation-Request-Screen-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Cancellation-Request-Screen-Data-Dictionary/Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>My-Vacation-Requests</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/My-Vacation-Requests-Screen-Data-Dictionary/My-Vacation-Requests-Screen-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/My-Vacation-Requests-Screen-Data-Dictionary/My-Vacation-Requests-Screen-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/My-Vacation-Requests-Screen-Data-Dictionary/My-Vacation-Requests-Screen-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Pending-Vacation-Requests</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Pending-Vacation-Requests-Screen-Data-Dictionary/Pending-Vacation-Requests-Screen-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Pending-Vacation-Requests-Screen-Data-Dictionary/Pending-Vacation-Requests-Screen-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Pending-Vacation-Requests-Screen-Data-Dictionary/Pending-Vacation-Requests-Screen-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Notifications-Center</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Notifications-Center-Screen-Data-Dictionary/Notifications-Center-Screen-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Notifications-Center-Screen-Data-Dictionary/Notifications-Center-Screen-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Notifications-Center-Screen-Data-Dictionary/Notifications-Center-Screen-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Review-Vacation-Request</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Request-Screen-Data-Dictionary/Review-Vacation-Request-Screen-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Request-Screen-Data-Dictionary/Review-Vacation-Request-Screen-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Request-Screen-Data-Dictionary/Review-Vacation-Request-Screen-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Review-Vacation-Cancellation-Request</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Vacation-Inquiry-Search-Parameters</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Vacation-Inquiry-Search-Results</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Print-Comparative-Annual-Report</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Print-Comparative-Annual-Report-Data-Dictionary/Print-Comparative-Annual-Report-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Print-Comparative-Annual-Report-Data-Dictionary/Print-Comparative-Annual-Report-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Print-Comparative-Annual-Report-Data-Dictionary/Print-Comparative-Annual-Report-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Print-Single-Transaction-Report</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Print-Single-Transaction-Report-Data-Dictionary/Print-Single-Transaction-Report-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Print-Single-Transaction-Report-Data-Dictionary/Print-Single-Transaction-Report-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Print-Single-Transaction-Report-Data-Dictionary/Print-Single-Transaction-Report-Data-Dictionary-1.png">PNG</a></div></div>
+
+    </div>
+
+    </ul>
+
+</details>
+
+<details open>
+
+    <summary>Master Data Dictionaries</summary>
+
+    <div class="card-grid">
+
+        <div class="doc-card"><h4>Employee</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary/Employee-Master-Data-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary/Employee-Master-Data-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary/Employee-Master-Data-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Vacation-Types</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Vacation-Types-Master-Data-Data-Dictionary/Vacation-Types-Master-Data-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Vacation-Types-Master-Data-Data-Dictionary/Vacation-Types-Master-Data-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Vacation-Types-Master-Data-Data-Dictionary/Vacation-Types-Master-Data-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Departments</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary/Departments-Master-Data-Data-Dictionary.html">HTML</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary/Departments-Master-Data-Data-Dictionary.pdf">PDF</a><a class="btn" target="_blank" href="Data-Dictionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary/Departments-Master-Data-Data-Dictionary-1.png">PNG</a></div></div>
+
+        <div class="doc-card"><h4>Departments (Legacy HTML)</h4><div class="actions"><a class="btn" target="_blank" href="Data-Dicitionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary.html">Open</a></div></div>
+
+    </div>
+
+    </ul>
+
+</details>
+
+<details>
+
+    <summary>Templates & Indexes</summary>
+
+    <ul>
+
+        <li>Data-Dictionary-Template: <a target="_blank" href="Data-Dictionary/Data-Dictionary-Template/Data-Dictionary-Template.html">HTML</a> | <a target="_blank" href="Data-Dictionary/Data-Dictionary-Template/Data-Dictionary-Template.pdf">PDF</a> | <a target="_blank" href="Data-Dictionary/Data-Dictionary-Template/Data-Dictionary-Template-1.png">PNG</a></li>
+
+        <li>Data-Dictionaries-(11): <a target="_blank" href="Data-Dictionary/Data-Dictionaries-(11)/Data-Dictionaries-(11).md">Markdown</a></li>
+
+        <li>Moved files log: <a target="_blank" href="Data-Dictionary/moved-files.log">moved-files.log</a></li>
+
+    </ul>
+
+</details>
+
+
+
+<h2 class="section-header">Print Layouts</h2>
+
+<details>
+
+    <summary>Layouts</summary>
+
+    <ul>
+
+        <li>Single Transaction Report: <a target="_blank" href="Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report.html">HTML</a> | <a target="_blank" href="Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report.pdf">PDF</a> | <a target="_blank" href="Wireframes/Print-Layout-Single-Transaction-Report/Print-Layout-Single-Transaction-Report-1.png">PNG</a> | <a target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Print-Single-Transaction-Report-Data-Dictionary/Print-Single-Transaction-Report-Data-Dictionary.html">Data Dictionary</a></li>
+
+        <li>Annual Comparative Report: <a target="_blank" href="Wireframes/Print-Layout-Annual-Comparative-Report/Print-Layout-Annual-Comparative-Report-Web.html">HTML</a> | <a target="_blank" href="Wireframes/Print-Layout-Annual-Comparative-Report/Print-Layout-Annual-Comparative-Report-Web.pdf">PDF</a> | <a target="_blank" href="Wireframes/Print-Layout-Annual-Comparative-Report/Print-Layout-Annual-Comparative-Report-Web-1.png">PNG</a> | <a target="_blank" href="Data-Dictionary/Screen-Data-Dictionaries/Print-Comparative-Annual-Report-Data-Dictionary/Print-Comparative-Annual-Report-Data-Dictionary.html">Data Dictionary</a></li>
+
+    </ul>
+
+</details>
+
+
+
+<h2 class="section-header">Master Data Dictionaries (Legacy quick links)</h2>
+
+<details>
+
+    <summary>Legacy shortcuts</summary>
+
+    <ul>
+
+        <li><a target="_blank" href="Data-Dicitionary/Master-Data-Dictionaries/Employee-Master-Data-Data-Dictionary.html">Employee (HTML)</a></li>
+
+        <li><a target="_blank" href="Data-Dicitionary/Master-Data-Dictionaries/Vacation-Types-Master-Data-Data-Dictionary.html">Vacation Types (HTML)</a></li>
+
+        <li><a target="_blank" href="Data-Dicitionary/Master-Data-Dictionaries/Departments-Master-Data-Data-Dictionary.html">Departments (HTML)</a></li>
+
+    </ul>
+
+</details>
+
+
+
+<h2 class="section-header">Use Cases (Legacy quick links)</h2>
+
+<details>
+
+    <summary>Legacy shortcuts</summary>
+
+    <ul>
+
+        <li><a target="_blank" href="Use-Cases/UC-1-Employee-Vacation-Request/UC-1-Employee-Vacation-Request.html">UC-1 (HTML)</a></li>
+
+        <li><a target="_blank" href="Use-Cases/UC-2-Employee-Vacation-Cancellation-Request/UC-2-Employee-Vacation-Cancellation-Request.html">UC-2 (HTML)</a></li>
+
+        <li><a target="_blank" href="Use-Cases/Messages-Table/Messages-Table.html">Messages Table (HTML)</a></li>
+
+    </ul>
+
+</details>
+
+
+
+<h2 class="section-header">Documentation</h2>
+
+<div class="wireframe-grid">
+
+    <div class="wireframe-card">
+
+        <h3>Software Requirements Specification (SRS)</h3>
+
+        <p>Comprehensive SRS document for the Vacation Management System in PDF format.</p>
+
+        <button onclick="openWireframe('SRS_Vacation_Management_System.pdf')">View SRS Document</button>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+    function openWireframe(path) {
+
+        window.open(path, '_blank');
+
+    }
+
+</script>
+
+
+
+</body>
+
+</html>
+
+
