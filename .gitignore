@@ -95,9 +95,6 @@ latexmkrc
 *.synctex.gz
 *.synctex
 
-# Test files
-test.html
-
 # Node modules
 node_modules/
 package-lock.json
