@@ -2,6 +2,13 @@
 
 A comprehensive educational resource demonstrating core Business Analysis deliverables and documentation standards using a Vacation Management System as a practical example.
 
+## 🌐 Live Project Preview
+
+**View the complete project structure with interactive navigation:**
+**[tryomar.github.io/Vacation-System/](https://tryomar.github.io/Vacation-System/)**
+
+This interactive HTML page is **auto-generated** by the `generate-tree.js` script and provides a user-friendly way to navigate through all files, diagrams, and deliverables in this repository.
+
 ## 🎯 Learning Objectives
 
 This repository serves as a **practical Business Analysis learning resource** that demonstrates:
