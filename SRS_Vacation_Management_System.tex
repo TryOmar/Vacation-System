@@ -13,7 +13,6 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{enumitem}
-\usepackage{hyperref}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
 \usepackage{setspace}
@@ -70,6 +69,17 @@
 
 % Table style
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+% Load hyperref last
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    pdfstartview=FitH,
+    bookmarksopen=true
+}
 
 \begin{document}
 
@@ -166,6 +176,43 @@ The remainder of this document is organized as follows:
 
 \section{Overall Description}
 
+\subsection{Current State}
+Currently, the vacation request process is handled manually with limited visibility and no workflow automation.
+
+\paragraph{Current Workflow}
+\begin{itemize}
+    \item The process is fully manual.
+    \item Employees submit paper-based vacation requests to their manager.
+    \item The manager reviews and either forwards the request to HR or rejects it.
+    \item HR processes approved requests for final confirmation.
+    \item Employees lack visibility into the request status after submission (no tracking).
+    \item There is no tracking or audit trail for the end-to-end process.
+\end{itemize}
+
+\paragraph{Existing Systems}
+\begin{itemize}
+    \item A production authentication and user management system exists (login, roles, permissions).
+    \item No dedicated vacation management module currently exists.
+    \item Security rules are implemented generally across systems but are not linked to the vacation flow.
+\end{itemize}
+
+\paragraph{Permissions and Roles}
+\begin{itemize}
+    \item The current organizational platform already supports roles and permissions.
+    \item Role capabilities (who can approve, who can review) are defined at a standard level but are not applied inside the vacation workflow.
+    \item The VMS must bind RBAC explicitly to vacation operations (submission, review, approval, cancellation).
+\end{itemize}
+
+\paragraph{Limitations}
+\begin{itemize}
+    \item Manual handling causes delays and errors; there is no automated workflow.
+    \item No reporting or performance indicators for the process.
+    \item No audit trail for compliance and traceability.
+    \item Employees cannot see the live status of their requests.
+\end{itemize}
+
+\noindent\textit{Note}: The organization already has a standardized authentication and authorization system in place (login, roles, permissions). However, these are not currently applied to the vacation request process.
+
 \subsection{Product Perspective}
 The Vacation Management System is a web-based application with mobile support that integrates with existing HR systems. It operates as a standalone module that can be deployed independently or integrated with larger enterprise systems.
 
@@ -245,32 +292,14 @@ System Administrators & Technical users, system maintenance & Full system access
 \caption{User Classes and Access Rights}
 \end{table}
 
-\subsection{Stakeholder Register}
-\begin{table}[H]
-\centering
-\begin{tabular}{|p{3cm}|p{3cm}|p{1cm}|p{1.5cm}|p{4cm}|p{4cm}|}
-\hline
-\textbf{Stakeholder} & \textbf{Role / Title} & \textbf{Power} & \textbf{Interest} & \textbf{Key Requirements} & \textbf{Main Concerns} \\
-\hline
-Employees & Staff & L & H & Submit and track vacation requests & Rejections, delays, unclear process \\
-\hline
-Direct Managers & Supervisor & H & H & Approve/reject requests & Delays, incomplete information \\
-\hline
-HR Personnel & HR Officer & H & H & Manage policies, approve requests & Misuse, balance errors \\
-\hline
-General Managers & GM / Senior Manager & H & H & Final approvals, system oversight & Delayed approvals, wrong balances \\
-\hline
-System & Automated Actor & H & H & Update balances, enforce policies & Wrong calculations, workflow errors \\
-\hline
-\end{tabular}
-\caption{Stakeholder Register}
-\end{table}
+
 
 \subsection{Operating Environment}
 \begin{itemize}
     \item \textbf{Platform}: Web-based application with mobile responsive design
     \item \textbf{Browsers}: Chrome, Firefox, Safari, Edge (latest versions)
     \item \textbf{Mobile}: iOS 12+, Android 8+
+    \item \textbf{Identity / SSO}: Organization-wide authentication, roles, and permissions already exist and will be leveraged (no standalone auth duplication)
     \item \textbf{Database}: SQL Server/MySQL/PostgreSQL
     \item \textbf{Server}: Windows/Linux server environment
 \end{itemize}
@@ -279,6 +308,7 @@ System & Automated Actor & H & H & Update balances, enforce policies & Wrong cal
 \begin{itemize}
     \item Compliance with Saudi vacation regulations
     \item Integration with existing HR systems
+    \item Integration with the existing identity and access management (IAM) solution; VMS must enforce RBAC for vacation operations using existing roles (Employee, Manager, HR, GM, Admin)
     \item Support for Arabic and English languages
     \item Mobile-first responsive design
     \item PDF generation capabilities
@@ -296,7 +326,7 @@ System & Automated Actor & H & H & Update balances, enforce policies & Wrong cal
     \item All employees are full-time Muslim Saudi employees
 \end{itemize}
 
-\section{System Architecture and Context}
+\section{System Architecture \& Diagrams}
 
 \subsection{System Context Diagram}
 The Vacation Management System operates within a broader organizational context, interacting with various stakeholders and external systems. The following diagram shows how the system integrates with the broader organizational ecosystem:
@@ -329,28 +359,76 @@ The system is built around these key components:
     \item \textbf{Balance Management Module}: Automated vacation balance calculations
 \end{itemize}
 
-\subsection{System State Management}
-The system manages various states for vacation requests and the overall workflow. The following state diagram illustrates the complete lifecycle of a vacation request:
+\subsection{Integration Interfaces}
+The Vacation Management System (VMS) integrates internal modules and external organizational services through well-defined touchpoints. This section summarizes integration flows and responsibilities without detailing internal implementation steps.
+
+\paragraph{Internal Integration}
+\begin{itemize}
+    \item \textbf{Centralized Data Access}: All modules (Employee, Manager, HR, Admin) access a centralized database to ensure consistency.
+    \item \textbf{Immediate Propagation}: Employee-submitted requests appear instantly in the Manager interface for action.
+    \item \textbf{Synchronized Actions}: Manager/HR decisions (approve, reject, cancel) are reflected in the employee portal in real time.
+    \item \textbf{Notification Hub}: The Notification Center integrates modules by emitting status updates for submission, approval, rejection, and cancellation across web and mobile.
+\end{itemize}
+
+\paragraph{External Integration}
+\begin{itemize}
+    \item \textbf{HR System (Master Data \& Auth)}: Provides employee master data and supports user validation and role-based access.
+    \item \textbf{Identity/SSO}: Enables single sign-on and secure session handling.
+    \item \textbf{Notification Services}: Email/SMS may be used for reminders or approval alerts outside the portal.
+    \item \textbf{Service Portal}: Employees and managers act on requests via the organization portal; notifications deep-link to portal screens.
+    \item \textbf{Optional: Payroll/Attendance}: Reflect approved vacations in salary and attendance records.
+\end{itemize}
+
+\paragraph{Data Flow and Communication}
+\begin{itemize}
+    \item Front-end (portal/mobile) communicates with back-end via secure RESTful APIs over HTTPS.
+    \item External exchanges comply with organizational security and privacy standards.
+    \item Error handling and logging ensure reliable request/response tracking across integrations.
+\end{itemize}
+
+\paragraph{Constraints and Assumptions}
+\begin{itemize}
+    \item External integrations depend on available APIs and supported formats (JSON, XML, CSV).
+    \item VMS operates in standalone mode if HR/Portal/Payroll integrations are temporarily unavailable; reconciliation occurs when restored.
+\end{itemize}
+
+\subsubsection*{Integration Summary Table}
+\begin{longtable}{p{3.2cm} p{4.2cm} p{4.2cm} p{2.1cm} p{2.1cm}}
+\toprule
+\textbf{System / Module} & \textbf{Purpose} & \textbf{Data Exchanged} & \textbf{Direction} & \textbf{Mechanism} \\
+\midrule
+HR System & Employee master data, role validation & Employee ID, Name, Dept, Title, Status & Inbound & REST API (JSON), SSO \\
+Identity / SSO & Authentication / SSO & Tokens, claims & Two-way & OAuth2/OIDC over HTTPS \\
+Notification Service & Alerts and reminders & Request status (submitted/approved/rejected) & Outbound & Email/SMS API \\
+Service Portal & User interaction layer & Tasks, deep links, request context & Two-way & Web/Mobile UI to/from Backend APIs \\
+Payroll (optional) & Reflect approved leave & Approved vacation records & Outbound & Batch export / API \\
+Attendance (optional) & Reflect absences & Approved vacation dates & Outbound & API \\
+\bottomrule
+\end{longtable}
+
+\subsection{State Diagrams}
+The following state diagram illustrates the complete lifecycle of a vacation request:
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{Diagrams/State-Diagram/State-Diagram.png}
 \caption{Vacation Request State Diagram - Complete Request Lifecycle}
-\label{fig:state-diagram}
+\label{fig:state-diagram-app}
 \end{figure}
 
-\subsection{Core Workflow Processes}
-The system implements several key workflow processes that define the approval and processing logic:
+\subsection{Workflow Diagrams}
+The following workflow diagrams define approval and processing logic:
 
 \subsubsection{Basic Vacation Request Flow}
-The standard vacation request follows this workflow:
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{Diagrams/Workflows/Vacation-Request-Basic-Flow/Vacation-Request-Basic-Flow.png}
 \caption{Basic Vacation Request Workflow - Standard Approval Process}
-\label{fig:basic-flow}
+\label{fig:basic-flow-app}
 \end{figure}
+
+
 
 \subsubsection{Escalation to Sponsor Flow}
 When approvals are delayed, the system automatically escalates requests:
@@ -359,8 +437,10 @@ When approvals are delayed, the system automatically escalates requests:
 \centering
 \includegraphics[width=0.9\textwidth]{Diagrams/Workflows/Vacation-Request-Escalation-to-Sponsor/Vacation-Request-Escalation-to-Sponsor.png}
 \caption{Vacation Request Escalation to Sponsor Workflow - Automatic Escalation}
-\label{fig:escalation-flow}
+\label{fig:escalation-flow-app}
 \end{figure}
+
+
 
 \subsubsection{Resubmission After Rejection Flow}
 Rejected requests can be resubmitted following this process:
@@ -369,8 +449,10 @@ Rejected requests can be resubmitted following this process:
 \centering
 \includegraphics[width=0.9\textwidth]{Diagrams/Workflows/Vacation-Request-Resubmission-After-Rejection/Vacation-Request-Resubmission-After-Rejection.png}
 \caption{Vacation Request Resubmission After Rejection Workflow}
-\label{fig:resubmission-flow}
+\label{fig:resubmission-flow-app}
 \end{figure}
+
+
 
 \section{Business Rules and Logic}
 
@@ -430,54 +512,9 @@ This section is the single source of truth for all business rules that govern sy
 \textbf{Applicable Use Cases}: UC-1
 \textbf{Implementation}: System locks all request fields after submission, allowing only cancellation.
 
-\subsection{Validation Rules}
+% Removed step-level validation rules (BR-011 to BR-016) consolidated into use cases
 
-\subsubsection{BR-011: Date Validation}
-\textbf{Rule}: Start date must be in the future, and end date must be after start date.
-\textbf{Applicable Use Cases}: UC-1
-\textbf{Implementation}: System validates date inputs in real-time and prevents submission of invalid dates.
-
-\subsubsection{BR-012: Overlap Prevention}
-\textbf{Rule}: The system must ensure an employee has at most one active vacation request for any given date range.
-\textbf{Applicable Use Cases}: UC-1
-\textbf{Implementation}: System checks existing requests against proposed dates and blocks submission if conflicts exist.
-
-\subsubsection{BR-013: Balance Validation}
-\textbf{Rule}: Requested vacation days must not exceed available leave balance.
-\textbf{Applicable Use Cases}: UC-1
-\textbf{Implementation}: System calculates available balance (Total - Taken - Pending) and validates against request.
-
-\subsubsection{BR-014: Attachment Requirements}
-\textbf{Rule}: Medical certificates are mandatory for sick leave requests.
-\textbf{Applicable Use Cases}: UC-1, UC-4
-\textbf{Implementation}: System requires file upload for sick leave type and validates attachment presence.
-
-\subsubsection{BR-015: Cancellation Eligibility}
-\textbf{Rule}: Only requests in Pending or Approved status can be cancelled.
-\textbf{Applicable Use Cases}: UC-2, UC-3, UC-5
-\textbf{Implementation}: System checks request status and enables/disables cancellation functionality accordingly.
-
-\subsubsection{BR-016: Cancellation Timing}
-\textbf{Rule}: Cancellation must occur before vacation start date.
-\textbf{Applicable Use Cases}: UC-2, UC-5
-\textbf{Implementation}: System compares current date with vacation start date and blocks late cancellations.
-
-\subsection{System Behavior Rules}
-
-\subsubsection{BR-017: Notification Delivery}
-\textbf{Rule}: System must notify all stakeholders of status changes within 5 minutes.
-\textbf{Applicable Use Cases}: UC-1, UC-2, UC-4, UC-5, UC-11
-\textbf{Implementation}: Real-time notification system triggers alerts upon workflow state changes.
-
-\subsubsection{BR-018: Data Integrity}
-\textbf{Rule}: All vacation transactions must maintain complete audit trail.
-\textbf{Applicable Use Cases}: All UC
-\textbf{Implementation}: System logs all actions with timestamp, user ID, and action details.
-
-\subsubsection{BR-019: Policy Configuration}
-\textbf{Rule}: Vacation policies must be configurable through administrative interface.
-\textbf{Applicable Use Cases}: UC-12
-\textbf{Implementation}: System provides configuration screens for entitlement days, eligibility criteria, and escalation timeframes.
+% Removed system behavior rules (BR-017 to BR-019) consolidated into use cases and NFRs
 
 \section{User Requirements / Use Cases}
 
@@ -855,39 +892,75 @@ Employee, Departments, and Vacation Types constitute the core master data used a
 \subsection{Operational Data}
 Vacation Requests, Vacation Cancellations, Approval History, and Notification Data constitute the operational entities. See Appendix B.2 for full data dictionaries.
 
+\subsection{Notifications Data Table}
+The notifications data model supports actionable alerts with deep links to relevant screens.
+
+\begin{longtable}{p{4cm} p{11cm}}
+\toprule
+\textbf{Field} & \textbf{Definition} \\
+\midrule
+NotificationID (PK) & Unique identifier for the notification \\
+Type & Category: Workflow, Validation, Error, Success, Info \\
+Severity & Level: Info, Warning, Critical \\
+RecipientUserId/Role & Target user or role (Employee, Manager, HR, GM) \\
+TriggerEvent & System event that generated the notification (e.g., UC-4 approval) \\
+MessageTemplate & i18n-enabled template with placeholders \\
+ContextParams & Key-value parameters (RequestID, EmployeeID, etc.) \\
+ActionButtons & [View], [Context] with routes and parameters \\
+TargetScreen & Destination screen identifier (e.g., Review Vacation Request) \\
+DeliveryChannel & In-app, Email, Push (configurable) \\
+IsRead / ReadAt & Read tracking fields \\
+CreatedAt / ExpiresAt & Timestamps for creation and expiry \\
+\bottomrule
+\end{longtable}
+
 \section{System Messages}
 
-The system includes a comprehensive message table for all user communications and error messages. This table defines the content, context, and display rules for system-generated messages.
+This section provides a concise lookup for system messages.
 
 \subsection{System Messages Table}
-The following images show the complete system messages table:
+\begin{longtable}{p{3cm} p{8cm} p{3cm}}
+\toprule
+\textbf{Message ID} & \textbf{Short Description} & \textbf{Category} \\
+\midrule
+MSG-001 & Request submitted successfully & Success \\
+MSG-002 & Approval required by manager & Workflow \\
+MSG-003 & Request rejected: reason provided & Workflow \\
+MSG-004 & Balance updated after GM approval & Workflow \\
+MSG-005 & Validation error: invalid dates & Validation \\
+MSG-006 & Validation error: insufficient balance & Validation \\
+MSG-007 & Attachment required for sick leave & Validation \\
+MSG-008 & System error: please try again later & Error \\
+\bottomrule
+\end{longtable}
+
+\subsubsection{Full Messages Table (Reference Images)}
+The following consolidated tables visualize the full list of system messages referenced by Message ID:
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1.0\textwidth]{Use-Cases/Messages-Table/Messages-Table-1.png}
-\caption{System Messages Table - Part 1}
+\includegraphics[width=0.98\textwidth]{Use-Cases/Messages-Table/Messages-Table-1.png}
+\caption{System Messages Table (Part 1)}
 \label{fig:messages-table-1}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1.0\textwidth]{Use-Cases/Messages-Table/Messages-Table-2.png}
-\caption{System Messages Table - Part 2}
+\includegraphics[width=0.98\textwidth]{Use-Cases/Messages-Table/Messages-Table-2.png}
+\caption{System Messages Table (Part 2)}
 \label{fig:messages-table-2}
 \end{figure}
 
 \subsection{Message Categories}
 \begin{itemize}
-    \item \textbf{Validation Messages}: Field validation errors and business rule violations
-    \item \textbf{Workflow Messages}: Approval status updates and workflow progression
-    \item \textbf{Notification Messages}: System notifications and user alerts
-    \item \textbf{Error Messages}: System errors and exception handling
-    \item \textbf{Success Messages}: Confirmation of successful operations
+    \item \textbf{Validation}: Field and business rule violations
+    \item \textbf{Workflow}: Approval and process progression updates
+    \item \textbf{Notification}: General alerts and reminders
+    \item \textbf{Error}: System/runtime errors
+    \item \textbf{Success}: Operation confirmations
 \end{itemize}
 
-\section{Appendices}
-
-\subsection{Appendix A: Glossary}
+\section{Glossary}
 \begin{itemize}
     \item \textbf{Vacation}: Time off from work for personal reasons
     \item \textbf{Leave Balance}: Remaining vacation days available
@@ -900,7 +973,7 @@ The following images show the complete system messages table:
     \item \textbf{Use Case}: Specific interaction scenario between users and system
 \end{itemize}
 
-\subsection{Appendix B: Data Models}
+\section{Data Models}
 \begin{itemize}
     \item Entity-Relationship Diagrams
     \item Database Schema Definitions
@@ -909,7 +982,15 @@ The following images show the complete system messages table:
     \item Master Data Entity Definitions
 \end{itemize}
 
-\subsection{Appendix B.1: Data Dictionary Template}
+\subsection{Entity Relationship Diagram (Conceptual)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{Diagrams/Entity-Relationship/Entity-Relationship.png}
+\caption{Conceptual ERD: Core entities and relationships}
+\label{fig:conceptual-erd}
+\end{figure}
+
+\subsection{Data Dictionary Template}
 The following image shows the standard data dictionary template used for documenting all system data entities:
 
 \begin{figure}[H]
@@ -919,7 +1000,7 @@ The following image shows the standard data dictionary template used for documen
 \label{fig:data-dictionary-template}
 \end{figure}
 
-\subsection{Appendix B.2: Comprehensive Data Dictionaries}
+\subsection{Comprehensive Data Dictionaries}
 This appendix consolidates all master and screen-level data dictionaries.
 
 \paragraph{Master Data Dictionaries}
@@ -1022,7 +1103,7 @@ This appendix consolidates all master and screen-level data dictionaries.
 \label{fig:print-comparative-annual-data-dict}
 \end{figure}
 
-\subsection{Appendix C: Wireframe Images}
+\section{Wireframe Images}
 This section contains all the wireframe images for the system's user interfaces:
 
 \subsubsection{Core Application Screens}
@@ -1035,12 +1116,44 @@ This section contains all the wireframe images for the system's user interfaces:
 \label{fig:wireframe-vacation-request}
 \end{figure}
 
+\noindent\textbf{Data Dictionary (Vacation Request)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Request-Screen-Data-Dictionary/Vacation-Request-Screen-Data-Dictionary-1.png}
+\caption{Vacation Request Screen Data Dictionary}
+\label{fig:vacation-request-data-dict-inline}
+\end{figure}
+
+\paragraph{Vacation Request Screen (Mobile)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{Wireframes/Vacation-Request/Vacation-Request-Mobile.png}
+\caption{Vacation Request Screen Wireframe - Mobile}
+\label{fig:wireframe-vacation-request-mobile}
+\end{figure}
+
 \paragraph{Vacation Cancellation Request Screen}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{Wireframes/Vacation-Cancellation-Request/Vacation-Cancellation-Request-1.png}
 \caption{Vacation Cancellation Request Screen Wireframe}
 \label{fig:wireframe-vacation-cancellation}
+\end{figure}
+
+\noindent\textbf{Data Dictionary (Vacation Cancellation Request)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Cancellation-Request-Screen-Data-Dictionary/Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png}
+\caption{Vacation Cancellation Request Screen Data Dictionary}
+\label{fig:vacation-cancellation-data-dict-inline}
+\end{figure}
+
+\paragraph{Vacation Cancellation Request Screen (Mobile)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{Wireframes/Vacation-Cancellation-Request/Vacation-Cancellation-Request-Mobile.png}
+\caption{Vacation Cancellation Request Screen Wireframe - Mobile}
+\label{fig:wireframe-vacation-cancellation-mobile}
 \end{figure}
 
 \paragraph{Review Vacation Request Screen}
@@ -1051,12 +1164,28 @@ This section contains all the wireframe images for the system's user interfaces:
 \label{fig:wireframe-review-vacation}
 \end{figure}
 
+\noindent\textbf{Data Dictionary (Review Vacation Request)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Request-Screen-Data-Dictionary/Review-Vacation-Request-Screen-Data-Dictionary-1.png}
+\caption{Review Vacation Request Screen Data Dictionary}
+\label{fig:review-vacation-data-dict-inline}
+\end{figure}
+
 \paragraph{Review Vacation Cancellation Request Screen}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{Wireframes/Review-Vacation-Cancellation-Request/Review-Vacation-Cancellation-Request-1.png}
 \caption{Review Vacation Cancellation Request Screen Wireframe}
 \label{fig:wireframe-review-cancellation}
+\end{figure}
+
+\noindent\textbf{Data Dictionary (Review Vacation Cancellation Request)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary/Review-Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png}
+\caption{Review Vacation Cancellation Request Screen Data Dictionary}
+\label{fig:review-cancellation-data-dict-inline}
 \end{figure}
 
 \paragraph{My Vacation Requests Screen}
@@ -1067,12 +1196,28 @@ This section contains all the wireframe images for the system's user interfaces:
 \label{fig:wireframe-my-vacation-requests}
 \end{figure}
 
+\noindent\textbf{Data Dictionary (My Vacation Requests)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/My-Vacation-Requests-Screen-Data-Dictionary/My-Vacation-Requests-Screen-Data-Dictionary-1.png}
+\caption{My Vacation Requests Screen Data Dictionary}
+\label{fig:my-vacation-requests-data-dict-inline}
+\end{figure}
+
 \paragraph{Pending Vacation Requests Screen}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{Wireframes/Pending-Vacation-Requests/Pending-Vacation-Requests-1.png}
 \caption{Pending Vacation Requests Screen Wireframe}
 \label{fig:wireframe-pending-vacation-requests}
+\end{figure}
+
+\noindent\textbf{Data Dictionary (Pending Vacation Requests)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Pending-Vacation-Requests-Screen-Data-Dictionary/Pending-Vacation-Requests-Screen-Data-Dictionary-1.png}
+\caption{Pending Vacation Requests Screen Data Dictionary}
+\label{fig:pending-vacation-requests-data-dict-inline}
 \end{figure}
 
 \paragraph{Vacation Inquiry Search Parameters Screen}
@@ -1083,12 +1228,28 @@ This section contains all the wireframe images for the system's user interfaces:
 \label{fig:wireframe-inquiry-search-params}
 \end{figure}
 
+\noindent\textbf{Data Dictionary (Inquiry Search Parameters)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary/Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary-1.png}
+\caption{Vacation Inquiry Search Parameters Screen Data Dictionary}
+\label{fig:inquiry-search-params-data-dict-inline}
+\end{figure}
+
 \paragraph{Vacation Inquiry Search Results Screen}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{Wireframes/Employee-Vacation-Inquiry-Search-Results/Employee-Vacation-Inquiry-Search-Results-1.png}
 \caption{Vacation Inquiry Search Results Screen Wireframe}
 \label{fig:wireframe-inquiry-search-results}
+\end{figure}
+
+\noindent\textbf{Data Dictionary (Inquiry Search Results)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary/Vacation-Inquiry-Search-Results-Screen-Data-Dictionary-1.png}
+\caption{Vacation Inquiry Search Results Screen Data Dictionary}
+\label{fig:inquiry-search-results-data-dict-inline}
 \end{figure}
 
 \paragraph{Notifications Center Screen}
@@ -1099,6 +1260,14 @@ This section contains all the wireframe images for the system's user interfaces:
 \label{fig:wireframe-notifications-center}
 \end{figure}
 
+\noindent\textbf{Data Dictionary (Notifications Center)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Notifications-Center-Screen-Data-Dictionary/Notifications-Center-Screen-Data-Dictionary-1.png}
+\caption{Notifications Center Screen Data Dictionary}
+\label{fig:notifications-center-data-dict-inline}
+\end{figure}
+
 \paragraph{Requests Center Screen}
 \begin{figure}[H]
 \centering
@@ -1106,6 +1275,8 @@ This section contains all the wireframe images for the system's user interfaces:
 \caption{Requests Center Screen Wireframe}
 \label{fig:wireframe-requests-center}
 \end{figure}
+
+\noindent\textit{Note: Requests Center reuses data elements from Pending and My Vacation Requests screens.}
 
 \subsubsection{Report Layout Screens}
 
@@ -1117,12 +1288,28 @@ This section contains all the wireframe images for the system's user interfaces:
 \label{fig:wireframe-single-transaction-report}
 \end{figure}
 
+\noindent\textbf{Data Dictionary (Single Transaction Report)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Print-Single-Transaction-Report-Data-Dictionary/Print-Single-Transaction-Report-Data-Dictionary-1.png}
+\caption{Print Single Transaction Report Data Dictionary}
+\label{fig:print-single-transaction-data-dict-inline}
+\end{figure}
+
 \paragraph{Annual Comparative Report Layout}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{Wireframes/Print-Layout-Annual-Comparative-Report/Print-Layout-Annual-Comparative-Report-Web-1.png}
 \caption{Annual Comparative Report Layout Wireframe}
 \label{fig:wireframe-annual-comparative-report}
+\end{figure}
+
+\noindent\textbf{Data Dictionary (Annual Comparative Report)}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Print-Comparative-Annual-Report-Data-Dictionary/Print-Comparative-Annual-Report-Data-Dictionary-1.png}
+\caption{Print Comparative Annual Report Data Dictionary}
+\label{fig:print-comparative-annual-data-dict-inline}
 \end{figure}
 
 \paragraph{Annual Comparative Report Search Parameters}
@@ -1133,67 +1320,22 @@ This section contains all the wireframe images for the system's user interfaces:
 \label{fig:wireframe-annual-comparative-report-search-params}
 \end{figure}
 
-\subsection{Appendix D: State Diagrams}
-The system implements comprehensive state management for vacation requests and workflows:
-
+\noindent\textbf{Data Dictionary (Annual Comparative Report Search Parameters)}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{Diagrams/State-Diagram/State-Diagram.png}
-\caption{Vacation Request State Diagram}
-\label{fig:state-diagram}
+\includegraphics[width=0.85\textwidth]{Data-Dictionary/Screen-Data-Dictionaries/Print-Comparative-Annual-Report-Data-Dictionary/Print-Comparative-Annual-Report-Data-Dictionary-1.png}
+\caption{Annual Comparative Report Search/Data Dictionary}
+\label{fig:annual-comparative-report-search-data-dict-inline}
 \end{figure}
 
-\subsection{Appendix E: Workflow Diagrams}
-The system implements several key workflow processes:
 
-\subsubsection{Basic Vacation Request Flow}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Diagrams/Workflows/Vacation-Request-Basic-Flow/Vacation-Request-Basic-Flow.png}
-\caption{Basic Vacation Request Workflow}
-\label{fig:basic-flow}
-\end{figure}
 
-\subsubsection{Escalation to Sponsor Flow}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Diagrams/Workflows/Vacation-Request-Escalation-to-Sponsor/Vacation-Request-Escalation-to-Sponsor.png}
-\caption{Vacation Request Escalation to Sponsor Workflow}
-\label{fig:escalation-flow}
-\end{figure}
+% Appendix F (Use Case Templates) removed as all use cases are documented in Section 5
 
-\subsubsection{Resubmission After Rejection Flow}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Diagrams/Workflows/Vacation-Request-Resubmission-After-Rejection/Vacation-Request-Resubmission-After-Rejection.png}
-\caption{Vacation Request Resubmission After Rejection Workflow}
-\label{fig:resubmission-flow}
-\end{figure}
-
-\subsection{Appendix F: Use Case Templates}
-The following image shows the standard use case template used for documenting all system use cases:
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{Use-Cases/Use-Case-Template/Use-Case-Template-1.png}
-\caption{Use Case Template}
-\label{fig:use-case-template}
-\end{figure}
-
-For complete use case specifications, refer to the All-UseCases.json document. This document contains:
-
-\begin{itemize}
-    \item Standard Use Case Template
-    \item Use Case Documentation Standards
-    \item Business Rule Definition Format
-    \item Exception Handling Documentation
-    \item Complete specifications for all 12 use cases
-\end{itemize}
-
-\subsection{Appendix G: System Architecture \& Context}
+\section{System Architecture \& Context (Additional)}
 The system architecture details are now presented in Section 3: System Architecture and Context for better contextual understanding. This appendix contains additional technical implementation details that complement the main architecture section.
 
-\subsection{Appendix H: Technical Specifications}
+\section{Technical Specifications}
 This appendix contains technical implementation details that are typically covered in a System Design Document:
 
 \subsubsection{Technology Stack}
@@ -1224,7 +1366,7 @@ This appendix contains technical implementation details that are typically cover
     \item \textbf{File Security}: Secure file upload and storage
 \end{itemize}
 
-\subsection{Appendix I: Testing Requirements}
+\section{Testing Requirements}
 This appendix contains testing specifications that are typically covered in a Test Plan:
 
 \subsubsection{Functional Testing}
@@ -1245,7 +1387,7 @@ This appendix contains testing specifications that are typically covered in a Te
     \item \textbf{PDF Generation Testing}: Report output validation
 \end{itemize}
 
-\subsection{Appendix J: Deployment and Maintenance}
+\section{Deployment and Maintenance}
 This appendix contains deployment and maintenance specifications that are typically covered in a Project Plan:
 
 \subsubsection{Deployment Strategy}
@@ -1266,7 +1408,7 @@ This appendix contains deployment and maintenance specifications that are typica
     \item \textbf{Policy Updates}: Vacation policy configuration management
 \end{itemize}
 
-\subsection{Appendix K: Quality Criteria and Review Practices}
+\section{Quality Criteria and Review Practices}
 This appendix articulates how the SRS adheres to quality criteria and the review process to maintain clarity and traceability.
 
 \subsubsection{Quality Criteria Mapping}
