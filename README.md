@@ -7,7 +7,7 @@ A comprehensive educational resource demonstrating core Business Analysis delive
 **View the complete project structure with interactive navigation:**
 **[tryomar.github.io/Vacation-System/](https://tryomar.github.io/Vacation-System/)**
 
-This interactive HTML page is **auto-generated** by the `generate-tree.js` script and provides a user-friendly way to navigate through all files, diagrams, and deliverables in this repository.
+This interactive HTML page is **auto-generated** by the [`generate-tree.js`](Scripts/generate-tree.js) script located in the [Scripts](Scripts/) folder and provides a user-friendly way to navigate through all files, diagrams, and deliverables in this repository.
 
 ## 🎯 Learning Objectives
 
