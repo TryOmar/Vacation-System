@@ -1,6 +1,6 @@
-# Vacation Management System
+# Business Analysis Learning Repository
 
-A comprehensive Business Analysis learning project demonstrating core BA deliverables and documentation standards.
+A comprehensive educational resource demonstrating core Business Analysis deliverables and documentation standards using a Vacation Management System as a practical example.
 
 ## 🎯 Learning Objectives
 
@@ -13,9 +13,9 @@ This repository serves as a **practical Business Analysis learning resource** th
 - **UI/UX Design** - Wireframes and user interface mockups
 - **Documentation Standards** - Professional BA deliverable templates
 
-## 🏗️ System Overview
+## 🏗️ Project Overview
 
-The Vacation Management System exemplifies real-world Business Analysis by modeling:
+The **Vacation Management System** exemplifies real-world Business Analysis by modeling:
 - **Employee vacation request workflows** with approval processes
 - **Manager review and approval** business processes
 - **Vacation balance tracking** and automated business rules
@@ -25,7 +25,7 @@ The Vacation Management System exemplifies real-world Business Analysis by model
 ## 📁 Project Structure
 
 ```
-Vacation System/
+Business Analysis Repository/
 │   .gitignore
 │   index.html
 │   README.md
@@ -41,7 +41,6 @@ Vacation System/
 │   └───Screen-Data-Dictionaries
 │       ├───Vacation-Request-Screen-Data-Dictionary
 │       ├───Review-Vacation-Request-Screen-Data-Dictionary
-│       ├───Notifications-Center-Screen-Data-Dictionary
 │       └───[Additional screen data dictionaries...]
 │
 ├───Diagrams
@@ -67,14 +66,7 @@ Vacation System/
 │   ├───UC-1-Employee-Vacation-Request
 │   ├───UC-2-Employee-Vacation-Cancellation-Request
 │   ├───UC-3-My-Vacation-Requests
-│   ├───UC-4-Review-Vacation-Request
-│   ├───UC-5-Review-Vacation-Cancellation-Request
-│   ├───UC-6-Pending-Vacation-Requests
-│   ├───UC-7-Vacation-Inquiry-Search-Parameters
-│   ├───UC-8-Vacation-Inquiry-Search-Results
-│   ├───UC-9-Print-Single-Vacation-Transaction-Report
-│   ├───UC-10-Print-Comparative-Annual-Report
-│   ├───UC-11-Notifications-Center
+│   ├───[Additional use cases...]
 │   ├───UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance
 │   ├───Use-Case-Template
 │   ├───Generated-UseCases-JSON
@@ -84,13 +76,7 @@ Vacation System/
     ├───Vacation-Request
     ├───Vacation-Cancellation-Request
     ├───My-Vacation-Requests
-    ├───Pending-Vacation-Requests
-    ├───Review-Vacation-Request
-    ├───Review-Vacation-Cancellation-Request
-    ├───Vacation-Inquiry-Search-Parameters
-    ├───Vacation-Inquiry-Search-Results
-    ├───Notifications-Center
-    ├───Requests-Center
+    ├───[Additional wireframes...]
     ├───Print-Layout-Single-Transaction-Report
     └───Print-Layout-Annual-Comparative-Report
 ```
@@ -105,23 +91,16 @@ Requirements are the foundation of any project. BAs create these documents to en
 - **Project Scope** - Business requirements and project boundaries definition  
 - **Meeting Minutes** - Stakeholder engagement and requirements elicitation documentation
 
-### Use Case Modeling (UC-1 to UC-12)
+### Use Case Modeling
 **Why Business Analysts Create Use Cases:**
 Use cases capture how users interact with the system to achieve business goals. They help BAs understand user needs, define system behavior, and ensure all scenarios are covered before development begins.
 
-Each use case demonstrates proper BA documentation practices:
-- **UC-1**: Employee Vacation Request - Basic workflow modeling
-- **UC-2**: Vacation Cancellation Request - Alternative flow handling
-- **UC-3**: My Vacation Requests - User interface requirements
-- **UC-4**: Review Vacation Request - Approval process modeling
-- **UC-5**: Review Cancellation Request - Exception handling
-- **UC-6**: Pending Requests Dashboard - Manager requirements
-- **UC-7**: Vacation Inquiry Search - Search functionality specification
-- **UC-8**: Search Results Display - Output requirements
-- **UC-9**: Single Transaction Reports - Reporting requirements
-- **UC-10**: Comparative Annual Reports - Analytics requirements
-- **UC-11**: Notifications Center - Communication requirements
-- **UC-12**: Automated Balance Updates - Business rule automation
+This project demonstrates 12 comprehensive use cases covering:
+- Basic workflows (vacation requests, approvals)
+- Alternative flows (cancellations, rejections)
+- Exception handling (escalations, resubmissions)
+- Reporting and analytics requirements
+- Business rule automation
 
 ### Business Process Modeling
 **Why Business Analysts Create Process Models:**
@@ -129,10 +108,7 @@ Process models help BAs visualize how work flows through an organization, identi
 
 - **Context Diagrams** - System boundaries and external interactions
 - **State Diagrams** - Business process states and transitions
-- **Workflow Diagrams** - Detailed business process flows including:
-  - Basic vacation request flow
-  - Escalation processes
-  - Resubmission workflows
+- **Workflow Diagrams** - Detailed business process flows including basic flows, escalations, and resubmissions
 
 ### Data Modeling
 **Why Business Analysts Create Data Models:**
@@ -146,9 +122,11 @@ Data models ensure BAs understand what information the system needs to store, ho
 **Why Business Analysts Create Wireframes:**
 Wireframes help BAs communicate interface requirements to stakeholders and developers. They ensure the system is intuitive, efficient, and meets user needs before expensive development begins.
 
-- **Wireframes** - User interface mockups for all business functions
-- **Screen Designs** - Complete user experience specifications
-- **Print Layouts** - Report and output design requirements
+This project includes wireframes for all major business functions:
+- Request and approval interfaces
+- Search and reporting screens
+- Dashboard and notification views
+- Print layouts for reports
 
 ## 🛠️ Automation Tools
 
@@ -201,7 +179,7 @@ Business Analysis requires systematic learning. This path follows the natural pr
 This repository provides a complete learning journey:
 
 1. **Start with Requirements** - Study the SRS and project scope
-2. **Understand Use Cases** - Analyze UC-1 through UC-12 for modeling techniques
+2. **Understand Use Cases** - Analyze the 12 use cases for modeling techniques
 3. **Study Process Flows** - Review workflow and state diagrams
 4. **Examine Data Models** - Learn data dictionary structures
 5. **Review UI Designs** - Understand wireframe and interface requirements
@@ -220,6 +198,16 @@ These are the core competencies every Business Analyst needs. They represent the
 - **Professional Documentation** standards and templates
 - **Requirements Management** with version control
 
+## 🌟 Real-World Application
+
+This repository demonstrates how Business Analysis principles apply to real business problems. The Vacation Management System serves as a practical example that shows:
+
+- **How to analyze business processes** and identify improvement opportunities
+- **How to gather requirements** from multiple stakeholder groups
+- **How to model complex workflows** with multiple actors and scenarios
+- **How to design user interfaces** that support business needs
+- **How to maintain documentation** throughout the project lifecycle
+
 ---
 
-*This project demonstrates professional Business Analysis deliverables and serves as a comprehensive learning resource for BA practitioners and students.*
+*This project demonstrates professional Business Analysis deliverables and serves as a comprehensive learning resource for BA practitioners and students. Use it to understand how BA concepts apply in practice and develop the skills needed for successful business analysis projects.*
