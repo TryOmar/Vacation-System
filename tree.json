@@ -1,0 +1,285 @@
+{
+  "Data-Dictionary": {
+    "Data-Dictionary-Template": [
+      "Data-Dictionary-Template-1.png",
+      "Data-Dictionary-Template.html",
+      "Data-Dictionary-Template.pdf"
+    ],
+    "Master-Data-Dictionaries": {
+      "Departments-Master-Data-Data-Dictionary": [
+        "Departments-Master-Data-Data-Dictionary-1.png",
+        "Departments-Master-Data-Data-Dictionary.html",
+        "Departments-Master-Data-Data-Dictionary.pdf"
+      ],
+      "Employee-Master-Data-Data-Dictionary": [
+        "Employee-Master-Data-Data-Dictionary-1.png",
+        "Employee-Master-Data-Data-Dictionary.html",
+        "Employee-Master-Data-Data-Dictionary.pdf"
+      ],
+      "Vacation-Types-Master-Data-Data-Dictionary": [
+        "Vacation-Types-Master-Data-Data-Dictionary-1.png",
+        "Vacation-Types-Master-Data-Data-Dictionary.html",
+        "Vacation-Types-Master-Data-Data-Dictionary.pdf"
+      ]
+    },
+    "Screen-Data-Dictionaries": {
+      "My-Vacation-Requests-Screen-Data-Dictionary": [
+        "My-Vacation-Requests-Screen-Data-Dictionary-1.png",
+        "My-Vacation-Requests-Screen-Data-Dictionary.html",
+        "My-Vacation-Requests-Screen-Data-Dictionary.pdf"
+      ],
+      "Notifications-Center-Screen-Data-Dictionary": [
+        "Notifications-Center-Screen-Data-Dictionary-1.png",
+        "Notifications-Center-Screen-Data-Dictionary.html",
+        "Notifications-Center-Screen-Data-Dictionary.pdf"
+      ],
+      "Pending-Vacation-Requests-Screen-Data-Dictionary": [
+        "Pending-Vacation-Requests-Screen-Data-Dictionary-1.png",
+        "Pending-Vacation-Requests-Screen-Data-Dictionary.html",
+        "Pending-Vacation-Requests-Screen-Data-Dictionary.pdf"
+      ],
+      "Print-Comparative-Annual-Report-Data-Dictionary": [
+        "Print-Comparative-Annual-Report-Data-Dictionary-1.png",
+        "Print-Comparative-Annual-Report-Data-Dictionary.html",
+        "Print-Comparative-Annual-Report-Data-Dictionary.pdf"
+      ],
+      "Print-Single-Transaction-Report-Data-Dictionary": [
+        "Print-Single-Transaction-Report-Data-Dictionary-1.png",
+        "Print-Single-Transaction-Report-Data-Dictionary.html",
+        "Print-Single-Transaction-Report-Data-Dictionary.pdf"
+      ],
+      "Review-Vacation-Cancellation-Request-Screen-Data-Dictionary": [
+        "Review-Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png",
+        "Review-Vacation-Cancellation-Request-Screen-Data-Dictionary.html",
+        "Review-Vacation-Cancellation-Request-Screen-Data-Dictionary.pdf"
+      ],
+      "Review-Vacation-Request-Screen-Data-Dictionary": [
+        "Review-Vacation-Request-Screen-Data-Dictionary-1.png",
+        "Review-Vacation-Request-Screen-Data-Dictionary.html",
+        "Review-Vacation-Request-Screen-Data-Dictionary.pdf"
+      ],
+      "Vacation-Cancellation-Request-Screen-Data-Dictionary": [
+        "Vacation-Cancellation-Request-Screen-Data-Dictionary-1.png",
+        "Vacation-Cancellation-Request-Screen-Data-Dictionary.html",
+        "Vacation-Cancellation-Request-Screen-Data-Dictionary.pdf"
+      ],
+      "Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary": [
+        "Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary-1.png",
+        "Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary.html",
+        "Vacation-Inquiry-Search-Parameters-Screen-Data-Dictionary.pdf"
+      ],
+      "Vacation-Inquiry-Search-Results-Screen-Data-Dictionary": [
+        "Vacation-Inquiry-Search-Results-Screen-Data-Dictionary-1.png",
+        "Vacation-Inquiry-Search-Results-Screen-Data-Dictionary.html",
+        "Vacation-Inquiry-Search-Results-Screen-Data-Dictionary.pdf"
+      ],
+      "Vacation-Request-Screen-Data-Dictionary": [
+        "Vacation-Request-Screen-Data-Dictionary-1.png",
+        "Vacation-Request-Screen-Data-Dictionary.html",
+        "Vacation-Request-Screen-Data-Dictionary.pdf"
+      ]
+    },
+    "_files": [
+      "moved-files.log"
+    ]
+  },
+  "Diagrams": {
+    "Context": [
+      "context.dot",
+      "context.drawio",
+      "context.drawio.png",
+      "context.png",
+      "Vocation System.drawio"
+    ],
+    "State-Diagram": [
+      "plantuml_export.puml",
+      "State-Diagram-Dark.png",
+      "State-Diagram.png",
+      "Website.txt"
+    ],
+    "Workflows": {
+      "Vacation-Request-Basic-Flow": [
+        "Vacation-Request-Basic-Flow.png",
+        "Vacation-Request-Basic-Flow.xpdl"
+      ],
+      "Vacation-Request-Escalation-to-Sponsor": [
+        "Vacation-Request-Escalation-to-Sponsor.png",
+        "Vacation-Request-Escalation-to-Sponsor.xpdl"
+      ],
+      "Vacation-Request-Resubmission-After-Rejection": [
+        "Vacation-Request-Resubmission-After-Rejection.png",
+        "Vacation-Request-Resubmission-After-Rejection.xpdl"
+      ]
+    }
+  },
+  "Requirements": [
+    "MinutesOfMeeting_Thursday_7Aug.md",
+    "MinutesOfMeeting_Thursday_7Aug.pdf",
+    "Project-Scope.md"
+  ],
+  "Use-Cases": {
+    "Messages-Table": [
+      "Messages-Table-1.png",
+      "Messages-Table-2.png",
+      "Messages-Table.html",
+      "Messages-Table.pdf"
+    ],
+    "UC-1-Employee-Vacation-Request": [
+      "UC-1-Employee-Vacation-Request-1.png",
+      "UC-1-Employee-Vacation-Request.html",
+      "UC-1-Employee-Vacation-Request.pdf"
+    ],
+    "UC-10-Print-Comparative-Annual-Report": [
+      "UC-10-Print-Comparative-Annual-Report-1.png",
+      "UC-10-Print-Comparative-Annual-Report.html",
+      "UC-10-Print-Comparative-Annual-Report.pdf"
+    ],
+    "UC-11-Notifications-Center": [
+      "UC-11-Notifications-Center-1.png",
+      "UC-11-Notifications-Center-2.png",
+      "UC-11-Notifications-Center.html",
+      "UC-11-Notifications-Center.pdf"
+    ],
+    "UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance": [
+      "UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance-1.png",
+      "UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance-2.png",
+      "UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance.html",
+      "UC-12-Automated-Update-of-Employee-Annual-Vacation-Balance.pdf"
+    ],
+    "UC-2-Employee-Vacation-Cancellation-Request": [
+      "UC-2-Employee-Vacation-Cancellation-Request-1.png",
+      "UC-2-Employee-Vacation-Cancellation-Request.html",
+      "UC-2-Employee-Vacation-Cancellation-Request.pdf"
+    ],
+    "UC-3-My-Vacation-Requests": [
+      "UC-3-My-Vacation-Requests-1.png",
+      "UC-3-My-Vacation-Requests.html",
+      "UC-3-My-Vacation-Requests.pdf"
+    ],
+    "UC-4-Review-Vacation-Request": [
+      "UC-4-Review-Vacation-Request-1.png",
+      "UC-4-Review-Vacation-Request.html",
+      "UC-4-Review-Vacation-Request.pdf"
+    ],
+    "UC-5-Review-Vacation-Cancellation-Request": [
+      "UC-5-Review-Vacation-Cancellation-Request-1.png",
+      "UC-5-Review-Vacation-Cancellation-Request.html",
+      "UC-5-Review-Vacation-Cancellation-Request.pdf"
+    ],
+    "UC-6-Pending-Vacation-Requests": [
+      "UC-6-Pending-Vacation-Requests-1.png",
+      "UC-6-Pending-Vacation-Requests.html",
+      "UC-6-Pending-Vacation-Requests.pdf"
+    ],
+    "UC-7-Vacation-Inquiry-Search-Parameters": [
+      "UC-7-Vacation-Inquiry-Search-Parameters-1.png",
+      "UC-7-Vacation-Inquiry-Search-Parameters.html",
+      "UC-7-Vacation-Inquiry-Search-Parameters.pdf"
+    ],
+    "UC-8-Vacation-Inquiry-Search-Results": [
+      "UC-8-Vacation-Inquiry-Search-Results-1.png",
+      "UC-8-Vacation-Inquiry-Search-Results.html",
+      "UC-8-Vacation-Inquiry-Search-Results.pdf"
+    ],
+    "UC-9-Print-Single-Vacation-Transaction-Report": [
+      "UC-9-Print-Single-Vacation-Transaction-Report-1.png",
+      "UC-9-Print-Single-Vacation-Transaction-Report.html",
+      "UC-9-Print-Single-Vacation-Transaction-Report.pdf"
+    ],
+    "Use-Case-Template": [
+      "Use-Case-Template-1.png",
+      "Use-Case-Template.html",
+      "Use-Case-Template.pdf"
+    ],
+    "_files": [
+      "All-UseCases-Fixed.json",
+      "All-UseCases.json",
+      "collect-usecases.ps1",
+      "package.json"
+    ]
+  },
+  "Wireframes": {
+    "Annual-Comparative-Report-Search-Parameters": [
+      "Annual-Comparative-Report-Search-Parameters-1.png",
+      "Annual-Comparative-Report-Search-Parameters.html",
+      "Annual-Comparative-Report-Search-Parameters.pdf"
+    ],
+    "Employee-Vacation-Inquiry-Search-Parameters": [
+      "Employee-Vacation-Inquiry-Search-Parameters-1.png",
+      "Employee-Vacation-Inquiry-Search-Parameters.html",
+      "Employee-Vacation-Inquiry-Search-Parameters.pdf"
+    ],
+    "Employee-Vacation-Inquiry-Search-Results": [
+      "Employee-Vacation-Inquiry-Search-Results-1.png",
+      "Employee-Vacation-Inquiry-Search-Results-2.png",
+      "Employee-Vacation-Inquiry-Search-Results.html",
+      "Employee-Vacation-Inquiry-Search-Results.pdf"
+    ],
+    "My-Vacation-Requests": [
+      "My-Vacation-Requests-1.png",
+      "My-Vacation-Requests.html",
+      "My-Vacation-Requests.pdf"
+    ],
+    "Notifications-Center": [
+      "Notifications-Center-1.png",
+      "Notifications-Center.html",
+      "Notifications-Center.pdf"
+    ],
+    "Pending-Vacation-Requests": [
+      "Pending-Vacation-Requests-1.png",
+      "Pending-Vacation-Requests.html",
+      "Pending-Vacation-Requests.pdf"
+    ],
+    "Print-Layout-Annual-Comparative-Report": [
+      "Print-Layout-Annual-Comparative-Report-Web-1.png",
+      "Print-Layout-Annual-Comparative-Report-Web.html",
+      "Print-Layout-Annual-Comparative-Report-Web.pdf"
+    ],
+    "Print-Layout-Single-Transaction-Report": [
+      "Print-Layout-Single-Transaction-Report-1.png",
+      "Print-Layout-Single-Transaction-Report.html",
+      "Print-Layout-Single-Transaction-Report.pdf"
+    ],
+    "Requests-Center": [
+      "Requests-Center-1.png",
+      "Requests-Center.html",
+      "Requests-Center.pdf"
+    ],
+    "Review-Vacation-Cancellation-Request": [
+      "Review-Vacation-Cancellation-Request-1.png",
+      "Review-Vacation-Cancellation-Request.html",
+      "Review-Vacation-Cancellation-Request.pdf"
+    ],
+    "Review-Vacation-Request": [
+      "Review-Vacation-Request-1.png",
+      "Review-Vacation-Request.html",
+      "Review-Vacation-Request.pdf"
+    ],
+    "Vacation-Cancellation-Request": [
+      "Vacation-Cancellation-Request-1.png",
+      "Vacation-Cancellation-Request.html",
+      "Vacation-Cancellation-Request.pdf"
+    ],
+    "Vacation-Request": [
+      "Vacation-Request-1.png",
+      "Vacation-Request.html",
+      "Vacation-Request.pdf"
+    ],
+    "_files": [
+      "test-1.png",
+      "test.html",
+      "test.pdf"
+    ]
+  },
+  "_files": [
+    "app.js",
+    "batch-html-to-pdf.js",
+    "config.js",
+    "generate-tree.js",
+    "index.html",
+    "package.json",
+    "SRS_Vacation_Management_System.pdf",
+    "SRS_Vacation_Management_System.tex",
+    "test.html"
+  ]
+}
