@@ -133,3 +133,28 @@ npm rebuild sharp
 - macOS: `brew install poppler`
 - Windows: Download from GitHub releases
 
+## 🔗 Git Integration
+
+### Auto-generate Tree on Commit
+You can automatically run `generate-tree.js` after each commit to keep the project tree updated:
+
+**Sample post-commit hook** (`.git/hooks/post-commit`):
+```bash
+#!/bin/bash
+cd "$(git rev-parse --show-toplevel)/Scripts"
+node generate-tree.js
+git add ../index.html
+git commit -m "Update project tree structure" --no-verify
+```
+
+**Windows post-commit hook** (`.git/hooks/post-commit`):
+```batch
+@echo off
+cd /d "%~dp0..\Scripts"
+node generate-tree.js
+git add ..\index.html
+git commit -m "Update project tree structure" --no-verify
+```
+
+**Note:** Make sure the hook file is executable (`chmod +x .git/hooks/post-commit` on Linux/Mac).
+
