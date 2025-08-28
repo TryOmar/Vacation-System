@@ -106,12 +106,13 @@ function generateHTML(tree) {
   html += 'body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 20px; }\n';
   html += '.card { background: #fff; border: 2px solid #333; border-radius: 8px; padding: 10px 15px; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); }\n';
   html += '.card h2 { margin:0 0 10px; text-align:center; font-size:1.2rem; border-bottom:1px solid #ccc; padding-bottom:5px; }\n';
-  html += '.item { display:flex; justify-content:space-between; align-items:center; margin:4px 0; }\n';
-  html += '.item span { flex:1; }\n';
-  html += '.buttons { flex-shrink:0; }\n';
-  html += '.btn { background:#000; color:#fff; border:none; padding:3px 8px; margin-left:5px; border-radius:4px; font-size:0.8rem; cursor:pointer; text-decoration:none; }\n';
+  html += '.item { display:flex; justify-content:space-between; align-items:center; margin:4px 0; padding:4px 6px; background:#f9f9f9; border-radius:4px; flex-wrap:wrap; }\n';
+  html += '.item span { flex:1; min-width:0; word-break:break-word; }\n';
+  html += '.buttons { flex-shrink:0; display:flex; gap:5px; margin-left:10px; }\n';
+  html += '.btn { background:#000; color:#fff; border:none; padding:3px 8px; border-radius:4px; font-size:0.8rem; cursor:pointer; text-decoration:none; white-space:nowrap; }\n';
   html += '.btn:hover { opacity:0.8; }\n';
   html += '</style>\n</head>\n<body>\n';
+  
 
   let allCategories = flattenCategories(tree);
 
