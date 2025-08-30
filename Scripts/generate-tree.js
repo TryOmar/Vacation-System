@@ -1,23 +1,25 @@
 const fs = require("fs");
 const path = require("path");
 
-// --- CONFIG ---
 const SCRIPT_DIR = __dirname;                  // folder of this script
 const ROOT_DIR = path.resolve(SCRIPT_DIR, ".."); // parent folder as project root
 const OUTPUT_FILE = path.join(ROOT_DIR, "index.html");
-const IGNORE = [
-  "node_modules",
-  ".git",
-  ".gitignore",
-  "package-lock.json",
-  "tree.json",
-  "index.html",
-  ".DS_Store"
-];
+const IGNORE = ["node_modules", ".git", ".gitignore", "package-lock.json", "tree.json", "index.html", ".DS_Store", "*.aux", "*.bbl", "*.bcf", "*.blg", "*.fdb_latexmk", "*.fls", "*.log", "*.out", "*.run.xml", "*.synctex.gz", "*.toc", "*.lof", "*.lot", "*.idx", "*.ind", "*.ilg", "*.glo", "*.gls", "*.glg", "*.acn", "*.acr", "*.alg", "*.ist", "*.loa", "*.nav", "*.snm", "*.vrb", "*.xdv", "*.spl", "*.synctex", "*.auxlock", "*.bak", "*.tmp", "*.swp", "*.swo", "*~", "*.backup", "*.old", "*.orig", "*.sty", "*.cls", "*.clo", "*.def", "*.cfg", "*.bib.bak", "*.bbl.bak", "*.ltjruby"];
 
-// --- HELPERS ---
 function shouldIgnore(name) {
-  return IGNORE.includes(name) || name.startsWith('.');
+  // Check for exact matches first
+  if (IGNORE.includes(name) || name.startsWith('.')) {
+    return true;
+  }
+  
+  // Check for wildcard patterns (e.g., *.aux, *.log)
+  return IGNORE.some(pattern => {
+    if (pattern.startsWith('*.')) {
+      const extension = pattern.substring(1); // Remove the *
+      return name.endsWith(extension);
+    }
+    return false;
+  });
 }
 
 // Recursively build tree
