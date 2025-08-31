@@ -56,44 +56,44 @@
 
   <script>
 
-
+    
 const userStoryData = {
-  title: "User Story Template",
-  description: "A reusable user story structure with narrative, trigger, acceptance criteria, and supporting details.",
+  title: "US-8 Employee Views Vacation Inquiry Search Results",
+  description: "User story for employee viewing vacation inquiry search results",
 
   sections: {
     "Summary": [
-      ["ID", "Unique identifier for the user story (e.g., US-001)"],
-      ["Epic", "The larger feature or module this story belongs to (e.g., User Registration & Login)"],
-      ["Title", "Short descriptive title for the user story (e.g., Register as a New User)"],
-      ["Priority", "Level of importance (High, Medium, Low)"],
-      ["Status", "Current state (Todo, In Progress, Done)"]
+      ["ID", "US-008"],
+      ["Epic", "Vacation Management"],
+      ["Title", "Employee Views Vacation Inquiry Search Results"],
+      ["Priority", "Medium"],
+      ["Status", "Todo"]
     ],
 
     "User Story": [
-      "As a <role>, I want to <goal> so that <benefit>."
+      "As an employee, I want to view detailed results from my vacation inquiry search so that I can access comprehensive information about vacation requests."
     ],
 
     "Trigger": [
-      ["Trigger", "What initiates this user story (e.g., user clicks a button, system event occurs)."]
+      ["Trigger", "Employee performs a vacation inquiry search and wants to view detailed results."]
     ],
 
     "Acceptance Criteria": {
       headers: ["#", "Criteria"],
       rows: [
-        ["1", "Given <precondition>, when <action>, then <expected outcome>."],
-        ["2", "Given <alternative scenario>, when <action>, then <expected outcome>."],
-        ["3", "Any additional acceptance conditions to define 'done'."]
+        ["1", "Given I perform a search, when results are displayed, then I should see a comprehensive list with Request ID, Employee Name, Vacation Type, Start Date, End Date, Status, and Days."],
+        ["2", "Given I view search results, when I click on a specific result, then I should see detailed information including notes and attachments."],
+        ["3", "Given I have multiple search results, when I view them, then they should be paginated with options to navigate between pages."],
+        ["4", "Given I want to export results, when I choose export, then I should be able to download results in CSV or PDF format."]
       ]
     },
 
     "Notes": [
-      ["Dependencies", "External services, systems, or prerequisites needed for this story."],
-      ["Remark", "Important considerations, constraints, or security requirements."]
+      ["Dependencies", "Search functionality, vacation database, export capabilities"],
+      ["Remark", "Results should be displayed in a user-friendly format with clear navigation and export options."]
     ]
   }
 };
-
 
 
 const FIRST_COL_WIDTH = '6%';

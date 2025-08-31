@@ -56,44 +56,44 @@
 
   <script>
 
-
+    
 const userStoryData = {
-  title: "User Story Template",
-  description: "A reusable user story structure with narrative, trigger, acceptance criteria, and supporting details.",
+  title: "US-12 System Automatically Updates Employee Annual Vacation Balance",
+  description: "User story for system automatically updating employee annual vacation balance",
 
   sections: {
     "Summary": [
-      ["ID", "Unique identifier for the user story (e.g., US-001)"],
-      ["Epic", "The larger feature or module this story belongs to (e.g., User Registration & Login)"],
-      ["Title", "Short descriptive title for the user story (e.g., Register as a New User)"],
-      ["Priority", "Level of importance (High, Medium, Low)"],
-      ["Status", "Current state (Todo, In Progress, Done)"]
+      ["ID", "US-012"],
+      ["Epic", "Vacation Management"],
+      ["Title", "System Automatically Updates Employee Annual Vacation Balance"],
+      ["Priority", "Medium"],
+      ["Status", "Todo"]
     ],
 
     "User Story": [
-      "As a <role>, I want to <goal> so that <benefit>."
+      "As a system administrator, I want the system to automatically update employee annual vacation balances so that leave entitlements are accurately maintained without manual intervention."
     ],
 
     "Trigger": [
-      ["Trigger", "What initiates this user story (e.g., user clicks a button, system event occurs)."]
+      ["Trigger", "System scheduled job runs to update vacation balances based on company policies and employee service dates."]
     ],
 
     "Acceptance Criteria": {
       headers: ["#", "Criteria"],
       rows: [
-        ["1", "Given <precondition>, when <action>, then <expected outcome>."],
-        ["2", "Given <alternative scenario>, when <action>, then <expected outcome>."],
-        ["3", "Any additional acceptance conditions to define 'done'."]
+        ["1", "Given the annual update process runs, when it executes, then all eligible employees should have their vacation balances updated according to company policy."],
+        ["2", "Given an employee's service anniversary, when the update runs, then their vacation entitlement should be recalculated based on years of service."],
+        ["3", "Given the update process completes, when it finishes, then a log should be generated showing all changes made."],
+        ["4", "Given any errors occur during the update, when they happen, then the system should log the errors and notify administrators."]
       ]
     },
 
     "Notes": [
-      ["Dependencies", "External services, systems, or prerequisites needed for this story."],
-      ["Remark", "Important considerations, constraints, or security requirements."]
+      ["Dependencies", "Employee service data, company vacation policies, automated scheduling system"],
+      ["Remark", "This process should run automatically and handle edge cases such as employees with special entitlements or policy exceptions."]
     ]
   }
 };
-
 
 
 const FIRST_COL_WIDTH = '6%';

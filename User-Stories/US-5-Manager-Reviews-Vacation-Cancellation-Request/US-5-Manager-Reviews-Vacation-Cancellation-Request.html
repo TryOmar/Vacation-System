@@ -56,44 +56,44 @@
 
   <script>
 
-
+    
 const userStoryData = {
-  title: "User Story Template",
-  description: "A reusable user story structure with narrative, trigger, acceptance criteria, and supporting details.",
+  title: "US-5 Manager Reviews Vacation Cancellation Request",
+  description: "User story for manager reviewing vacation cancellation requests",
 
   sections: {
     "Summary": [
-      ["ID", "Unique identifier for the user story (e.g., US-001)"],
-      ["Epic", "The larger feature or module this story belongs to (e.g., User Registration & Login)"],
-      ["Title", "Short descriptive title for the user story (e.g., Register as a New User)"],
-      ["Priority", "Level of importance (High, Medium, Low)"],
-      ["Status", "Current state (Todo, In Progress, Done)"]
+      ["ID", "US-005"],
+      ["Epic", "Vacation Management"],
+      ["Title", "Manager Reviews Vacation Cancellation Request"],
+      ["Priority", "High"],
+      ["Status", "Todo"]
     ],
 
     "User Story": [
-      "As a <role>, I want to <goal> so that <benefit>."
+      "As a manager, I want to review and approve/reject vacation cancellation requests from my team members so that I can manage team availability and handle schedule changes."
     ],
 
     "Trigger": [
-      ["Trigger", "What initiates this user story (e.g., user clicks a button, system event occurs)."]
+      ["Trigger", "Manager receives notification of pending vacation cancellation request from team member."]
     ],
 
     "Acceptance Criteria": {
       headers: ["#", "Criteria"],
       rows: [
-        ["1", "Given <precondition>, when <action>, then <expected outcome>."],
-        ["2", "Given <alternative scenario>, when <action>, then <expected outcome>."],
-        ["3", "Any additional acceptance conditions to define 'done'."]
+        ["1", "Given I am a manager, when I access the cancellation review screen, then I should see the original vacation request details and cancellation reason."],
+        ["2", "Given I review a cancellation request, when I make a decision, then I should be able to approve or reject the cancellation."],
+        ["3", "Given I approve a cancellation, when I submit my decision, then the employee should be notified and their vacation balance should be restored."],
+        ["4", "Given I reject a cancellation, when I provide a reason, then the rejection reason should be stored and communicated to the employee."]
       ]
     },
 
     "Notes": [
-      ["Dependencies", "External services, systems, or prerequisites needed for this story."],
-      ["Remark", "Important considerations, constraints, or security requirements."]
+      ["Dependencies", "Manager role permissions, vacation cancellation workflow, notification system"],
+      ["Remark", "Cancellation approvals should consider business impact and team coverage requirements."]
     ]
   }
 };
-
 
 
 const FIRST_COL_WIDTH = '6%';

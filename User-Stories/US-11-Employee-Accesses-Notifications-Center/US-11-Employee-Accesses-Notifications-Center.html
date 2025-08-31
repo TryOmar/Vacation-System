@@ -56,44 +56,44 @@
 
   <script>
 
-
+    
 const userStoryData = {
-  title: "User Story Template",
-  description: "A reusable user story structure with narrative, trigger, acceptance criteria, and supporting details.",
+  title: "US-11 Employee Accesses Notifications Center",
+  description: "User story for employee accessing notifications center",
 
   sections: {
     "Summary": [
-      ["ID", "Unique identifier for the user story (e.g., US-001)"],
-      ["Epic", "The larger feature or module this story belongs to (e.g., User Registration & Login)"],
-      ["Title", "Short descriptive title for the user story (e.g., Register as a New User)"],
-      ["Priority", "Level of importance (High, Medium, Low)"],
-      ["Status", "Current state (Todo, In Progress, Done)"]
+      ["ID", "US-011"],
+      ["Epic", "Vacation Management"],
+      ["Title", "Employee Accesses Notifications Center"],
+      ["Priority", "Medium"],
+      ["Status", "Todo"]
     ],
 
     "User Story": [
-      "As a <role>, I want to <goal> so that <benefit>."
+      "As an employee, I want to access the notifications center so that I can stay informed about my vacation request status and important updates."
     ],
 
     "Trigger": [
-      ["Trigger", "What initiates this user story (e.g., user clicks a button, system event occurs)."]
+      ["Trigger", "Employee wants to check for notifications about vacation requests or system updates."]
     ],
 
     "Acceptance Criteria": {
       headers: ["#", "Criteria"],
       rows: [
-        ["1", "Given <precondition>, when <action>, then <expected outcome>."],
-        ["2", "Given <alternative scenario>, when <action>, then <expected outcome>."],
-        ["3", "Any additional acceptance conditions to define 'done'."]
+        ["1", "Given I am logged in, when I access the notifications center, then I should see all my relevant notifications."],
+        ["2", "Given I view notifications, when they are displayed, then they should be sorted by date (newest first) and show read/unread status."],
+        ["3", "Given I have unread notifications, when I click on one, then it should be marked as read and show full details."],
+        ["4", "Given I want to manage notifications, when I access the center, then I should have options to mark all as read or clear old notifications."]
       ]
     },
 
     "Notes": [
-      ["Dependencies", "External services, systems, or prerequisites needed for this story."],
-      ["Remark", "Important considerations, constraints, or security requirements."]
+      ["Dependencies", "Notification system, user authentication, notification database"],
+      ["Remark", "Notifications should be clear, actionable, and respect user preferences for frequency and types."]
     ]
   }
 };
-
 
 
 const FIRST_COL_WIDTH = '6%';

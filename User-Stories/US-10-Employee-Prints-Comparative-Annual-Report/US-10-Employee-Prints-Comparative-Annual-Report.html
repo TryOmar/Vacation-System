@@ -56,44 +56,44 @@
 
   <script>
 
-
+    
 const userStoryData = {
-  title: "User Story Template",
-  description: "A reusable user story structure with narrative, trigger, acceptance criteria, and supporting details.",
+  title: "US-10 Employee Prints Comparative Annual Report",
+  description: "User story for employee printing comparative annual reports",
 
   sections: {
     "Summary": [
-      ["ID", "Unique identifier for the user story (e.g., US-001)"],
-      ["Epic", "The larger feature or module this story belongs to (e.g., User Registration & Login)"],
-      ["Title", "Short descriptive title for the user story (e.g., Register as a New User)"],
-      ["Priority", "Level of importance (High, Medium, Low)"],
-      ["Status", "Current state (Todo, In Progress, Done)"]
+      ["ID", "US-010"],
+      ["Epic", "Vacation Management"],
+      ["Title", "Employee Prints Comparative Annual Report"],
+      ["Priority", "Low"],
+      ["Status", "Todo"]
     ],
 
     "User Story": [
-      "As a <role>, I want to <goal> so that <benefit>."
+      "As an employee, I want to print a comparative annual vacation report so that I can analyze my vacation patterns and usage over multiple years."
     ],
 
     "Trigger": [
-      ["Trigger", "What initiates this user story (e.g., user clicks a button, system event occurs)."]
+      ["Trigger", "Employee needs to generate and print a comparative annual vacation report for analysis or HR purposes."]
     ],
 
     "Acceptance Criteria": {
       headers: ["#", "Criteria"],
       rows: [
-        ["1", "Given <precondition>, when <action>, then <expected outcome>."],
-        ["2", "Given <alternative scenario>, when <action>, then <expected outcome>."],
-        ["3", "Any additional acceptance conditions to define 'done'."]
+        ["1", "Given I select annual report parameters, when I choose to generate, then the system should create a comparative report across multiple years."],
+        ["2", "Given I generate a report, when it's created, then it should include vacation usage patterns, balances, and trends over the selected years."],
+        ["3", "Given I view the report, when it's displayed, then I should have options to print or save as PDF."],
+        ["4", "Given I print the report, when it's printed, then the output should be clear and suitable for analysis and documentation."]
       ]
     },
 
     "Notes": [
-      ["Dependencies", "External services, systems, or prerequisites needed for this story."],
-      ["Remark", "Important considerations, constraints, or security requirements."]
+      ["Dependencies", "Multi-year vacation data, report generation system, comparative analysis tools"],
+      ["Remark", "Reports should provide meaningful insights and be formatted for easy reading and analysis."]
     ]
   }
 };
-
 
 
 const FIRST_COL_WIDTH = '6%';

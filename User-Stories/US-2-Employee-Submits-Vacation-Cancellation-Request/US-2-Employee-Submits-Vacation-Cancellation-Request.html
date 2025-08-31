@@ -56,44 +56,44 @@
 
   <script>
 
-
+    
 const userStoryData = {
-  title: "User Story Template",
-  description: "A reusable user story structure with narrative, trigger, acceptance criteria, and supporting details.",
+  title: "US-2 Employee Submits Vacation Cancellation Request",
+  description: "User story for employee vacation cancellation request functionality",
 
   sections: {
     "Summary": [
-      ["ID", "Unique identifier for the user story (e.g., US-001)"],
-      ["Epic", "The larger feature or module this story belongs to (e.g., User Registration & Login)"],
-      ["Title", "Short descriptive title for the user story (e.g., Register as a New User)"],
-      ["Priority", "Level of importance (High, Medium, Low)"],
-      ["Status", "Current state (Todo, In Progress, Done)"]
+      ["ID", "US-002"],
+      ["Epic", "Vacation Management"],
+      ["Title", "Employee Submits Vacation Cancellation Request"],
+      ["Priority", "High"],
+      ["Status", "Todo"]
     ],
 
     "User Story": [
-      "As a <role>, I want to <goal> so that <benefit>."
+      "As an employee, I want to submit a vacation cancellation request so that I can cancel my approved vacation when needed."
     ],
 
     "Trigger": [
-      ["Trigger", "What initiates this user story (e.g., user clicks a button, system event occurs)."]
+      ["Trigger", "Employee needs to cancel an approved vacation request due to changed circumstances."]
     ],
 
     "Acceptance Criteria": {
       headers: ["#", "Criteria"],
       rows: [
-        ["1", "Given <precondition>, when <action>, then <expected outcome>."],
-        ["2", "Given <alternative scenario>, when <action>, then <expected outcome>."],
-        ["3", "Any additional acceptance conditions to define 'done'."]
+        ["1", "Given I have an approved vacation request, when I submit a cancellation request, then the system should mark it as pending cancellation."],
+        ["2", "Given I submit a cancellation request, when I provide a reason, then the system should store the cancellation reason."],
+        ["3", "Given I submit a cancellation request, when the request is submitted, then my manager should be notified."],
+        ["4", "Given I submit a cancellation request, when the request is approved, then my vacation balance should be restored."]
       ]
     },
 
     "Notes": [
-      ["Dependencies", "External services, systems, or prerequisites needed for this story."],
-      ["Remark", "Important considerations, constraints, or security requirements."]
+      ["Dependencies", "Approved vacation request must exist, manager approval workflow"],
+      ["Remark", "Cancellation requests should be tracked separately from regular vacation requests for audit purposes."]
     ]
   }
 };
-
 
 
 const FIRST_COL_WIDTH = '6%';

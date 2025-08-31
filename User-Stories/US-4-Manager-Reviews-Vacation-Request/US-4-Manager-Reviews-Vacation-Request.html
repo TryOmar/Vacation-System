@@ -56,44 +56,44 @@
 
   <script>
 
-
+    
 const userStoryData = {
-  title: "User Story Template",
-  description: "A reusable user story structure with narrative, trigger, acceptance criteria, and supporting details.",
+  title: "US-4 Manager Reviews Vacation Request",
+  description: "User story for manager reviewing vacation requests",
 
   sections: {
     "Summary": [
-      ["ID", "Unique identifier for the user story (e.g., US-001)"],
-      ["Epic", "The larger feature or module this story belongs to (e.g., User Registration & Login)"],
-      ["Title", "Short descriptive title for the user story (e.g., Register as a New User)"],
-      ["Priority", "Level of importance (High, Medium, Low)"],
-      ["Status", "Current state (Todo, In Progress, Done)"]
+      ["ID", "US-004"],
+      ["Epic", "Vacation Management"],
+      ["Title", "Manager Reviews Vacation Request"],
+      ["Priority", "High"],
+      ["Status", "Todo"]
     ],
 
     "User Story": [
-      "As a <role>, I want to <goal> so that <benefit>."
+      "As a manager, I want to review and approve/reject vacation requests from my team members so that I can manage team availability and ensure proper coverage."
     ],
 
     "Trigger": [
-      ["Trigger", "What initiates this user story (e.g., user clicks a button, system event occurs)."]
+      ["Trigger", "Manager receives notification of pending vacation request from team member."]
     ],
 
     "Acceptance Criteria": {
       headers: ["#", "Criteria"],
       rows: [
-        ["1", "Given <precondition>, when <action>, then <expected outcome>."],
-        ["2", "Given <alternative scenario>, when <action>, then <expected outcome>."],
-        ["3", "Any additional acceptance conditions to define 'done'."]
+        ["1", "Given I am a manager, when I access the review screen, then I should see the vacation request details including employee info, dates, and reason."],
+        ["2", "Given I review a request, when I make a decision, then I should be able to approve, reject, or request additional information."],
+        ["3", "Given I approve a request, when I submit my decision, then the employee should be notified and the request status should be updated."],
+        ["4", "Given I reject a request, when I provide a reason, then the rejection reason should be stored and communicated to the employee."]
       ]
     },
 
     "Notes": [
-      ["Dependencies", "External services, systems, or prerequisites needed for this story."],
-      ["Remark", "Important considerations, constraints, or security requirements."]
+      ["Dependencies", "Manager role permissions, vacation request workflow, notification system"],
+      ["Remark", "Managers should have access to team member vacation balances and company policies to make informed decisions."]
     ]
   }
 };
-
 
 
 const FIRST_COL_WIDTH = '6%';

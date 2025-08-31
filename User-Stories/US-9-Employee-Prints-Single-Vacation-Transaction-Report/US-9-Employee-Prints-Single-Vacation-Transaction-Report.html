@@ -56,44 +56,44 @@
 
   <script>
 
-
+    
 const userStoryData = {
-  title: "User Story Template",
-  description: "A reusable user story structure with narrative, trigger, acceptance criteria, and supporting details.",
+  title: "US-9 Employee Prints Single Vacation Transaction Report",
+  description: "User story for employee printing single vacation transaction reports",
 
   sections: {
     "Summary": [
-      ["ID", "Unique identifier for the user story (e.g., US-001)"],
-      ["Epic", "The larger feature or module this story belongs to (e.g., User Registration & Login)"],
-      ["Title", "Short descriptive title for the user story (e.g., Register as a New User)"],
-      ["Priority", "Level of importance (High, Medium, Low)"],
-      ["Status", "Current state (Todo, In Progress, Done)"]
+      ["ID", "US-009"],
+      ["Epic", "Vacation Management"],
+      ["Title", "Employee Prints Single Vacation Transaction Report"],
+      ["Priority", "Low"],
+      ["Status", "Todo"]
     ],
 
     "User Story": [
-      "As a <role>, I want to <goal> so that <benefit>."
+      "As an employee, I want to print a single vacation transaction report so that I can have a physical copy for my records or HR purposes."
     ],
 
     "Trigger": [
-      ["Trigger", "What initiates this user story (e.g., user clicks a button, system event occurs)."]
+      ["Trigger", "Employee needs a printed copy of a specific vacation transaction for documentation."]
     ],
 
     "Acceptance Criteria": {
       headers: ["#", "Criteria"],
       rows: [
-        ["1", "Given <precondition>, when <action>, then <expected outcome>."],
-        ["2", "Given <alternative scenario>, when <action>, then <expected outcome>."],
-        ["3", "Any additional acceptance conditions to define 'done'."]
+        ["1", "Given I select a vacation transaction, when I choose to print, then the system should generate a formatted report."],
+        ["2", "Given I print a report, when it's generated, then it should include all relevant transaction details in a professional format."],
+        ["3", "Given I print a report, when it's displayed, then I should have options to print or save as PDF."],
+        ["4", "Given I print a report, when it's printed, then the output should be clear and suitable for official use."]
       ]
     },
 
     "Notes": [
-      ["Dependencies", "External services, systems, or prerequisites needed for this story."],
-      ["Remark", "Important considerations, constraints, or security requirements."]
+      ["Dependencies", "Vacation transaction data, report generation system, printing capabilities"],
+      ["Remark", "Reports should be formatted professionally and include all necessary information for official documentation."]
     ]
   }
 };
-
 
 
 const FIRST_COL_WIDTH = '6%';

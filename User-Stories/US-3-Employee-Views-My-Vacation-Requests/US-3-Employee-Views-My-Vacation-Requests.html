@@ -56,44 +56,44 @@
 
   <script>
 
-
+    
 const userStoryData = {
-  title: "User Story Template",
-  description: "A reusable user story structure with narrative, trigger, acceptance criteria, and supporting details.",
+  title: "US-3 Employee Views My Vacation Requests",
+  description: "User story for employee viewing their vacation requests",
 
   sections: {
     "Summary": [
-      ["ID", "Unique identifier for the user story (e.g., US-001)"],
-      ["Epic", "The larger feature or module this story belongs to (e.g., User Registration & Login)"],
-      ["Title", "Short descriptive title for the user story (e.g., Register as a New User)"],
-      ["Priority", "Level of importance (High, Medium, Low)"],
-      ["Status", "Current state (Todo, In Progress, Done)"]
+      ["ID", "US-003"],
+      ["Epic", "Vacation Management"],
+      ["Title", "Employee Views My Vacation Requests"],
+      ["Priority", "Medium"],
+      ["Status", "Todo"]
     ],
 
     "User Story": [
-      "As a <role>, I want to <goal> so that <benefit>."
+      "As an employee, I want to view all my vacation requests so that I can track their status and history."
     ],
 
     "Trigger": [
-      ["Trigger", "What initiates this user story (e.g., user clicks a button, system event occurs)."]
+      ["Trigger", "Employee navigates to 'My Vacation Requests' section to view their requests."]
     ],
 
     "Acceptance Criteria": {
       headers: ["#", "Criteria"],
       rows: [
-        ["1", "Given <precondition>, when <action>, then <expected outcome>."],
-        ["2", "Given <alternative scenario>, when <action>, then <expected outcome>."],
-        ["3", "Any additional acceptance conditions to define 'done'."]
+        ["1", "Given I am logged in, when I access 'My Vacation Requests', then I should see all my submitted vacation requests."],
+        ["2", "Given I view my requests, when the page loads, then each request should display Request ID, Vacation Type, Start Date, End Date, Status, and Submission Date."],
+        ["3", "Given I have multiple requests, when I view the list, then requests should be sorted by submission date (newest first)."],
+        ["4", "Given I want to see request details, when I click on a request, then the system should show the complete request information."]
       ]
     },
 
     "Notes": [
-      ["Dependencies", "External services, systems, or prerequisites needed for this story."],
-      ["Remark", "Important considerations, constraints, or security requirements."]
+      ["Dependencies", "Employee authentication, vacation request database"],
+      ["Remark", "The view should be read-only and only show requests belonging to the logged-in employee."]
     ]
   }
 };
-
 
 
 const FIRST_COL_WIDTH = '6%';
