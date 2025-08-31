@@ -23,13 +23,13 @@ This interactive HTML page is **auto-generated** by the [`generate-tree.js`](Scr
 
 The following examples showcase the various types of Business Analysis deliverables included in this project. Each diagram demonstrates professional modeling techniques and standards used in real-world BA projects.
 
-#### Use Case Diagrams
+#### Use Cases
 ![Use Case Example](Use-Cases/UC-1-Employee-Vacation-Request/UC-1-Employee-Vacation-Request-1.png)
 
 
 *Employee Vacation Request use case diagram - shows the complete workflow from request submission to approval, including actors, preconditions, and post-conditions*
 
-#### User Story Diagrams
+#### User Stories
 ![User Story Example](User-Stories/US-1-Employee-Submits-Vacation-Request/US-1-Employee-Submits-Vacation-Request-1.png)
 
 
