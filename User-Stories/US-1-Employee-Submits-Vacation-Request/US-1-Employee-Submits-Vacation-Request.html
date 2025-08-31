@@ -54,44 +54,49 @@
 
   <script>
 
-
+    
 const userStoryData = {
-  title: "User Story Template",
-  description: "A reusable user story structure with narrative, trigger, acceptance criteria, and supporting details.",
+  title: "Employee Submits Vacation Request",
+  description: "Core functionality for employees to request and adjust vacations before submission. This feature provides a dedicated screen accessible via web and mobile platforms for employees to submit their leave requests for multi-level approval.",
 
   sections: {
     "Summary": [
-      ["ID", "Unique identifier for the user story (e.g., US-001)"],
-      ["Epic", "The larger feature or module this story belongs to (e.g., User Registration & Login)"],
-      ["Title", "Short descriptive title for the user story (e.g., Register as a New User)"],
-      ["Priority", "Level of importance (High, Medium, Low)"],
-      ["Status", "Current state (Todo, In Progress, Done)"]
+      ["ID", "**UC-1**"],
+      ["Epic", "Vacation Request Management"], // This use case (UC-1) is a primary component of the "Vacation Request Management" functional requirement (FR-001)
+      ["Title", "Employee Submits Vacation Request"],
+      ["Priority", "High"], // Inferred as a core functionality for the vacation management system
+      ["Status", "**In Progress**"]
     ],
 
     "User Story": [
-      "As a <role>, I want to <goal> so that <benefit>."
+      "**As an Employee, I want to submit a vacation request and route it to my manager for approval, so that I can schedule my time off and receive official acknowledgment.**"
     ],
 
     "Trigger": [
-      ["Trigger", "What initiates this user story (e.g., user clicks a button, system event occurs)."]
+      ["Trigger", "Employee initiates a new vacation request in the portal."]
     ],
 
     "Acceptance Criteria": {
       headers: ["#", "Criteria"],
       rows: [
-        ["1", "Given <precondition>, when <action>, then <expected outcome>."],
-        ["2", "Given <alternative scenario>, when <action>, then <expected outcome>."],
-        ["3", "Any additional acceptance conditions to define 'done'."]
+        ["1", "Given the employee navigates to 'Request Vacation', when the system displays the vacation request form (Screen 1), then it includes **auto-filled, read-only fields for Employee Name and Employee ID**, **mandatory input fields for Vacation Type (with 'Annual' | 'Sick' options), Start Date, and End Date**, an **auto-calculated, read-only field for Period (Days)**, an **optional text area for Notes**, and a **File Upload Area for Attachments**. The form also displays the **current leave balance**."],
+        ["2", "Given the employee enters a **Start Date** and **End Date**, when the system performs real-time validation, then the **Start Date must not be in the past**, and the **End Date must be strictly after the Start Date**."],
+        ["3", "Given **'Sick' leave is selected as the Vacation Type**, when the employee attempts to submit the request, then the system **requires a medical certificate attachment** for successful submission."],
+        ["4", "Given the **requested days do not exceed the employee's available leave balance** and all other validations pass, when the employee clicks 'Submit', then the system **saves the request**, **assigns a unique Request ID**, and **sets its initial status to 'Pending Approval'**."],
+        ["5", "Given an **insufficient leave balance** for the requested period, when the employee attempts to submit the request, then the system **blocks submission** and displays an error message (e.g., MSG-102)."],
+        ["6", "Given the employee selects **dates that overlap an existing vacation request** for the same employee, when they proceed with the request, then the system **warns the employee about the overlap** and allows them to **confirm or adjust** the dates."],
+        ["7", "Given the employee is identified as a **trainee**, when they attempt to submit a vacation request, then the system **blocks the request submission**."],
+        ["8", "When the employee clicks 'Submit', then the submission operation should complete **within 120 seconds**."],
+        ["9", "Given the **HR database is unavailable** during submission, when the employee clicks 'Submit', then the system **shows an error** and prompts the employee to retry later."]
       ]
     },
 
     "Notes": [
-      ["Dependencies", "External services, systems, or prerequisites needed for this story."],
-      ["Remark", "Important considerations, constraints, or security requirements."]
+      ["Dependencies", "The employee must be **authenticated** in the HR system and possess a **non-zero leave balance** for a request to be submitted. The system relies on **Employee Master Data** and **Vacation Types Master Data** for accurate information and policy enforcement. The system integrates with existing HR systems."],
+      ["Remark", "This use case is designed for **full-time Muslim Saudi employees, excluding trainees**. Requests can be **modified before submission**, but **not afterwards**. Upon successful submission, the request is stored with a 'Pending Approval' status, the manager is notified, and the employee can track the status from their dashboard. The annual leave entitlement is **21 days**, increasing to **30 days for employees with over 10 years of service or those aged 50 and above**. Unused vacation days are **forfeited annually** without carryover or compensation. Only **Annual and Sick leave types** are supported."]
     ]
   }
 };
-
 
 
 const FIRST_COL_WIDTH = '6%';
