@@ -41,6 +41,12 @@ The following examples showcase the various types of Business Analysis deliverab
 
 *Vacation request interface wireframe - shows UI/UX design considerations and user interface requirements for the vacation request form*
 
+![Mobile Wireframe Example](Wireframes/Vacation-Request/Vacation-Request-Mobile.png)
+
+
+*Mobile vacation request wireframe - demonstrates responsive design considerations and mobile-first user experience for vacation requests*
+
+
 #### Data Dictionary Examples
 ![Data Dictionary Example](Data-Dictionary/Screen-Data-Dictionaries/Vacation-Request-Screen-Data-Dictionary/Vacation-Request-Screen-Data-Dictionary-1.png)
 
