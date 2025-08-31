@@ -69,6 +69,12 @@ The following examples showcase the various types of Business Analysis deliverab
 
 *System context diagram - defines the boundaries of the vacation management system and its interactions with external entities like employees, managers, and HR systems*
 
+#### Data Modeling
+![Entity Relationship Diagram](Diagrams/Entity-Relationship/Entity-Relationship.png.png)
+
+
+*Entity Relationship Diagram (ERD) - shows the database structure and relationships between vacation system entities including employees, departments, vacation types, and vacation requests*
+
 ## 🎯 Learning Objectives
 
 This repository serves as a **practical Business Analysis learning resource** that demonstrates:
