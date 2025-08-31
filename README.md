@@ -79,6 +79,14 @@ Business Analysis Repository/
 │   ├───Generated-UseCases-JSON
 │   └───Messages-Table
 │
+├───User-Stories
+│   ├───US-1-Employee-Submits-Vacation-Request
+│   ├───US-2-Employee-Submits-Vacation-Cancellation-Request
+│   ├───US-3-Employee-Views-My-Vacation-Requests
+│   ├───[Additional user stories...]
+│   ├───US-12-System-Automatically-Updates-Employee-Annual-Vacation-Balance
+│   └───User-Story-Template
+│
 └───Wireframes
     ├───Vacation-Request
     ├───Vacation-Cancellation-Request
@@ -108,6 +116,18 @@ This project demonstrates 12 comprehensive use cases covering:
 - Exception handling (escalations, resubmissions)
 - Reporting and analytics requirements
 - Business rule automation
+
+### User Stories
+**Why Business Analysts Create User Stories:**
+User stories provide a user-centric view of requirements that focuses on business value and user needs. They help BAs communicate requirements in simple, understandable language that stakeholders and development teams can easily grasp and implement.
+
+This project includes 12 user stories that complement the use cases:
+- **Employee-focused stories** - Vacation requests, cancellations, and inquiries
+- **Manager workflows** - Review and approval processes
+- **System automation** - Balance updates and notifications
+- **Reporting capabilities** - Transaction reports and comparative analytics
+
+Each user story follows the standard format: "As a [role], I want [feature] so that [benefit]" and includes acceptance criteria for clear implementation guidance.
 
 ### Business Process Modeling
 **Why Business Analysts Create Process Models:**
@@ -187,10 +207,11 @@ This repository provides a complete learning journey:
 
 1. **Start with Requirements** - Study the SRS and project scope
 2. **Understand Use Cases** - Analyze the 12 use cases for modeling techniques
-3. **Study Process Flows** - Review workflow and state diagrams
-4. **Examine Data Models** - Learn data dictionary structures
-5. **Review UI Designs** - Understand wireframe and interface requirements
-6. **Practice Automation** - Use scripts to maintain documentation
+3. **Learn User Stories** - Review the 12 user stories for agile requirements
+4. **Study Process Flows** - Review workflow and state diagrams
+5. **Examine Data Models** - Learn data dictionary structures
+6. **Review UI Designs** - Understand wireframe and interface requirements
+7. **Practice Automation** - Use scripts to maintain documentation
 
 ## 🎓 What You'll Learn
 
@@ -199,6 +220,7 @@ These are the core competencies every Business Analyst needs. They represent the
 
 - **Requirements Elicitation** techniques and documentation
 - **Use Case Modeling** best practices and standards
+- **User Story Development** for agile requirements and stakeholder communication
 - **Business Process Modeling** with diagrams and workflows
 - **Data Modeling** principles and dictionary creation
 - **UI/UX Requirements** specification and wireframing
