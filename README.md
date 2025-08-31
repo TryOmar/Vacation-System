@@ -25,28 +25,42 @@ The following examples showcase the various types of Business Analysis deliverab
 
 #### Use Case Diagrams
 ![Use Case Example](Use-Cases/UC-1-Employee-Vacation-Request/UC-1-Employee-Vacation-Request-1.png)
+
+
 *Employee Vacation Request use case diagram - shows the complete workflow from request submission to approval, including actors, preconditions, and post-conditions*
 
 #### User Story Diagrams
 ![User Story Example](User-Stories/US-1-Employee-Submits-Vacation-Request/US-1-Employee-Submits-Vacation-Request-1.png)
+
+
 *User story for vacation request submission - demonstrates agile requirements format with acceptance criteria and business value focus*
 
 #### Wireframe Examples
 ![Wireframe Example](Wireframes/Vacation-Request/Vacation-Request-1.png)
+
+
 *Vacation request interface wireframe - shows UI/UX design considerations and user interface requirements for the vacation request form*
 
 #### Data Dictionary Examples
 ![Data Dictionary Example](Data-Dictionary/Screen-Data-Dictionaries/Vacation-Request-Screen-Data-Dictionary/Vacation-Request-Screen-Data-Dictionary-1.png)
+
+
 *Screen data dictionary for vacation request - defines all data elements, validation rules, and business logic for the vacation request interface*
 
 #### Business Process Diagrams
 ![Workflow Example](Diagrams/Workflows/Vacation-Request-Basic-Flow/Vacation-Request-Basic-Flow.png)
+
+
 *Basic vacation request workflow - illustrates the standard approval process flow with decision points and business rules*
 
 ![State Diagram Example](Diagrams/State-Diagram/State-Diagram.png)
+
+
 *Vacation request state diagram - shows the complete lifecycle of a vacation request from draft to approved/rejected states*
 
-![Context Diagram Example](Diagrams/Context/context.png)
+![Context Diagram Example](Diagrams/Context/context.drawio.png)
+
+
 *System context diagram - defines the boundaries of the vacation management system and its interactions with external entities like employees, managers, and HR systems*
 
 ## 🎯 Learning Objectives
