@@ -165,13 +165,14 @@ The remainder of this document is organized as follows:
     \item Section 3: System Architecture and Context
     \item Section 4: Business Rules and Logic
     \item Section 5: User Requirements / Use Cases
-    \item Section 6: Functional Requirements
-    \item Section 7: Non-Functional Requirements
-    \item Section 8: User Interface Overview
-    \item Section 9: Data Requirements Overview
-    \item Section 10: System Messages
-    \item Section 11: Appendices
-    \item Section 12: Document Approval
+    \item Section 6: User Stories
+    \item Section 7: Functional Requirements
+    \item Section 8: Non-Functional Requirements
+    \item Section 9: User Interface Overview
+    \item Section 10: Data Requirements Overview
+    \item Section 11: System Messages
+    \item Section 12: Appendices
+    \item Section 13: Document Approval
 \end{itemize}
 
 \section{Overall Description}
@@ -702,9 +703,149 @@ This mapping ensures that:
     \item Complete traceability is maintained throughout the system
 \end{itemize}
 
+\section{User Stories}
+
+This section provides user stories that complement the use cases by describing system functionality from the user's perspective. User stories follow the format "As a [role], I want [feature] so that [benefit]."
+
+\subsection{User Story Summary}
+The system implements 12 user stories that correspond to the core use cases:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{1cm}|p{4cm}|p{3cm}|p{3cm}|}
+\hline
+\textbf{ID} & \textbf{User Story Name} & \textbf{Primary Actor} & \textbf{Business Rules} \\
+\hline
+US-1 & Employee Submits Vacation Request & Employee & BR-001, BR-002, BR-003, BR-011, BR-012, BR-013, BR-014 \\
+\hline
+US-2 & Employee Submits Vacation Cancellation Request & Employee & BR-015, BR-016 \\
+\hline
+US-3 & Employee Views My Vacation Requests & Employee & BR-015, BR-016 \\
+\hline
+US-4 & Manager Reviews Vacation Request & Manager/HR/GM & BR-006, BR-007, BR-008, BR-009, BR-014 \\
+\hline
+US-5 & Manager Reviews Vacation Cancellation Request & Manager/HR & BR-015, BR-016, BR-009 \\
+\hline
+US-6 & Manager Views Pending Vacation Requests & Manager/HR & BR-006, BR-007 \\
+\hline
+US-7 & Employee Searches Vacation Inquiry & HR/Managers/Employees & BR-018 \\
+\hline
+US-8 & Employee Views Vacation Inquiry Search Results & HR/Managers/Employees & BR-018 \\
+\hline
+US-9 & Employee Prints Single Vacation Transaction Report & HR/Managers/Employees & BR-018 \\
+\hline
+US-10 & Employee Prints Comparative Annual Report & HR/Managers/GM & BR-018 \\
+\hline
+US-11 & Employee Accesses Notifications Center & All Users & BR-017 \\
+\hline
+US-12 & System Automatically Updates Employee Annual Vacation Balance & System & BR-001, BR-002, BR-008, BR-019 \\
+\hline
+\end{tabular}
+\caption{User Story Summary with Business Rule References}
+\end{table}
+
+\subsection{User Story Details}
+The following user stories are implemented in the system:
+
+\subsubsection{US-1: Employee Submits Vacation Request}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-1-Employee-Submits-Vacation-Request/US-1-Employee-Submits-Vacation-Request-1.png}
+\caption{US-1: Employee Submits Vacation Request User Story}
+\label{fig:us1}
+\end{figure}
+
+\subsubsection{US-2: Employee Submits Vacation Cancellation Request}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-2-Employee-Submits-Vacation-Cancellation-Request/US-2-Employee-Submits-Vacation-Cancellation-Request-1.png}
+\caption{US-2: Employee Submits Vacation Cancellation Request User Story}
+\label{fig:us2}
+\end{figure}
+
+\subsubsection{US-3: Employee Views My Vacation Requests}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-3-Employee-Views-My-Vacation-Requests/US-3-Employee-Views-My-Vacation-Requests-1.png}
+\caption{US-3: Employee Views My Vacation Requests User Story}
+\label{fig:us3}
+\end{figure}
+
+\subsubsection{US-4: Manager Reviews Vacation Request}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-4-Manager-Reviews-Vacation-Request/US-4-Manager-Reviews-Vacation-Request-1.png}
+\caption{US-4: Manager Reviews Vacation Request User Story}
+\label{fig:us4}
+\end{figure}
+
+\subsubsection{US-5: Manager Reviews Vacation Cancellation Request}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-5-Manager-Reviews-Vacation-Cancellation-Request/US-5-Manager-Reviews-Vacation-Cancellation-Request-1.png}
+\caption{US-5: Manager Reviews Vacation Cancellation Request User Story}
+\label{fig:us5}
+\end{figure}
+
+\subsubsection{US-6: Manager Views Pending Vacation Requests}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-6-Manager-Views-Pending-Vacation-Requests/US-6-Manager-Views-Pending-Vacation-Requests-1.png}
+\caption{US-6: Manager Views Pending Vacation Requests User Story}
+\label{fig:us6}
+\end{figure}
+
+\subsubsection{US-7: Employee Searches Vacation Inquiry}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-7-Employee-Searches-Vacation-Inquiry/US-7-Employee-Searches-Vacation-Inquiry-1.png}
+\caption{US-7: Employee Searches Vacation Inquiry User Story}
+\label{fig:us7}
+\end{figure}
+
+\subsubsection{US-8: Employee Views Vacation Inquiry Search Results}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-8-Employee-Views-Vacation-Inquiry-Search-Results/US-8-Employee-Views-Vacation-Inquiry-Search-Results-1.png}
+\caption{US-8: Employee Views Vacation Inquiry Search Results User Story}
+\label{fig:us8}
+\end{figure}
+
+\subsubsection{US-9: Employee Prints Single Vacation Transaction Report}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-9-Employee-Prints-Single-Vacation-Transaction-Report/US-9-Employee-Prints-Single-Vacation-Transaction-Report-1.png}
+\caption{US-9: Employee Prints Single Vacation Transaction Report User Story}
+\label{fig:us9}
+\end{figure}
+
+\subsubsection{US-10: Employee Prints Comparative Annual Report}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-10-Employee-Prints-Comparative-Annual-Report/US-10-Employee-Prints-Comparative-Annual-Report-1.png}
+\caption{US-10: Employee Prints Comparative Annual Report User Story}
+\label{fig:us10}
+\end{figure}
+
+\subsubsection{US-11: Employee Accesses Notifications Center}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-11-Employee-Accesses-Notifications-Center/US-11-Employee-Accesses-Notifications-Center-1.png}
+\caption{US-11: Employee Accesses Notifications Center User Story}
+\label{fig:us11}
+\end{figure}
+
+\subsubsection{US-12: System Automatically Updates Employee Annual Vacation Balance}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{User-Stories/US-12-System-Automatically-Updates-Employee-Annual-Vacation-Balance/US-12-System-Automatically-Updates-Employee-Annual-Vacation-Balance-1.png}
+\caption{US-12: System Automatically Updates Employee Annual Vacation Balance User Story}
+\label{fig:us12}
+\end{figure}
+
 \section{Functional Requirements}
 
-This section lists what the system must do. Each functional requirement references applicable business rules (Section 4) and is traced to use cases (Section 5), where detailed flows illustrate scenarios. Avoid duplicating scenario steps here; use cases serve as the canonical behavioral narratives.
+This section lists what the system must do. Each functional requirement references applicable business rules (Section 4) and is traced to use cases (Section 5) and user stories (Section 6), where detailed flows illustrate scenarios. Avoid duplicating scenario steps here; use cases and user stories serve as the canonical behavioral narratives.
 
 \subsection{FR-001: Vacation Request Management}
 \textbf{Description}: The system must allow employees to create and submit vacation requests.
@@ -1414,10 +1555,10 @@ This appendix articulates how the SRS adheres to quality criteria and the review
 \subsubsection{Quality Criteria Mapping}
 \begin{itemize}
     \item \textbf{Correct \\ Complete}: Centralized Business Rules (Section 4) and comprehensive traceability matrix (Section 5) ensure accuracy and coverage.
-    \item \textbf{Clear \\ Unambiguous}: Quantified NFRs (Section 7) and explicit field definitions (Appendix B.2) reduce ambiguity.
+    \item \textbf{Clear \\ Unambiguous}: Quantified NFRs (Section 8) and explicit field definitions (Appendix B.2) reduce ambiguity.
     \item \textbf{Consistent}: Glossary (Appendix A) governs terminology across sections; references avoid duplicate definitions.
     \item \textbf{Feasible}: Constraints and architecture (Sections 2 and 3) bound implementation scope.
-    \item \textbf{Traceable}: Table mappings in Section 5 link UCs, BRs, FRs, UIs, and Data.
+    \item \textbf{Traceable}: Table mappings in Section 5 link UCs, BRs, FRs, UIs, and Data, and Section 6 provides user story perspectives.
     \item \textbf{Testable}: Each FR/NFR includes measurable outcomes enabling verification.
     \item \textbf{INVEST for Stories}: Use cases and FRs are structured to be valuable, estimable, and testable; large items are decomposed.
 \end{itemize}
@@ -1467,7 +1608,8 @@ This appendix articulates how the SRS adheres to quality criteria and the review
 \hline
 2.2 & Previous & Added all use case images, wireframes, and data dictionary images & System Analyst \\
 \hline
-2.3 & Current & Reorganized structure for logical flow, embedded key diagrams in relevant sections, added comprehensive traceability matrix & System Analyst \\
+2.3 & Previous & Reorganized structure for logical flow, embedded key diagrams in relevant sections, added comprehensive traceability matrix & System Analyst \\
+2.4 & Current & Added comprehensive User Stories section with all 12 user story diagrams, updated section numbering and references & System Analyst \\
 \hline
 \end{tabular}
 \caption{Document Version History}
